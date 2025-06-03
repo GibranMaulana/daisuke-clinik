@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import org.kordamp.bootstrapfx.BootstrapFX;
+
 /**
  * JavaFX App
  */
@@ -17,8 +19,11 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
+        Parent root = loadFXML("ui/patient-view");
+        scene = new Scene(root, 800, 600);
+        
         stage.setScene(scene);
+        stage.setTitle("Hospital Patient Management System");
         stage.show();
     }
 

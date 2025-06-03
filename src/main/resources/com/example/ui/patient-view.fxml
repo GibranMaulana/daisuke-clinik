@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane xmlns="http://javafx.com/javafx/17.0.2"
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.example.ui.PatientController"
+          stylesheets="@dark-theme.css"
+          styleClass="root-pane"
+          >
+
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <!-- Define three columns: Nav (15%), Main (70%), Search (15%)           -->
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <columnConstraints>
+        <ColumnConstraints percentWidth="9" minWidth="100"/>  <!-- Navigation -->
+        <ColumnConstraints percentWidth="76" hgrow="ALWAYS"/> <!-- Main Content -->
+        <ColumnConstraints percentWidth="15" minWidth="150"/>  <!-- Search Panel -->
+    </columnConstraints>
+
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <!-- Define three rows: Header (60px), Content (grow), Footer (40px)        -->
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <rowConstraints>
+        <RowConstraints minHeight="60" prefHeight="60" maxHeight="60"/>   <!-- Header -->
+        <RowConstraints vgrow="ALWAYS"/>                                  <!-- Content -->
+        <RowConstraints minHeight="40" prefHeight="40" maxHeight="40"/>   <!-- Footer -->
+    </rowConstraints>
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <!-- 1) HEADER: spans all 3 columns, fixed height 60px                     -->
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <HBox GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="3"
+          styleClass="header-pane" alignment="CENTER">
+        <padding>
+            <Insets top="10" right="10" bottom="10" left="15"/>
+        </padding>
+        <Label text="Clinic Management" styleClass="header-label"/>
+    </HBox>
+
+
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <!-- 2A) NAVIGATION PANE (Column 0, Row 1)                                  -->
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <VBox GridPane.rowIndex="1" GridPane.columnIndex="0"
+          styleClass="nav-pane" spacing="7" alignment="TOP_LEFT">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+        <Button text="Dashboard"    styleClass="nav-button"/>
+        <Button text="Patients"     styleClass="nav-button"/>
+        <Button text="Appointments" styleClass="nav-button"/>
+        <Button text="Reports"      styleClass="nav-button"/>
+        <Button text="Settings"     styleClass="nav-button"/>
+    </VBox>
+
+
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <!-- 2B) MAIN CONTENT (Column 1, Row 1) – a VBox with Form + Table          -->
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <VBox GridPane.rowIndex="1" GridPane.columnIndex="1"
+          spacing="12" VBox.vgrow="ALWAYS" styleClass="main-pane">
+
+        <!-- ──────────────────────────────────────────────────────────────────── -->
+        <!-- 2B.i) PATIENT FORM (at top of main-pane)                          -->
+        <!-- ──────────────────────────────────────────────────────────────────── -->
+        <GridPane styleClass="form-pane" hgap="10" vgap="10">
+            <padding>
+                <Insets top="10" right="15" bottom="10" left="15"/>
+            </padding>
+            <columnConstraints>
+                <ColumnConstraints percentWidth="20"/>
+                <ColumnConstraints percentWidth="30"/>
+                <ColumnConstraints percentWidth="20"/>
+                <ColumnConstraints percentWidth="30"/>
+            </columnConstraints>
+
+            <!-- ID -->
+            <Label text="ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                   styleClass="form-label"/>
+            <TextField fx:id="addIdField" promptText="e.g. p001"
+                       GridPane.rowIndex="0" GridPane.columnIndex="1"
+                       styleClass="form-field"/>
+
+            <!-- Name -->
+            <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="2"
+                   styleClass="form-label"/>
+            <TextField fx:id="addNameField" promptText="Full Name"
+                       GridPane.rowIndex="0" GridPane.columnIndex="3"
+                       styleClass="form-field"/>
+
+            <!-- Age -->
+            <Label text="Age:" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                   styleClass="form-label"/>
+            <TextField fx:id="addAgeField" promptText="Integer"
+                       GridPane.rowIndex="1" GridPane.columnIndex="1"
+                       styleClass="form-field"/>
+
+            <!-- Address -->
+            <Label text="Address:" GridPane.rowIndex="1" GridPane.columnIndex="2"
+                   styleClass="form-label"/>
+            <TextField fx:id="addAddressField" promptText="Street, City"
+                       GridPane.rowIndex="1" GridPane.columnIndex="3"
+                       styleClass="form-field"/>
+
+            <!-- Phone -->
+            <Label text="Phone:" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                   styleClass="form-label"/>
+            <TextField fx:id="addPhoneField" promptText="Phone Number"
+                       GridPane.rowIndex="2" GridPane.columnIndex="1"
+                       styleClass="form-field"/>
+
+            <!-- Add Patient Button (aligned to right) -->
+            <Button text="Add Patient"
+                    fx:id="addButton"
+                    GridPane.rowIndex="2" GridPane.columnIndex="3"
+                    styleClass="btn-add"
+                    onAction="#handleAddPatient"/>
+        </GridPane>
+
+        <!-- ──────────────────────────────────────────────────────────────────── -->
+        <!-- 2B.ii) PATIENT TABLE (below form, fills remaining vertical space)  -->
+        <!-- ──────────────────────────────────────────────────────────────────── -->
+        <VBox spacing="6" VBox.vgrow="ALWAYS">
+            <padding>
+                <Insets top="10" right="15" bottom="10" left="15"/>
+            </padding>
+            <Label text="All Patients (In-Order by ID)"
+                   styleClass="section-label"/>
+            <TableView fx:id="patientTable"
+                       styleClass="table-pane"
+                       VBox.vgrow="ALWAYS"
+                       prefWidth="600">
+                <columns>
+                    <TableColumn fx:id="colId"      text="ID"      prefWidth="80"/>
+                    <TableColumn fx:id="colName"    text="Name"    prefWidth="300"/>
+                    <TableColumn fx:id="colAge"     text="Age"     prefWidth="50"/>
+                    <TableColumn fx:id="colAddress" text="Address" prefWidth="360"/>
+                    <TableColumn fx:id="colPhone"   text="Phone"   prefWidth="180"/>
+                </columns>
+                <placeholder>
+                    <Label text="No patients added." styleClass="placeholder-label"/>
+                </placeholder>
+            </TableView>
+        </VBox>
+    </VBox>
+
+
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <!-- 2C) SEARCH PANEL (Column 2, Row 1, fixed width)                         -->
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <VBox GridPane.rowIndex="1" GridPane.columnIndex="2"
+          spacing="8" prefWidth="200" minWidth="150" styleClass="search-pane">
+        <padding>
+            <Insets top="20" right="10" bottom="20" left="10"/>
+        </padding>
+        <Label text="Search Patients (ID Prefix)" styleClass="section-label"/>
+        <TextField fx:id="searchIdField" promptText="Type ID prefix..."
+                   styleClass="form-field"/>
+        <ListView fx:id="searchResultsListView"
+                  styleClass="search-list"
+                  prefHeight="250">
+            <placeholder>
+                <Label text="Type ID to search..." styleClass="placeholder-label"/>
+            </placeholder>
+        </ListView>
+    </VBox>
+
+
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <!-- 3) FOOTER (spans all 3 columns, fixed height 40px)                    -->
+    <!-- ────────────────────────────────────────────────────────────────────────── -->
+    <HBox GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="3"
+          styleClass="footer-pane" alignment="CENTER">
+        <padding>
+            <Insets top="5" right="10" bottom="5" left="10"/>
+        </padding>
+        <Label fx:id="footerLabel" text="Ready" styleClass="footer-label"/>
+    </HBox>
+
+</GridPane>

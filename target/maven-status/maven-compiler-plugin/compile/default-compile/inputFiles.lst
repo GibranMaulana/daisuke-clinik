@@ -1,6 +1,10 @@
+/home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/ds/CustomeBST.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/App.java
-/home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/PrimaryController.java
-/home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/SecondaryController.java
+/home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/data/PatientSearchTreeManagement.java
+/home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/data/PatientRecordManagement.java
+/home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/data/exampleDAO.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/DoctorLogin.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/module-info.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/ds/CustomeLinkedList.java
+/home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/Patient.java
+/home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/ui/PatientController.java
