@@ -1,158 +1,197 @@
 package com.example.ui;
 
-import com.example.data.PatientSearchTreeManagement;
+import com.example.data.PatientDAO;
 import com.example.model.Patient;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import com.example.model.ds.CustomeLinkedList;
+import com.example.model.ds.CustomeBST;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * PatientController (auto‐generate int ID)
+ */
 public class PatientController {
 
-    // ───────────────────────────
-    // Form fields (Center → GridPane)
-    // ───────────────────────────
-    @FXML private TextField addIdField;
+    // ─────────────────────────────────────────────────────────────────────────
+    // 1) FXML fields (no addIdField now)
+    // ─────────────────────────────────────────────────────────────────────────
+
     @FXML private TextField addNameField;
     @FXML private TextField addAgeField;
     @FXML private TextField addAddressField;
     @FXML private TextField addPhoneField;
     @FXML private Button addButton;
 
-    // ───────────────────────────
-    // Patient TableView (Center)
-    // ───────────────────────────
     @FXML private TableView<Patient> patientTable;
-    @FXML private TableColumn<Patient, String> colId;
+    @FXML private TableColumn<Patient, Integer> colId;
     @FXML private TableColumn<Patient, String> colName;
     @FXML private TableColumn<Patient, Integer> colAge;
     @FXML private TableColumn<Patient, String> colAddress;
     @FXML private TableColumn<Patient, String> colPhone;
 
-    // ───────────────────────────
-    // Search (Right)
-    // ───────────────────────────
     @FXML private TextField searchIdField;
-    @FXML private ListView<String> searchResultsListView;
+    @FXML private ListView<String> searchResultsList;
 
-    // ───────────────────────────
-    // Footer (Bottom)
-    // ───────────────────────────
     @FXML private Label footerLabel;
 
-    private final PatientSearchTreeManagement bstMgr = PatientSearchTreeManagement.getInstance();
-    private ObservableList<Patient> tableData = FXCollections.observableArrayList();
+    // ─────────────────────────────────────────────────────────────────────────
+    // 2) DAO & in‐memory BST
+    // ─────────────────────────────────────────────────────────────────────────
 
+    private final PatientDAO patientDAO = new PatientDAO();
+    private CustomeBST<Patient> patientsBST;
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // 3) Initialize: set up columns and load existing patients
+    // ─────────────────────────────────────────────────────────────────────────
     @FXML
     public void initialize() {
-        // 1) Configure TableView columns
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colAge.setCellValueFactory(new PropertyValueFactory<>("age"));
-        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
-        colPhone.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        // Configure TableView columns
+        colId.setCellValueFactory(cellData ->
+            new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getId()).asObject());
+        colName.setCellValueFactory(cellData ->
+            new javafx.beans.property.SimpleStringProperty(cellData.getValue().getName()));
+        colAge.setCellValueFactory(cellData ->
+            new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getAge()).asObject());
+        colAddress.setCellValueFactory(cellData ->
+            new javafx.beans.property.SimpleStringProperty(cellData.getValue().getAddress()));
+        colPhone.setCellValueFactory(cellData ->
+            new javafx.beans.property.SimpleStringProperty(cellData.getValue().getPhoneNumber()));
 
-        // 2) Load initial patient data into tableData and bind to table
-        refreshInOrderTable();
-        patientTable.setItems(tableData);
+        // Load all patients from DAO into BST
+        patientsBST = patientDAO.getAllPatientsBST();
 
-        // 3) Live search as you type
-        searchIdField.textProperty().addListener(new ChangeListener<>() {
-            @Override
-            public void changed(
-                    ObservableValue<? extends String> obs,
-                    String oldValue,
-                    String newValue
-            ) {
-                filterByIdPrefix(newValue);
-            }
+        // Populate the main TableView
+        refreshPatientTable();
+
+        // Listen for changes in the “ID prefix” field
+        searchIdField.textProperty().addListener((obs, oldText, newText) -> {
+            onSearchKeyTyped(newText);
         });
 
-        // 4) Initialize search results empty
-        filterByIdPrefix("");
-
-        // 5) Footer initial text
         footerLabel.setText("Ready");
     }
 
+    // ─────────────────────────────────────────────────────────────────────────
+    // 4) Add Patient Button Handler (auto‐generate ID)
+    // ─────────────────────────────────────────────────────────────────────────
     @FXML
-    private void handleAddPatient() {
-        String id = addIdField.getText().trim();
-        String name = addNameField.getText().trim();
-        String ageText = addAgeField.getText().trim();
-        String address = addAddressField.getText().trim();
-        String phone = addPhoneField.getText().trim();
+    private void onAddPatientClicked(ActionEvent event) {
+        String name        = addNameField.getText().trim();
+        String ageText     = addAgeField.getText().trim();
+        String address     = addAddressField.getText().trim();
+        String phoneNumber = addPhoneField.getText().trim();
 
-        if (id.isEmpty() || name.isEmpty() || ageText.isEmpty() || address.isEmpty() || phone.isEmpty()) {
-            showAlert(AlertType.WARNING, "All fields are required to add a patient.");
+        if (name.isEmpty() || ageText.isEmpty() || address.isEmpty() || phoneNumber.isEmpty()) {
+            footerLabel.setText("All fields are required.");
             return;
         }
 
         int age;
         try {
             age = Integer.parseInt(ageText);
-        } catch (NumberFormatException e) {
-            showAlert(AlertType.WARNING, "Age must be a valid integer.");
+        } catch (NumberFormatException ex) {
+            footerLabel.setText("Age must be an integer.");
             return;
         }
 
-        Patient newPatient = new Patient(id, name, age, address, phone);
-        if (bstMgr.searchPatient(id) != null) {
-            showAlert(AlertType.ERROR, "A patient with ID \"" + id + "\" already exists.");
-            return;
+        // Generate a random 7-digit ID (1_000_000 – 9_999_999)
+        int newId = ThreadLocalRandom.current().nextInt(1_000_000, 10_000_000);
+        // Ensure uniqueness
+        while (patientDAO.findById(newId) != null) {
+            newId = ThreadLocalRandom.current().nextInt(1_000_000, 10_000_000);
         }
 
-        try {
-            bstMgr.insertPatient(newPatient);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            showAlert(AlertType.ERROR, "Failed to add patient:\n" + ex.getMessage());
-            return;
-        }
+        // Create and persist new Patient
+        Patient newPatient = new Patient(newId, name, age, address, phoneNumber);
+        patientDAO.registerPatient(newPatient);
 
-        addIdField.clear();
+        // Update in‐memory BST and refresh TableView
+        patientsBST.insert(newPatient);
+        refreshPatientTable();
+
+        // Clear input fields & show success
         addNameField.clear();
         addAgeField.clear();
         addAddressField.clear();
         addPhoneField.clear();
-
-        refreshInOrderTable();
-        filterByIdPrefix(searchIdField.getText().trim());
-        footerLabel.setText("Patient \"" + id + "\" added successfully.");
+        footerLabel.setText("Added patient with ID: " + newId);
     }
 
-    private void refreshInOrderTable() {
-        tableData.clear();
-        List<Patient> sorted = bstMgr.inOrderDisplay();
-        tableData.addAll(sorted);
+    // ─────────────────────────────────────────────────────────────────────────
+    // 5) Refresh the main TableView from the BST (in‐order)
+    // ─────────────────────────────────────────────────────────────────────────
+    private void refreshPatientTable() {
+        CustomeLinkedList<Patient> inOrderList = patientsBST.inOrderList();
+        ObservableList<Patient> obs = FXCollections.observableArrayList();
+        for (Patient p : inOrderList) {
+            obs.add(p);
+        }
+        patientTable.setItems(obs);
     }
 
-    private void filterByIdPrefix(String prefix) {
-        prefix = prefix.trim();
-        searchResultsListView.getItems().clear();
-        if (prefix.isEmpty()) {
+    // ─────────────────────────────────────────────────────────────────────────
+    // 6) Live “search by ID prefix” as user types
+    // ─────────────────────────────────────────────────────────────────────────
+    private void onSearchKeyTyped(String newText) {
+        searchResultsList.getItems().clear();
+        String prefixText = newText.trim();
+        if (prefixText.isEmpty()) {
             return;
         }
-        for (Patient p : bstMgr.inOrderDisplay()) {
-            if (p.getId().startsWith(prefix)) {
-                searchResultsListView.getItems().add(p.getId() + "  |  " + p.getName());
+
+        // Ensure prefixText contains only digits
+        for (char c : prefixText.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                footerLabel.setText("Search prefix must be digits only.");
+                return;
             }
         }
-        if (searchResultsListView.getItems().isEmpty()) {
-            searchResultsListView.getItems().add("No matches for \"" + prefix + "\".");
+
+        // Build a CustomeLinkedList<String> of matches
+        CustomeLinkedList<String> matches = new CustomeLinkedList<>();
+        CustomeLinkedList<Patient> allPatients = patientsBST.inOrderList();
+        for (Patient p : allPatients) {
+            String idStr = Integer.toString(p.getId());
+            if (idStr.startsWith(prefixText)) {
+                matches.add(idStr + " | " + p.getName());
+            }
         }
+
+        // Transfer matches into an ObservableList<String>
+        ObservableList<String> items = FXCollections.observableArrayList();
+        for (String s : matches) {
+            items.add(s);
+        }
+        searchResultsList.setItems(items);
     }
 
-    private void showAlert(AlertType type, String message) {
-        Alert alert = new Alert(type, message, ButtonType.OK);
-        alert.setHeaderText(null);
-        alert.showAndWait();
+    // ─────────────────────────────────────────────────────────────────────────
+    // 7) Handle clicking on a search result: scroll the TableView to that row
+    // ─────────────────────────────────────────────────────────────────────────
+    @FXML
+    private void onSearchResultClicked() {
+        String selected = searchResultsList.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            return;
+        }
+        // “selected” looks like “1234567 | Alice”
+        String[] parts = selected.split("\\s+");
+        int id = Integer.parseInt(parts[0]);
+
+        // Find and select that patient in the TableView
+        ObservableList<Patient> tableItems = patientTable.getItems();
+        for (int i = 0; i < tableItems.size(); i++) {
+            if (tableItems.get(i).getId() == id) {
+                patientTable.getSelectionModel().select(i);
+                patientTable.scrollTo(i);
+                break;
+            }
+        }
     }
 }

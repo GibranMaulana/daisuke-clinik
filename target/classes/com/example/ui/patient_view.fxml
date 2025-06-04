@@ -60,7 +60,13 @@
     <!-- 2B) MAIN CONTENT (Column 1, Row 1) – a VBox with Form + Table          -->
     <!-- ────────────────────────────────────────────────────────────────────────── -->
     <VBox GridPane.rowIndex="1" GridPane.columnIndex="1"
-          spacing="12" VBox.vgrow="ALWAYS" styleClass="main-pane">
+          spacing="12" VBox.vgrow="ALWAYS" styleClass="main-pane" alignment="CENTER">
+
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+
+        <Label text="ADD NEW PATIENT" styleClass="header-label"/>
 
         <!-- ──────────────────────────────────────────────────────────────────── -->
         <!-- 2B.i) PATIENT FORM (at top of main-pane)                          -->
@@ -75,13 +81,6 @@
                 <ColumnConstraints percentWidth="20"/>
                 <ColumnConstraints percentWidth="30"/>
             </columnConstraints>
-
-            <!-- ID -->
-            <Label text="ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"
-                   styleClass="form-label"/>
-            <TextField fx:id="addIdField" promptText="e.g. p001"
-                       GridPane.rowIndex="0" GridPane.columnIndex="1"
-                       styleClass="form-field"/>
 
             <!-- Name -->
             <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="2"
@@ -122,12 +121,12 @@
         <!-- ──────────────────────────────────────────────────────────────────── -->
         <!-- 2B.ii) PATIENT TABLE (below form, fills remaining vertical space)  -->
         <!-- ──────────────────────────────────────────────────────────────────── -->
-        <VBox spacing="6" VBox.vgrow="ALWAYS">
+        <VBox spacing="12" VBox.vgrow="ALWAYS" alignment="CENTER">
             <padding>
                 <Insets top="10" right="15" bottom="10" left="15"/>
             </padding>
             <Label text="All Patients (In-Order by ID)"
-                   styleClass="section-label"/>
+                   styleClass="header-label"/>
             <TableView fx:id="patientTable"
                        styleClass="table-pane"
                        VBox.vgrow="ALWAYS"

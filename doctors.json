@@ -1,0 +1,15 @@
+[ {
+  "id" : 5555,
+  "name" : "Dr. Bob",
+  "password" : "password123",
+  "specialty" : "Cardiology",
+  "currentLoginTime" : null,
+  "loginHistory" : [ ]
+}, {
+  "id" : 4717,
+  "name" : "Dc. Gibran",
+  "password" : "test",
+  "specialty" : "speciality",
+  "currentLoginTime" : "2025-06-04T22:25:21.667552429",
+  "loginHistory" : [ "2025-06-04T22:25:21.667552429" ]
+} ]

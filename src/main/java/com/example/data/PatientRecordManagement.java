@@ -61,12 +61,14 @@ public class PatientRecordManagement {
         return allPatients;
     }
 
-    public Patient findPatientById(String id) {
-        for (Patient p : allPatients) {
-            if (p.getId().equals(id)) {
-                return p;
-            }
+    // new (int id) version
+    public Patient findPatientById(int id) {
+    for (Patient p : allPatients) {
+        if (p.getId() == id) {
+        return p;
         }
-        throw new IllegalStateException("Patient not found with ID: " + id);
     }
+    throw new IllegalStateException("Patient not found with ID: " + id);
+    }
+
 }

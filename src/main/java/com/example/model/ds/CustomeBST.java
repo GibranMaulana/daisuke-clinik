@@ -200,4 +200,17 @@ public class CustomeBST<T extends Comparable<T>> {
     visitor.accept(node.data);
     inOrderRec(node.right, visitor);
   }
+
+  public CustomeLinkedList<T> inOrderList() {
+    CustomeLinkedList<T> result = new CustomeLinkedList<>();
+    inOrderCollect(root, result);
+    return result;
+  }
+
+  private void inOrderCollect(Node<T> node, CustomeLinkedList<T> list) {
+    if (node == null) return;
+    inOrderCollect(node.left, list);
+    list.add(node.data);
+    inOrderCollect(node.right, list);
+  }
 }

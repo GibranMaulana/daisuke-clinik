@@ -18,4 +18,5 @@ module com.example {
     exports com.example.model;
     exports com.example.model.ds;
     exports com.example.ui;
+    exports com.example.data;
 }

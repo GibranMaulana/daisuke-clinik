@@ -62,7 +62,7 @@ public class PatientSearchTreeManagement {
      * Internally we construct a “dummy” Patient with only its ID set, since Patient.compareTo
      * compares by ID.  CustomeBST.search(...) will compare using compareTo.
      */
-    public Patient searchPatient(String id) {
+    public Patient searchPatient(int id) {
         // Create a “key” object that only has its ID set.
         Patient key = new Patient(id, null, 0, null, null);
         return patientTree.search(key);

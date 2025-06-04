@@ -158,4 +158,21 @@ public class CustomeLinkedList<T> implements Iterable<T> {
         }
         return list;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        Node<T> cur = head;
+        while (cur != null) {
+            sb.append(cur.data);
+            if (cur.next != null) {
+                sb.append(", ");
+            }
+            cur = cur.next;
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
 }

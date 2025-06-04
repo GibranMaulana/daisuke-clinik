@@ -6,38 +6,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
-import org.kordamp.bootstrapfx.BootstrapFX;
-
-/**
- * JavaFX App
- */
 public class App extends Application {
-
-    private static Scene scene;
-
     @Override
-    public void start(Stage stage) throws IOException {
-        Parent root = loadFXML("ui/patient-view");
-        scene = new Scene(root, 800, 600);
-        
+    public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("ui/login_view.fxml"));
+        Scene scene = new Scene(root, 400, 300);
+        stage.setTitle("Clinic Management");
         stage.setScene(scene);
-        stage.setTitle("Hospital Patient Management System");
         stage.show();
     }
 
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
-    }
-
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
-
 }
