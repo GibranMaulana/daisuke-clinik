@@ -2,6 +2,9 @@ package com.example.ui;
 
 import com.example.data.DoctorDAO;
 import com.example.model.Doctor;
+import com.example.model.LoginSession;
+import com.example.data.LoginSessionDAO;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +20,7 @@ public class DoctorLoginController {
     @FXML private PasswordField passwordField;
 
     private final DoctorDAO doctorDAO = new DoctorDAO();
+    private final LoginSessionDAO sessionDAO = new LoginSessionDAO();
 
     @FXML
     private void onLoginClicked(ActionEvent event) {
@@ -52,6 +56,13 @@ public class DoctorLoginController {
 
         // You’d now load doctor-dashboard.fxml. For now, print to console:
         System.out.println("Doctor " + id + " logged in.");
+
+        LoginSession session = new LoginSession(
+                d.getId(),
+                d.getName(),
+                d.getCurrentLoginTime()
+        );
+        sessionDAO.addSession(session);
 
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/doctor_dashboard.fxml"));

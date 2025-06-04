@@ -1,6 +1,7 @@
 package com.example.ui;
 
 import com.example.data.AppointmentDAO;
+import com.example.data.LoginSessionDAO;
 import com.example.model.Appointment;
 import com.example.model.Doctor;
 import com.example.model.ds.CustomeLinkedList;
@@ -23,6 +24,7 @@ public class DoctorDashboardController {
 
     private Doctor loggedInDoctor;
     private final AppointmentDAO appointmentDAO = new AppointmentDAO();
+    private final LoginSessionDAO sessionDAO = new LoginSessionDAO();
 
     /**
      * Called right after FXML is loaded by DoctorLoginController.
@@ -63,6 +65,8 @@ public class DoctorDashboardController {
 
     @FXML
     private void onLogoutClicked(ActionEvent event) {
+        sessionDAO.removeSession(loggedInDoctor.getId());
+     
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/doctor-login.fxml"));
             Stage stage = (Stage) welcomeLabel.getScene().getWindow();
