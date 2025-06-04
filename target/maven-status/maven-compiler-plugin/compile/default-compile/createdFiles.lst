@@ -1,6 +1,7 @@
 com/example/App.class
 com/example/model/ds/CustomeLinkedList$1.class
 com/example/data/DAOTest.class
+com/example/ui/DoctorDashboardController.class
 com/example/ui/PatientController.class
 com/example/ui/PatientRegisterController.class
 com/example/ui/DoctorRegisterController.class

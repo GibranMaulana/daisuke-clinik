@@ -12,6 +12,7 @@
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/ds/CustomeLinkedList.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/Patient.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/ui/PatientController.java
+/home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/ui/DoctorDashboardController.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/data/AppointmentDAO.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/App.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/ui/DoctorRegisterController.java

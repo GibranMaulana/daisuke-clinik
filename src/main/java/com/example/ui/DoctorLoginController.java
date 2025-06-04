@@ -52,6 +52,14 @@ public class DoctorLoginController {
 
         // You’d now load doctor-dashboard.fxml. For now, print to console:
         System.out.println("Doctor " + id + " logged in.");
+
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/doctor_dashboard.fxml"));
+            Stage stage = (Stage) doctorIdField.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
