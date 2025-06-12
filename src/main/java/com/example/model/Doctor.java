@@ -7,39 +7,46 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Doctor implements Comparable<Doctor> {
-    private int id;    
-    private String name;
-    private String password;    
+public class Doctor extends User implements Comparable<Doctor> {
     private String specialty;
-    private LocalDateTime currentLoginTime;
-
     @JsonIgnore
     private CustomeLinkedList<LocalDateTime> loginHistory;
 
     public Doctor() {
+        super();
         loginHistory = new CustomeLinkedList<>();
     }
 
+    // Constructor for backward compatibility (maps name to fullname)
     public Doctor(int id, String name, String password, String specialty) {
-        this();
-        this.id = id;
-        this.name = name;
-        this.password = password;
+        super(id, name, password, name, null); // username=name, fullname=name, email=null
         this.specialty = specialty;
+        this.loginHistory = new CustomeLinkedList<>();
     }
 
-    // ─────────────────────────────────────────
-    // Basic getters & setters (id, name, password, specialty, currentLoginTime)
-    // ─────────────────────────────────────────
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    // Full constructor with User fields
+    public Doctor(int id, String username, String password, String fullname, String email, String specialty) {
+        super(id, username, password, fullname, email);
+        this.specialty = specialty;
+        this.loginHistory = new CustomeLinkedList<>();
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    // ID validation for 4-digit IDs
+    @Override
+    public boolean isValidId(int id) {
+        return id >= 1000 && id <= 9999;
+    }
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    // Backward compatibility: getName() maps to getFullname()
+    public String getName() {
+        return getFullname();
+    }
+
+    public void setName(String name) {
+        setFullname(name);
+    }
+
+    private LocalDateTime currentLoginTime;
 
     public String getSpecialty() { return specialty; }
     public void setSpecialty(String specialty) { this.specialty = specialty; }
@@ -89,7 +96,7 @@ public class Doctor implements Comparable<Doctor> {
     // ─────────────────────────────────────────
     @Override
     public String toString() {
-        return String.format("%s | %s | %s", id, name, specialty);
+        return String.format("%s | %s | %s", id, getFullname(), specialty);
     }
 
     @Override

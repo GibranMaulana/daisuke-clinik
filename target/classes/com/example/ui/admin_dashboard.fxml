@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.example.ui.AdminController"
+      style="-fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-background-color: #F8F9FA;"
+      alignment="CENTER" spacing="0">
+
+    <!-- Header Section -->
+    <VBox style="-fx-background-color: #DC3545; -fx-padding: 30; -fx-spacing: 15;" 
+          alignment="CENTER" minHeight="120" maxHeight="120">
+        <HBox spacing="20" alignment="CENTER">
+            <FontIcon iconLiteral="fas-tachometer-alt" iconSize="36" iconColor="white" />
+            <Label text="Admin Dashboard" 
+                   style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+        </HBox>
+        <Label fx:id="welcomeLabel" text="Welcome, Administrator" 
+               style="-fx-text-fill: white; -fx-font-size: 16px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+        <Label text="Hospital Management System Administration" 
+               style="-fx-text-fill: #FFEBEE; -fx-font-size: 14px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+    </VBox>
+
+    <!-- Navigation Bar -->
+    <HBox style="-fx-background-color: #343A40; -fx-padding: 15 0; -fx-spacing: 0;" 
+          alignment="CENTER" minHeight="60" maxHeight="60">
+        
+        <!-- Dashboard Section -->
+        <Button fx:id="navDashboard" text="Dashboard" onAction="#showDashboardView"
+                style="-fx-background-color: transparent; -fx-text-fill: #FFFFFF; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 20; -fx-background-radius: 6; -fx-cursor: hand; -fx-graphic-text-gap: 8; -fx-border-color: transparent; -fx-border-width: 0;">
+            <graphic>
+                <FontIcon iconLiteral="fas-tachometer-alt" iconSize="16" iconColor="#FFFFFF" />
+            </graphic>
+        </Button>
+        
+        <!-- Doctors Section -->
+        <Button fx:id="navDoctors" text="Doctors" onAction="#showDoctorsView"
+                style="-fx-background-color: transparent; -fx-text-fill: #ADB5BD; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 20; -fx-background-radius: 6; -fx-cursor: hand; -fx-graphic-text-gap: 8; -fx-border-color: transparent; -fx-border-width: 0;">
+            <graphic>
+                <FontIcon iconLiteral="fas-user-md" iconSize="16" iconColor="#ADB5BD" />
+            </graphic>
+        </Button>
+        
+        <!-- Patients Section -->
+        <Button fx:id="navPatients" text="Patients" onAction="#showPatientsView"
+                style="-fx-background-color: transparent; -fx-text-fill: #ADB5BD; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 20; -fx-background-radius: 6; -fx-cursor: hand; -fx-graphic-text-gap: 8; -fx-border-color: transparent; -fx-border-width: 0;">
+            <graphic>
+                <FontIcon iconLiteral="fas-users" iconSize="16" iconColor="#ADB5BD" />
+            </graphic>
+        </Button>
+        
+        <!-- Appointments Section -->
+        <Button fx:id="navAppointments" text="Appointments" onAction="#showAppointmentsView"
+                style="-fx-background-color: transparent; -fx-text-fill: #ADB5BD; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 20; -fx-background-radius: 6; -fx-cursor: hand; -fx-graphic-text-gap: 8; -fx-border-color: transparent; -fx-border-width: 0;">
+            <graphic>
+                <FontIcon iconLiteral="fas-calendar-alt" iconSize="16" iconColor="#ADB5BD" />
+            </graphic>
+        </Button>
+        
+        <!-- Registrations Section -->
+        <Button fx:id="navRegistrations" text="Registrations" onAction="#showRegistrationsView"
+                style="-fx-background-color: transparent; -fx-text-fill: #ADB5BD; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 20; -fx-background-radius: 6; -fx-cursor: hand; -fx-graphic-text-gap: 8; -fx-border-color: transparent; -fx-border-width: 0;">
+            <graphic>
+                <FontIcon iconLiteral="fas-user-plus" iconSize="16" iconColor="#ADB5BD" />
+            </graphic>
+        </Button>
+    </HBox>
+
+    <!-- Main Content Area -->
+    <StackPane style="-fx-background-color: #F8F9FA;" VBox.vgrow="ALWAYS">
+        
+        <!-- Dashboard View -->
+        <VBox fx:id="dashboardView" spacing="40" alignment="CENTER" 
+              style="-fx-background-color: #F8F9FA; -fx-padding: 40;" visible="true">
+            <!-- Quick Stats Cards -->
+            <HBox spacing="30" alignment="CENTER">
+                <!-- Total Doctors Card -->
+                <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 30; -fx-spacing: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 4);" 
+                      alignment="CENTER" minWidth="220" prefWidth="250">
+                    <FontIcon iconLiteral="fas-user-md" iconSize="40" iconColor="#272757" />
+                    <Label text="Total Doctors" style="-fx-font-weight: bold; -fx-text-fill: #2C2C54; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px;"/>
+                    <Label fx:id="totalDoctorsLabel" text="0" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #DC3545; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                </VBox>
+                
+                <!-- Total Patients Card -->
+                <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 30; -fx-spacing: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 4);" 
+                      alignment="CENTER" minWidth="220" prefWidth="250">
+                    <FontIcon iconLiteral="fas-users" iconSize="40" iconColor="#28A745" />
+                    <Label text="Total Patients" style="-fx-font-weight: bold; -fx-text-fill: #2C2C54; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px;"/>
+                    <Label fx:id="totalPatientsLabel" text="0" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #28A745; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                </VBox>
+                
+                <!-- Active Sessions Card -->
+                <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 30; -fx-spacing: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 4);" 
+                      alignment="CENTER" minWidth="220" prefWidth="250">
+                    <FontIcon iconLiteral="fas-circle" iconSize="40" iconColor="#007BFF" />
+                    <Label text="Active Sessions" style="-fx-font-weight: bold; -fx-text-fill: #2C2C54; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px;"/>
+                    <Label fx:id="loggedInDoctorsLabel" text="0" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #007BFF; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                </VBox>
+                
+                <!-- Total Appointments Card -->
+                <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 30; -fx-spacing: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 4);" 
+                      alignment="CENTER" minWidth="220" prefWidth="250">
+                    <FontIcon iconLiteral="fas-calendar-alt" iconSize="40" iconColor="#FFC107" />
+                    <Label text="Appointments" style="-fx-font-weight: bold; -fx-text-fill: #2C2C54; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px;"/>
+                    <Label fx:id="totalAppointmentsLabel" text="0" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #FFC107; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                </VBox>
+            </HBox>
+
+            <!-- Refresh Button -->
+            <Button fx:id="refreshStatsButton" text="Refresh Statistics" onAction="#refreshStatistics"
+                    style="-fx-background-color: #DC3545; -fx-text-fill: white; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 16px; -fx-padding: 15 30; -fx-background-radius: 8; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 2); -fx-graphic-text-gap: 12;"
+                    prefWidth="220" prefHeight="50">
+                <graphic>
+                    <FontIcon iconLiteral="fas-sync-alt" iconSize="18" iconColor="white" />
+                </graphic>
+            </Button>
+        </VBox>
+        
+        <!-- Doctors View -->
+        <VBox fx:id="doctorsView" spacing="40" alignment="CENTER" 
+              style="-fx-background-color: #F8F9FA; -fx-padding: 40;" visible="false">
+            <!-- Doctor Management Section -->
+            <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 40; -fx-spacing: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 4);" 
+                  spacing="30" alignment="CENTER" maxWidth="1200" prefWidth="1100">
+                <HBox spacing="15" alignment="CENTER">
+                    <FontIcon iconLiteral="fas-user-md" iconSize="28" iconColor="#2C2C54" />
+                    <Label text="Doctor Management" 
+                           style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2C2C54; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                </HBox>
+                
+                <!-- Doctor Action Buttons -->
+                <HBox spacing="20" alignment="CENTER">
+                    <Button fx:id="viewAllDoctorsButton" text="View All Doctors" onAction="#viewAllDoctors"
+                            style="-fx-background-color: #007BFF; -fx-text-fill: white; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 25; -fx-background-radius: 8; -fx-cursor: hand; -fx-graphic-text-gap: 10;">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-users" iconSize="16" iconColor="white" />
+                        </graphic>
+                    </Button>
+                    <Button fx:id="viewLoggedInDoctorsButton" text="Active Sessions" onAction="#viewLoggedInDoctors"
+                            style="-fx-background-color: #28A745; -fx-text-fill: white; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 25; -fx-background-radius: 8; -fx-cursor: hand; -fx-graphic-text-gap: 10;">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-circle" iconSize="16" iconColor="white" />
+                        </graphic>
+                    </Button>
+                    <Button fx:id="viewDoctorLoginHistoryButton" text="Login History" onAction="#viewDoctorLoginHistory"
+                            style="-fx-background-color: #6C757D; -fx-text-fill: white; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 25; -fx-background-radius: 8; -fx-cursor: hand; -fx-graphic-text-gap: 10;">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-chart-bar" iconSize="16" iconColor="white" />
+                        </graphic>
+                    </Button>
+                </HBox>
+                
+                <!-- Doctor Search and Removal Section -->
+                <HBox spacing="30" alignment="CENTER" style="-fx-background-color: #F8F9FA; -fx-padding: 20; -fx-background-radius: 8;">
+                    <VBox spacing="10" alignment="CENTER">
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <FontIcon iconLiteral="fas-search" iconSize="16" iconColor="#495057" />
+                            <Label text="Search by Doctor ID" style="-fx-font-weight: bold; -fx-text-fill: #495057; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px;"/>
+                        </HBox>
+                        <TextField fx:id="doctorIdField" promptText="Enter doctor ID..." 
+                                  style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #DEE2E6; -fx-border-radius: 8; -fx-border-width: 1; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"
+                                  prefWidth="200"/>
+                    </VBox>
+                    
+                    <VBox spacing="5" alignment="BOTTOM_LEFT">
+                        <Button fx:id="removeDoctorButton" text="Remove Selected" onAction="#removeDoctor"
+                                style="-fx-background-color: #DC3545; -fx-text-fill: white; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 15; -fx-background-radius: 8; -fx-cursor: hand; -fx-graphic-text-gap: 8;">
+                            <graphic>
+                                <FontIcon iconLiteral="fas-user-times" iconSize="14" iconColor="white" />
+                            </graphic>
+                        </Button>
+                    </VBox>
+                </HBox>
+                
+                <!-- Doctor Tables -->
+                <TabPane tabClosingPolicy="UNAVAILABLE" style="-fx-background-color: transparent;" prefWidth="1050">
+                    <Tab>
+                        <text>All Doctors</text>
+                        <graphic>
+                            <FontIcon iconLiteral="fas-list" iconSize="14" iconColor="#495057" />
+                        </graphic>
+                        <TableView fx:id="allDoctorsTable" prefHeight="450">
+                            <columns>
+                                <TableColumn fx:id="doctorIdColumn" text="ID" prefWidth="80"/>
+                                <TableColumn fx:id="doctorUsernameColumn" text="Username" prefWidth="150"/>
+                                <TableColumn fx:id="doctorNameColumn" text="Name" prefWidth="200"/>
+                                <TableColumn fx:id="doctorEmailColumn" text="Email" prefWidth="200"/>
+                                <TableColumn fx:id="doctorSpecialtyColumn" text="Specialty" prefWidth="200"/>
+                                <TableColumn fx:id="doctorStatusColumn" text="Status" prefWidth="120"/>
+                            </columns>
+                        </TableView>
+                    </Tab>
+                    <Tab>
+                        <text>Active Sessions</text>
+                        <graphic>
+                            <FontIcon iconLiteral="fas-circle" iconSize="14" iconColor="#28A745" />
+                        </graphic>
+                        <TableView fx:id="loggedInDoctorsTable" prefHeight="450">
+                            <columns>
+                                <TableColumn fx:id="activeDoctorIdColumn" text="ID" prefWidth="80"/>
+                                <TableColumn fx:id="activeDoctorUsernameColumn" text="Username" prefWidth="150"/>
+                                <TableColumn fx:id="activeDoctorNameColumn" text="Name" prefWidth="200"/>
+                                <TableColumn fx:id="activeDoctorEmailColumn" text="Email" prefWidth="200"/>
+                                <TableColumn fx:id="activeDoctorSpecialtyColumn" text="Specialty" prefWidth="170"/>
+                                <TableColumn fx:id="activeDoctorLoginTimeColumn" text="Login Time" prefWidth="150"/>
+                            </columns>
+                        </TableView>
+                    </Tab>
+                </TabPane>
+            </VBox>
+        </VBox>
+        
+        <!-- Patients View -->
+        <VBox fx:id="patientsView" spacing="40" alignment="CENTER" 
+              style="-fx-background-color: #F8F9FA; -fx-padding: 40;" visible="false">
+            <!-- Patient Management Section -->
+            <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 40; -fx-spacing: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 4);" 
+                  spacing="30" alignment="CENTER" maxWidth="1200" prefWidth="1100">
+                <HBox spacing="15" alignment="CENTER">
+                    <FontIcon iconLiteral="fas-users" iconSize="28" iconColor="#28A745" />
+                    <Label text="Patient Management" 
+                           style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2C2C54; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                </HBox>
+                
+                <!-- Enhanced Patient Search -->
+                <VBox spacing="20" alignment="CENTER">
+                    <!-- Search Controls Row -->
+                    <HBox spacing="20" alignment="CENTER">
+                        <VBox spacing="5" alignment="CENTER_LEFT">
+                            <HBox spacing="5" alignment="CENTER_LEFT">
+                                <FontIcon iconLiteral="fas-id-card" iconSize="14" iconColor="#495057" />
+                                <Label text="Search by Patient ID" style="-fx-font-weight: bold; -fx-text-fill: #495057; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px;"/>
+                            </HBox>
+                            <TextField fx:id="patientIdField" promptText="Enter ID prefix..." 
+                                      style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #DEE2E6; -fx-border-radius: 8; -fx-border-width: 1; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"
+                                      prefWidth="150"/>
+                        </VBox>
+                        
+                        <VBox spacing="5" alignment="CENTER_LEFT">
+                            <HBox spacing="5" alignment="CENTER_LEFT">
+                                <FontIcon iconLiteral="fas-user" iconSize="14" iconColor="#495057" />
+                                <Label text="Search by Patient Name" style="-fx-font-weight: bold; -fx-text-fill: #495057; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px;"/>
+                            </HBox>
+                            <TextField fx:id="patientNameField" promptText="Enter name..." 
+                                      style="-fx-font-size: 14px; -fx-padding: 10; -fx-background-radius: 8; -fx-border-color: #DEE2E6; -fx-border-radius: 8; -fx-border-width: 1; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"
+                                      prefWidth="200"/>
+                        </VBox>
+                        
+                        <VBox spacing="5" alignment="BOTTOM_LEFT">
+                            <Button fx:id="clearSearchButton" text="Clear Filters" onAction="#clearPatientSearch"
+                                    style="-fx-background-color: #6C757D; -fx-text-fill: white; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 15; -fx-background-radius: 8; -fx-cursor: hand; -fx-graphic-text-gap: 8;">
+                                <graphic>
+                                    <FontIcon iconLiteral="fas-times" iconSize="14" iconColor="white" />
+                                </graphic>
+                            </Button>
+                        </VBox>
+                        
+                        <VBox spacing="5" alignment="BOTTOM_LEFT">
+                            <Button fx:id="removePatientButton" text="Remove Selected" onAction="#removePatient"
+                                    style="-fx-background-color: #DC3545; -fx-text-fill: white; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 15; -fx-background-radius: 8; -fx-cursor: hand; -fx-graphic-text-gap: 8;">
+                                <graphic>
+                                    <FontIcon iconLiteral="fas-trash-alt" iconSize="14" iconColor="white" />
+                                </graphic>
+                            </Button>
+                        </VBox>
+                    </HBox>
+                    
+                    <!-- Search Status -->
+                    <HBox spacing="10" alignment="CENTER">
+                        <FontIcon iconLiteral="fas-info-circle" iconSize="14" iconColor="#17A2B8" />
+                        <Label fx:id="patientSearchStatus" text="Showing all patients" 
+                               style="-fx-text-fill: #17A2B8; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px; -fx-background-color: #D1ECF1; -fx-padding: 5 10; -fx-background-radius: 12;"/>
+                    </HBox>
+                </VBox>
+                
+                <!-- Patient Table -->
+                <TableView fx:id="allPatientsTable" prefHeight="450" prefWidth="1050">
+                    <columns>
+                        <TableColumn fx:id="patientIdColumn" text="ID" prefWidth="80"/>
+                        <TableColumn fx:id="patientUsernameColumn" text="Username" prefWidth="130"/>
+                        <TableColumn fx:id="patientNameColumn" text="Name" prefWidth="150"/>
+                        <TableColumn fx:id="patientEmailColumn" text="Email" prefWidth="180"/>
+                        <TableColumn fx:id="patientAgeColumn" text="Age" prefWidth="60"/>
+                        <TableColumn fx:id="patientAddressColumn" text="Address" prefWidth="200"/>
+                        <TableColumn fx:id="patientPhoneColumn" text="Phone" prefWidth="120"/>
+                        <TableColumn fx:id="patientIllnessColumn" text="Current Illness" prefWidth="130"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </VBox>
+        
+        <!-- Appointments View -->
+        <VBox fx:id="appointmentsView" spacing="40" alignment="CENTER" 
+              style="-fx-background-color: #F8F9FA; -fx-padding: 40;" visible="false">
+            <!-- Appointments Section -->
+            <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 40; -fx-spacing: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 4);" 
+                  spacing="30" alignment="CENTER" maxWidth="1200" prefWidth="1100">
+                <HBox spacing="15" alignment="CENTER">
+                    <FontIcon iconLiteral="fas-calendar-alt" iconSize="28" iconColor="#FFC107" />
+                    <Label text="Appointment Management" 
+                           style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2C2C54; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                </HBox>
+                
+                <Button fx:id="viewAllAppointmentsButton" text="View All Appointments" onAction="#viewAllAppointments"
+                        style="-fx-background-color: #FFC107; -fx-text-fill: #212529; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 16px; -fx-padding: 15 30; -fx-background-radius: 8; -fx-cursor: hand; -fx-graphic-text-gap: 12;"
+                        prefWidth="250" prefHeight="50">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-list-alt" iconSize="18" iconColor="#212529" />
+                    </graphic>
+                </Button>
+                
+                <!-- Appointments Table -->
+                <TableView fx:id="allAppointmentsTable" prefHeight="450" prefWidth="1050">
+                    <columns>
+                        <TableColumn fx:id="appointmentIdColumn" text="ID" prefWidth="100"/>
+                        <TableColumn fx:id="appointmentPatientIdColumn" text="Patient ID" prefWidth="120"/>
+                        <TableColumn fx:id="appointmentDoctorIdColumn" text="Doctor ID" prefWidth="120"/>
+                        <TableColumn fx:id="appointmentTimeColumn" text="Time" prefWidth="200"/>
+                        <TableColumn fx:id="appointmentIllnessColumn" text="Illness" prefWidth="250"/>
+                        <TableColumn fx:id="appointmentStatusColumn" text="Status" prefWidth="130"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </VBox>
+        
+        <!-- Registrations View -->
+        <VBox fx:id="registrationsView" spacing="40" alignment="CENTER" 
+              style="-fx-background-color: #F8F9FA; -fx-padding: 40;" visible="false">
+            <!-- Pending Registrations Section -->
+            <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 40; -fx-spacing: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 4);" 
+                  spacing="30" alignment="CENTER" maxWidth="1200" prefWidth="1100">
+                <HBox spacing="15" alignment="CENTER">
+                    <FontIcon iconLiteral="fas-hourglass-half" iconSize="28" iconColor="#FFA726" />
+                    <Label text="Pending Doctor Registrations" 
+                           style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2C2C54; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                </HBox>
+                
+                <HBox spacing="20" alignment="CENTER">
+                    <Button fx:id="acceptButton" text="Accept" onAction="#acceptDoctorRegistration"
+                            style="-fx-background-color: #28A745; -fx-text-fill: white; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 25; -fx-background-radius: 8; -fx-cursor: hand; -fx-graphic-text-gap: 10;">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-check" iconSize="16" iconColor="white" />
+                        </graphic>
+                    </Button>
+                    <Button fx:id="declineButton" text="Decline" onAction="#declineDoctorRegistration"
+                            style="-fx-background-color: #DC3545; -fx-text-fill: white; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 25; -fx-background-radius: 8; -fx-cursor: hand; -fx-graphic-text-gap: 10;">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-times" iconSize="16" iconColor="white" />
+                        </graphic>
+                    </Button>
+                </HBox>
+                
+                <TableView fx:id="pendingRegistrationsTable" prefHeight="450" prefWidth="1050" 
+                          style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #DEE2E6; -fx-border-radius: 8; -fx-border-width: 1;">
+                    <columns>
+                        <TableColumn fx:id="regRequestIdColumn" text="Request ID" prefWidth="120" style="-fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif;"/>
+                        <TableColumn fx:id="regDoctorNameColumn" text="Doctor Name" prefWidth="250" style="-fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif;"/>
+                        <TableColumn fx:id="regSpecialtyColumn" text="Specialty" prefWidth="200" style="-fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif;"/>
+                        <TableColumn fx:id="regRequestTimeColumn" text="Request Time" prefWidth="230" style="-fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif;"/>
+                        <TableColumn fx:id="regStatusColumn" text="Status" prefWidth="130" style="-fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif;"/>
+                    </columns>
+                    <placeholder>
+                        <VBox spacing="15" alignment="CENTER">
+                            <FontIcon iconLiteral="fas-clipboard-list" iconSize="36" iconColor="#6C757D" />
+                            <Label text="No pending registrations available" 
+                                   style="-fx-text-fill: #6C757D; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 16px;"/>
+                        </VBox>
+                    </placeholder>
+                </TableView>
+            </VBox>
+        </VBox>
+    </StackPane>
+
+    <!-- Footer -->
+    <HBox style="-fx-background-color: #2C2C54; -fx-padding: 20 30;" 
+          alignment="CENTER" spacing="20" minHeight="60" maxHeight="60">
+        <Label text="Hospital Management System - Admin Portal" 
+               style="-fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="statusLabel" text="Ready" 
+               style="-fx-text-fill: #ADB5BD; -fx-font-size: 14px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-padding: 0 20 0 0;"/>
+        <Button fx:id="logoutButton" text="Logout" onAction="#logout"
+                style="-fx-background-color: #DC3545; -fx-text-fill: white; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 20; -fx-background-radius: 8; -fx-cursor: hand; -fx-graphic-text-gap: 10;">
+            <graphic>
+                <FontIcon iconLiteral="fas-sign-out-alt" iconSize="16" iconColor="white" />
+            </graphic>
+        </Button>
+    </HBox>
+
+</VBox>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="com.example.ui.PatientAppointmentController"
+
+          style="-fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-background-color: #F8F9FA;">
+
+    <columnConstraints>
+        <ColumnConstraints minWidth="250" prefWidth="250" maxWidth="250"/>
+        <ColumnConstraints hgrow="ALWAYS"/>
+    </columnConstraints>
+    
+    <rowConstraints>
+        <RowConstraints vgrow="ALWAYS"/>
+        <RowConstraints minHeight="40" maxHeight="40"/>
+    </rowConstraints>
+
+    <!-- Left Navigation Panel -->
+    <VBox style="-fx-background-color: #0F0E47; -fx-padding: 15; -fx-spacing: 10; -fx-min-width: 200;" GridPane.rowIndex="0" GridPane.columnIndex="0" spacing="0">
+        <VBox alignment="CENTER" style="-fx-padding: 15; -fx-spacing: 5;">
+            <HBox spacing="10" alignment="CENTER">
+                <FontIcon iconLiteral="fas-calendar-plus" iconSize="20" iconColor="white" />
+                <Label text="Book Appointment" style="-fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+            </HBox>
+            <Label text="Patient Portal" style="-fx-text-fill: #B8B8E6; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px;"/>
+        </VBox>
+
+        <!-- Navigation Buttons -->
+        <VBox spacing="5" style="-fx-padding: 10 0; -fx-spacing: 5;">
+            <Button text="Home" 
+                    onAction="#onBackClicked"
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 15; -fx-alignment: center-left; -fx-background-radius: 5; -fx-min-width: 170; -fx-graphic-text-gap: 10;"
+                    maxWidth="Infinity">
+                <graphic>
+                    <FontIcon iconLiteral="fas-home" iconSize="14" iconColor="white" />
+                </graphic>
+            </Button>
+            <Button text="Register" 
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 15; -fx-alignment: center-left; -fx-background-radius: 5; -fx-min-width: 170; -fx-graphic-text-gap: 10;"
+                    maxWidth="Infinity">
+                <graphic>
+                    <FontIcon iconLiteral="fas-user-plus" iconSize="14" iconColor="white" />
+                </graphic>
+            </Button>
+            <Button text="Book Appointment" 
+                    style="-fx-background-color: #505081; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 15; -fx-alignment: center-left; -fx-background-radius: 5; -fx-min-width: 170; -fx-graphic-text-gap: 10;"
+                    maxWidth="Infinity">
+                <graphic>
+                    <FontIcon iconLiteral="fas-calendar-plus" iconSize="14" iconColor="white" />
+                </graphic>
+            </Button>
+            <Button text="My Appointments" 
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 15; -fx-alignment: center-left; -fx-background-radius: 5; -fx-min-width: 170; -fx-graphic-text-gap: 10;"
+                    maxWidth="Infinity">
+                <graphic>
+                    <FontIcon iconLiteral="fas-clipboard-list" iconSize="14" iconColor="white" />
+                </graphic>
+            </Button>
+        </VBox>
+
+        <!-- Quick Info -->
+        <VBox style="-fx-padding: 15 0; -fx-spacing: 8;">
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <FontIcon iconLiteral="fas-info-circle" iconSize="14" iconColor="#B8B8E6" />
+                <Label text="Quick Info" style="-fx-text-fill: #B8B8E6; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 13px; -fx-font-weight: bold;"/>
+            </HBox>
+            <VBox spacing="8" style="-fx-padding: 10; -fx-background-color: #2B2A5C; -fx-background-radius: 8;">
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <FontIcon iconLiteral="fas-clock" iconSize="12" iconColor="#B8B8E6" />
+                    <Label text="Clinic Hours" style="-fx-text-fill: #B8B8E6; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                </HBox>
+                <Label text="Mon-Fri: 8AM-6PM" style="-fx-text-fill: white; -fx-font-size: 12px;"/>
+                <Label text="Sat: 9AM-4PM" style="-fx-text-fill: white; -fx-font-size: 12px;"/>
+                <Label text="Sun: Emergency Only" style="-fx-text-fill: white; -fx-font-size: 12px;"/>
+            </VBox>
+        </VBox>
+    </VBox>
+
+    <!-- Main Content Area -->
+    <ScrollPane GridPane.rowIndex="0" GridPane.columnIndex="1" fitToWidth="true" style="-fx-background-color: #F8F9FA; -fx-padding: 0;">
+        <VBox spacing="20" style="-fx-padding: 20; -fx-spacing: 20;">
+            <!-- Header Section -->
+            <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 20; -fx-spacing: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);" spacing="15">
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <FontIcon iconLiteral="fas-calendar-plus" iconSize="24" iconColor="#2C2C54" />
+                    <Label text="Schedule Appointment" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2C2C54;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="statusLabel" text="" style="-fx-text-fill: #28A745; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px; -fx-background-color: #D4F6DD; -fx-padding: 5 10; -fx-background-radius: 12;"/>
+                </HBox>
+                
+                <Separator/>
+                
+                <Label text="Book an appointment with one of our available doctors. Select your preferred date, time, and describe your medical concern." 
+                       style="-fx-text-fill: #6C757D; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px;" wrapText="true"/>
+            </VBox>
+
+            <!-- Doctor Selection -->
+            <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 20; -fx-spacing: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);" spacing="15">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <FontIcon iconLiteral="fas-user-md" iconSize="18" iconColor="#2C2C54" />
+                    <Label text="Select Doctor" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2C2C54;"/>
+                </HBox>
+                
+                <VBox spacing="10">
+                    <Label text="Available Doctors (Currently Online)" style="-fx-text-fill: #6C757D; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                    <ListView fx:id="doctorListView"
+                              prefHeight="150"
+                              style="-fx-min-height: 150px;">
+                        <placeholder>
+                            <VBox alignment="CENTER" spacing="10">
+                                <Label text="No doctors available" style="-fx-font-size: 16px; -fx-text-fill: #6C757D;"/>
+                                <Label text="Please try again later or contact us directly" style="-fx-text-fill: #6C757D; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px;"/>
+                            </VBox>
+                        </placeholder>
+                    </ListView>
+                </VBox>
+            </VBox>
+
+            <!-- Appointment Details -->
+            <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 20; -fx-spacing: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);" spacing="15">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <FontIcon iconLiteral="fas-clipboard-list" iconSize="18" iconColor="#2C2C54" />
+                    <Label text="Appointment Details" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2C2C54;"/>
+                </HBox>
+                
+                <HBox spacing="20">
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <FontIcon iconLiteral="fas-calendar-alt" iconSize="14" iconColor="#6C757D" />
+                            <Label text="Preferred Date" style="-fx-text-fill: #6C757D; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                        </HBox>
+                        <DatePicker fx:id="datePicker" prefWidth="200"/>
+                    </VBox>
+                    
+                    <VBox spacing="5" HBox.hgrow="ALWAYS">
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <FontIcon iconLiteral="fas-clock" iconSize="14" iconColor="#6C757D" />
+                            <Label text="Preferred Time (24hr format)" style="-fx-text-fill: #6C757D; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                        </HBox>
+                        <TextField fx:id="timeField"
+                                   promptText="e.g. 14:30"
+                                   prefWidth="150"/>
+                    </VBox>
+                </HBox>
+
+                <VBox spacing="5">
+                    <HBox spacing="8" alignment="CENTER_LEFT">
+                        <FontIcon iconLiteral="fas-notes-medical" iconSize="14" iconColor="#6C757D" />
+                        <Label text="Describe Your Medical Concern" style="-fx-text-fill: #6C757D; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                    </HBox>
+                    <TextArea fx:id="illnessArea"
+                              promptText="Please provide a brief description of your symptoms or medical concern..."
+                              prefRowCount="4"
+                              wrapText="true"/>
+                </VBox>
+            </VBox>
+
+            <!-- Action Section -->
+            <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 20; -fx-spacing: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);" spacing="15">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <FontIcon iconLiteral="fas-check-circle" iconSize="16" iconColor="#28A745" />
+                    <Label text="Complete Booking" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2C2C54;"/>
+                </HBox>
+                <HBox spacing="15" alignment="CENTER">
+                    <Button text="Schedule Appointment"
+                            onAction="#onScheduleClicked"
+                            style="-fx-background-color: #28A745; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 16px; -fx-padding: 12 24; -fx-background-radius: 6; -fx-cursor: hand; -fx-graphic-text-gap: 12;"
+                            prefWidth="200"
+                            prefHeight="45">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-calendar-check" iconSize="16" iconColor="white" />
+                        </graphic>
+                    </Button>
+                    <Button text="Back to Home"
+                            onAction="#onBackClicked"
+                            style="-fx-background-color: #6C757D; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 20; -fx-background-radius: 6; -fx-cursor: hand; -fx-graphic-text-gap: 10;"
+                            prefWidth="150">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-home" iconSize="14" iconColor="white" />
+                        </graphic>
+                    </Button>
+                </HBox>
+                
+                <Label text="Tip: You'll receive a confirmation with your appointment ID after booking" 
+                       style="-fx-text-fill: #6C757D; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px;" wrapText="true"/>
+            </VBox>
+        </VBox>
+    </ScrollPane>
+
+    <!-- Status Bar spans both columns -->
+    <HBox style="-fx-background-color: #272757; -fx-padding: 8 15;" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2">
+        <Label text="Appointment Booking" style="-fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label text="Patient Portal" style="-fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px;"/>
+    </HBox>
+</GridPane>

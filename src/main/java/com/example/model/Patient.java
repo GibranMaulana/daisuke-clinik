@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-public class Patient implements Comparable<Patient> {
-    private int id;       // 7‐digit numeric string
-    private String name;
+public class Patient extends User implements Comparable<Patient> {
     private int age;
     private String address;
     private String phoneNumber;
@@ -20,37 +18,47 @@ public class Patient implements Comparable<Patient> {
     private CustomeLinkedList<String> illnessHistory;
 
     public Patient() {
+        super();
         this.illnessHistory = new CustomeLinkedList<>();
     }
 
-    public Patient(int id, String name, int age, String address, String phoneNumber) {
-        this();
-        this.id = id;
-        this.name = name;
+    // Constructor for backward compatibility (fullname as name)
+    public Patient(int id, String fullname, int age, String address, String phoneNumber) {
+        super(id, fullname, null, fullname, null); // username=fullname, password=null, email=null
         this.age = age;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.illnessHistory = new CustomeLinkedList<>();
+    }
+
+    // Full constructor with User fields
+    public Patient(int id, String username, String password, String fullname, String email, 
+                   int age, String address, String phoneNumber) {
+        super(id, username, password, fullname, email);
+        this.age = age;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.illnessHistory = new CustomeLinkedList<>();
+    }
+
+    // ID validation for 7-digit IDs
+    @Override
+    public boolean isValidId(int id) {
+        return id >= 1000000 && id <= 9999999;
+    }
+
+    // Backward compatibility: getName() maps to getFullname()
+    public String getName() {
+        return getFullname();
+    }
+
+    public void setName(String name) {
+        setFullname(name);
     }
 
     // ─────────────────────────────────────────
     // 2) Usual getters & setters for basic fields
     // ─────────────────────────────────────────
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getAge() {
         return age;
     }
@@ -124,7 +132,7 @@ public class Patient implements Comparable<Patient> {
     @Override
     public String toString() {
         return String.format("%s | %s | %d | %s | %s",
-                id, name, age, address, phoneNumber);
+                id, getFullname(), age, address, phoneNumber);
     }
 
     @Override

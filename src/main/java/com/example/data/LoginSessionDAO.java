@@ -7,13 +7,17 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.File;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 /**
- * Manages the list of currently logged-in doctors.
- * Uses a JSON file “loginSessions.json” which stores an array of LoginSession objects.
+ * Manages the list of currently logged‐in doctors, but
+ * automatically removes any session older than EXPIRATION_HOURS.
  */
 public class LoginSessionDAO {
     private static final String FILE = "loginSessions.json";
+    private static final long EXPIRATION_HOURS = 24; // sessions older than this are “stale”
+
     private final ObjectMapper mapper;
 
     public LoginSessionDAO() {
@@ -23,8 +27,8 @@ public class LoginSessionDAO {
     }
 
     /**
-     * Load all sessions into a CustomeLinkedList<LoginSession>.
-     * If file does not exist or is empty, return an empty list.
+     * Load all sessions from JSON, remove any that are older than EXPIRATION_HOURS,
+     * save the cleaned list back to disk, and return it.
      */
     public CustomeLinkedList<LoginSession> loadAllSessions() {
         try {
@@ -32,12 +36,27 @@ public class LoginSessionDAO {
             if (!f.exists() || f.length() == 0) {
                 return new CustomeLinkedList<>();
             }
+
+            // 1) Read the raw array from JSON
             LoginSession[] arr = mapper.readValue(f, LoginSession[].class);
-            CustomeLinkedList<LoginSession> list = new CustomeLinkedList<>();
+
+            // 2) Filter out stale sessions
+            LocalDateTime now = LocalDateTime.now();
+            CustomeLinkedList<LoginSession> freshList = new CustomeLinkedList<>();
             for (LoginSession s : arr) {
-                list.add(s);
+                if (s.getLoginTime() != null) {
+                    Duration age = Duration.between(s.getLoginTime(), now);
+                    if (age.toHours() < EXPIRATION_HOURS) {
+                        // Still valid
+                        freshList.add(s);
+                    }
+                }
             }
-            return list;
+
+            // 3) Overwrite the file with only the fresh sessions
+            saveAllSessions(freshList);
+
+            return freshList;
         } catch (Exception ex) {
             ex.printStackTrace();
             return new CustomeLinkedList<>();
@@ -62,7 +81,7 @@ public class LoginSessionDAO {
     }
 
     /**
-     * Add a new session (if doctor not already logged-in).
+     * Add a new session (if doctor not already logged‐in and not stale).
      */
     public void addSession(LoginSession session) {
         CustomeLinkedList<LoginSession> all = loadAllSessions();
@@ -77,7 +96,7 @@ public class LoginSessionDAO {
     }
 
     /**
-     * Remove a session by doctorId (on logout).
+     * Remove a session by doctorId (on explicit logout).
      */
     public void removeSession(int doctorId) {
         CustomeLinkedList<LoginSession> all = loadAllSessions();
@@ -95,7 +114,7 @@ public class LoginSessionDAO {
     }
 
     /**
-     * Return a list of all currently logged-in doctors’ sessions.
+     * Return a list of all currently logged‐in (fresh) doctors’ sessions.
      */
     public CustomeLinkedList<LoginSession> getAllSessions() {
         return loadAllSessions();

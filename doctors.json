@@ -1,15 +1,41 @@
 [ {
-  "id" : 5555,
-  "name" : "Dr. Bob",
-  "password" : "password123",
-  "specialty" : "Cardiology",
+  "id" : 1124,
+  "username" : "tiana margaret",
+  "password" : "tianamargaret",
+  "fullname" : "tiana margaret",
+  "email" : null,
+  "specialty" : "neurology",
+  "currentLoginTime" : "2025-06-12T12:12:54.264344598",
+  "name" : "tiana margaret",
+  "loginHistory" : [ "2025-06-12T12:00:07.139900584", "2025-06-12T12:12:54.264344598" ]
+}, {
+  "id" : 1087,
+  "username" : "stampe",
+  "password" : "stampeuns",
+  "fullname" : "stampe",
+  "email" : null,
+  "specialty" : "limbciology",
   "currentLoginTime" : null,
+  "name" : "stampe",
   "loginHistory" : [ ]
 }, {
-  "id" : 4717,
-  "name" : "Dc. Gibran",
-  "password" : "test",
-  "specialty" : "speciality",
-  "currentLoginTime" : "2025-06-04T23:56:04.373006625",
-  "loginHistory" : [ "2025-06-04T22:25:21.667552429", "2025-06-04T23:56:04.373006625" ]
+  "id" : 9814,
+  "username" : "bob123",
+  "password" : "password123",
+  "fullname" : "Dr. Bob",
+  "email" : null,
+  "specialty" : "Cardiology",
+  "currentLoginTime" : "2025-06-12T12:36:32.775422692",
+  "name" : "Dr. Bob",
+  "loginHistory" : [ "2025-06-12T11:58:59.451608848", "2025-06-12T12:07:17.418704268", "2025-06-12T12:36:32.775422692" ]
+}, {
+  "id" : 8514,
+  "username" : "susan strong",
+  "password" : "susanstrnog",
+  "fullname" : "susan strong",
+  "email" : null,
+  "specialty" : "cardiology",
+  "currentLoginTime" : "2025-06-12T13:08:45.261020835",
+  "name" : "susan strong",
+  "loginHistory" : [ "2025-06-12T13:08:45.261020835" ]
 } ]

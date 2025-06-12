@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="com.example.ui.AdminLoginController"
+          style="-fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-background-color: #F8F9FA;">
+
+    <!-- Define column constraints -->
+    <columnConstraints>
+        <ColumnConstraints percentWidth="100" halignment="CENTER"/>
+    </columnConstraints>
+    
+    <!-- Define row constraints -->
+    <rowConstraints>
+        <RowConstraints vgrow="NEVER"/>     <!-- Header -->
+        <RowConstraints vgrow="ALWAYS"/>    <!-- Main content -->
+        <RowConstraints vgrow="NEVER"/>     <!-- Status bar -->
+    </rowConstraints>
+
+    <!-- Header -->
+    <VBox style="-fx-background-color: #DC3545; -fx-padding: 20; -fx-spacing: 10;" 
+          GridPane.rowIndex="0" GridPane.columnIndex="0">
+        <HBox spacing="15" alignment="CENTER">
+            <FontIcon iconLiteral="fas-user-shield" iconSize="32" iconColor="white" />
+            <Label text="Admin Portal" 
+                   style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+        </HBox>
+        <Label text="Hospital Management System Administration" 
+               style="-fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+    </VBox>
+
+    <!-- Main Content Area -->
+    <VBox alignment="CENTER" spacing="40" 
+          style="-fx-background-color: #F8F9FA; -fx-padding: 40;" 
+          GridPane.rowIndex="1" GridPane.columnIndex="0">
+        
+        <!-- Login Card -->
+        <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 40; -fx-spacing: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);" 
+              alignment="CENTER" spacing="25" maxWidth="400" minWidth="350">
+            
+            <Label text="Administrator Login" 
+                   style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2C2C54; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+            
+            <!-- Username Field -->
+            <VBox spacing="8">
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <FontIcon iconLiteral="fas-user" iconSize="16" iconColor="#495057" />
+                    <Label text="Username" 
+                           style="-fx-text-fill: #495057; -fx-font-weight: bold; -fx-font-size: 14px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                </HBox>
+                <TextField fx:id="usernameField" 
+                          promptText="Enter your username"
+                          style="-fx-font-size: 14px; -fx-padding: 12; -fx-background-radius: 6; -fx-border-color: #DEE2E6; -fx-border-radius: 6; -fx-border-width: 1; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"
+                          prefWidth="280"/>
+            </VBox>
+            
+            <!-- Password Field -->
+            <VBox spacing="8">
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <FontIcon iconLiteral="fas-lock" iconSize="16" iconColor="#495057" />
+                    <Label text="Password" 
+                           style="-fx-text-fill: #495057; -fx-font-weight: bold; -fx-font-size: 14px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                </HBox>
+                <PasswordField fx:id="passwordField" 
+                              promptText="Enter your password"
+                              style="-fx-font-size: 14px; -fx-padding: 12; -fx-background-radius: 6; -fx-border-color: #DEE2E6; -fx-border-radius: 6; -fx-border-width: 1; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"
+                              prefWidth="280"/>
+            </VBox>
+            
+            <!-- Buttons -->
+            <VBox spacing="15" alignment="CENTER">
+                <Button text="Login" 
+                        fx:id="loginButton"
+                        onAction="#onLoginClicked"
+                        style="-fx-background-color: #DC3545; -fx-text-fill: white; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 16px; -fx-padding: 15 25; -fx-background-radius: 8; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 2); -fx-graphic-text-gap: 12;"
+                        prefWidth="280"
+                        prefHeight="50">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-sign-in-alt" iconSize="18" iconColor="white" />
+                    </graphic>
+                </Button>
+                
+                <Button text="Back to Main" 
+                        fx:id="backButton"
+                        onAction="#onBackClicked"
+                        style="-fx-background-color: transparent; -fx-text-fill: #6C757D; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 20; -fx-border-color: #6C757D; -fx-border-radius: 6; -fx-border-width: 1; -fx-cursor: hand; -fx-graphic-text-gap: 10;"
+                        prefWidth="280"
+                        prefHeight="40">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-arrow-left" iconSize="16" iconColor="#6C757D" />
+                    </graphic>
+                </Button>
+            </VBox>
+            
+            <!-- Status Message -->
+            <Label fx:id="statusLabel" 
+                   text=""
+                   style="-fx-text-fill: #DC3545; -fx-font-size: 12px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"
+                   visible="false"/>
+        </VBox>
+        
+        <!-- Security Notice -->
+        <VBox style="-fx-background-color: #FFF3CD; -fx-background-radius: 8; -fx-padding: 15; -fx-spacing: 5; -fx-border-color: #FFEAA7; -fx-border-radius: 8; -fx-border-width: 1;" 
+              alignment="CENTER" maxWidth="400">
+            <HBox spacing="8" alignment="CENTER">
+                <FontIcon iconLiteral="fas-exclamation-triangle" iconSize="16" iconColor="#856404" />
+                <Label text="Administrator Access" 
+                       style="-fx-font-weight: bold; -fx-text-fill: #856404; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px;"/>
+            </HBox>
+            <Label text="This portal is restricted to authorized hospital administrators only" 
+                   style="-fx-text-fill: #856404; -fx-font-size: 12px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;" 
+                   textAlignment="CENTER" wrapText="true"/>
+        </VBox>
+    </VBox>
+    
+    <!-- Status Bar -->
+    <HBox style="-fx-background-color: #DC3545; -fx-padding: 8 15;" 
+          GridPane.rowIndex="2" GridPane.columnIndex="0">
+        <Label text="Admin Portal - Hospital Management System" 
+               style="-fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label text="Secure Access" 
+               style="-fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px;"/>
+    </HBox>
+</GridPane>

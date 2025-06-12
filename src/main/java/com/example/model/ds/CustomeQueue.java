@@ -31,4 +31,15 @@ public class CustomeQueue<T> {
     public Object[] toArray() {
         return list.toJsonArray(); // reuse your linked‐list → Object[] converter
     }
+
+    /** Reconstruct queue from array for JSON loading. */
+    @SuppressWarnings("unchecked")
+    public void fromArray(Object[] array) {
+        list = new CustomeLinkedList<>();
+        if (array != null) {
+            for (Object obj : array) {
+                list.add((T) obj);
+            }
+        }
+    }
 }

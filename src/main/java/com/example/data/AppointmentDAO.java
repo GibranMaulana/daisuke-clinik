@@ -90,4 +90,38 @@ public class AppointmentDAO {
         }
         return toProcess;
     }
+
+    /** Return (without dequeuing) first appointment for doctorId */
+    public Appointment peekNextAppointment(int doctorId) {
+        CustomeLinkedList<Appointment> all = loadAllAppointments();
+        for (Appointment a : all) {
+            if (a.getDoctorId() == doctorId) {
+                return a;
+            }
+        }
+        return null;
+    }
+
+    public boolean hasAppointment(int patientId, int doctorId) {
+        try {
+            File f = new File(FILE);
+            if (!f.exists() || f.length() == 0) {
+                return false;
+            }
+            Appointment[] arr = mapper.readValue(f, Appointment[].class);
+            for (Appointment a : arr) {
+                if (a.getPatientId() == patientId && a.getDoctorId() == doctorId) {
+                    return true;
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    /** Get all appointments as a list - used by admin functions */
+    public CustomeLinkedList<Appointment> getAllAppointments() {
+        return loadAllAppointments();
+    }
 }

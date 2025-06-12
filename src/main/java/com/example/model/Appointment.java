@@ -13,6 +13,7 @@ public class Appointment {
     private String doctorSpecialty;
     private LocalDateTime time;
     private String patientIllness;
+    private String status = "scheduled"; // Default status
 
     public Appointment() {
         // For Jackson
@@ -30,6 +31,7 @@ public class Appointment {
         this.doctorSpecialty = doctorSpecialty;
         this.time = time;
         this.patientIllness = patientIllness;
+        this.status = "scheduled";
     }
 
     // ─────────────── Getters & Setters ───────────────
@@ -82,11 +84,19 @@ public class Appointment {
         this.patientIllness = patientIllness;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return String.format(
-            "%d | P:%d | D:%d | %s | %s",
-            appointmentId, patientId, doctorId, time, patientIllness
+            "%d | P:%d | D:%d | %s | %s | %s",
+            appointmentId, patientId, doctorId, time, patientIllness, status
         );
     }
 

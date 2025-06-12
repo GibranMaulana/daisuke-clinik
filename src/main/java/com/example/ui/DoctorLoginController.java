@@ -1,6 +1,7 @@
 package com.example.ui;
 
 import com.example.data.DoctorDAO;
+import com.example.data.PendingDoctorRegistrationDAO;
 import com.example.model.Doctor;
 import com.example.model.LoginSession;
 import com.example.data.LoginSessionDAO;
@@ -21,6 +22,7 @@ public class DoctorLoginController {
 
     private final DoctorDAO doctorDAO = new DoctorDAO();
     private final LoginSessionDAO sessionDAO = new LoginSessionDAO();
+    private final PendingDoctorRegistrationDAO pendingDAO = new PendingDoctorRegistrationDAO();
 
     @FXML
     private void onLoginClicked(ActionEvent event) {
@@ -42,6 +44,11 @@ public class DoctorLoginController {
 
         Doctor d = doctorDAO.findById(id);
         if (d == null) {
+            // Check if the doctor is in pending registrations
+            if (pendingDAO.isDoctorPending(id)) {
+                System.out.println("Your account is pending admin verification. Please wait for approval before logging in.");
+                return;
+            }
             System.out.println("No such doctor found.");
             return;
         }
@@ -64,8 +71,14 @@ public class DoctorLoginController {
         );
         sessionDAO.addSession(session);
 
+        CurrentDoctorHolder.setDoctor(d); // Store the logged-in doctor        
+
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/doctor_dashboard.fxml"));
+             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/ui/doctor_dashboard.fxml"));
+            Parent root = loader.load();
+
+            DoctorDashboardController ctrl = loader.getController();
+            ctrl.setLoggedInDoctor(d);   // <-- THIS must run
             Stage stage = (Stage) doctorIdField.getScene().getWindow();
             stage.getScene().setRoot(root);
         } catch (IOException e) {

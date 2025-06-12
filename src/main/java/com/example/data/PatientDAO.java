@@ -85,13 +85,47 @@ public class PatientDAO {
     }
 
     /** Delete old and insert updated, then persist. */
+    // In PatientDAO.java
+
     public void updatePatient(Patient p) {
-        patientsBST.delete(p);
+        // 1) Delete any existing entry with the same ID
+        Patient existing = findById(p.getId());
+        if (existing != null) {
+            patientsBST.delete(existing);
+        }
+
+        // 2) Insert the updated patient
         patientsBST.insert(p);
+
+        // 3) Persist the entire BST to JSON
         saveAllPatients();
     }
 
     public CustomeBST<Patient> getAllPatientsBST() {
         return patientsBST;
+    }
+
+    /** 
+     * Refresh the cached BST data by reloading from the JSON file.
+     * This ensures we get the latest data after external changes.
+     */
+    public void refreshData() {
+        this.patientsBST = loadAllPatients();
+    }
+
+    /** Get all patients as a list - used by admin functions */
+    public CustomeLinkedList<Patient> getAllPatients() {
+        return patientsBST.inOrderList();
+    }
+
+    /** Delete patient by ID - used by admin functions */
+    public boolean deletePatient(int id) {
+        Patient toDelete = findById(id);
+        if (toDelete != null) {
+            patientsBST.delete(toDelete);
+            saveAllPatients();
+            return true;
+        }
+        return false;
     }
 }

@@ -1,1 +1,9 @@
-[ ]
+[ {
+  "appointmentId" : 5001235,
+  "patientId" : 4101360,
+  "doctorId" : 1124,
+  "doctorSpecialty" : "neurology",
+  "time" : "2025-06-10T10:00:00",
+  "patientIllness" : "Headache consultation",
+  "status" : "scheduled"
+} ]

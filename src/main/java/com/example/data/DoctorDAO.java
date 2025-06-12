@@ -82,4 +82,15 @@ public class DoctorDAO {
     public CustomeLinkedList<Doctor> getAllDoctors() {
         return doctorList;
     }
+
+    /** Delete doctor by ID - used by admin functions */
+    public boolean deleteDoctor(int id) {
+        Doctor toDelete = findById(id);
+        if (toDelete != null) {
+            doctorList.remove(toDelete);
+            saveAllDoctors();
+            return true;
+        }
+        return false;
+    }
 }

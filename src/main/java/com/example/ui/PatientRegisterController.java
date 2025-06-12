@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -16,6 +17,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public class PatientRegisterController {
     @FXML private TextField nameField;
     @FXML private TextField ageField;
+    @FXML private TextField usernameField;
+    @FXML private TextField emailField;
+    @FXML private PasswordField passwordField;
     @FXML private TextField addressField;
     @FXML private TextField phoneField;
     @FXML private Label statusLabel;
@@ -24,13 +28,31 @@ public class PatientRegisterController {
 
     @FXML
     private void onRegisterPatientClicked(ActionEvent event) {
-        String name    = nameField.getText().trim();
+        String fullname = nameField.getText().trim();
         String ageText = ageField.getText().trim();
+        String username = usernameField.getText().trim();
+        String email   = emailField.getText().trim();
+        String password = passwordField.getText().trim();
         String address = addressField.getText().trim();
         String phone   = phoneField.getText().trim();
 
-        if (name.isEmpty() || ageText.isEmpty() || address.isEmpty() || phone.isEmpty()) {
+        if (fullname.isEmpty() || ageText.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty() || address.isEmpty() || phone.isEmpty()) {
             statusLabel.setText("All fields are required.");
+            statusLabel.setStyle("-fx-text-fill: #DC3545; -fx-font-size: 14px;");
+            return;
+        }
+
+        // Enhanced email validation
+        if (!isValidEmail(email)) {
+            statusLabel.setText("Please enter a valid email address.");
+            statusLabel.setStyle("-fx-text-fill: #DC3545; -fx-font-size: 14px;");
+            return;
+        }
+
+        // Password validation
+        if (password.length() < 6) {
+            statusLabel.setText("Password must be at least 6 characters long.");
+            statusLabel.setStyle("-fx-text-fill: #DC3545; -fx-font-size: 14px;");
             return;
         }
 
@@ -40,6 +62,7 @@ public class PatientRegisterController {
             if (age <= 0) throw new NumberFormatException();
         } catch (NumberFormatException ex) {
             statusLabel.setText("Age must be a positive integer.");
+            statusLabel.setStyle("-fx-text-fill: #DC3545; -fx-font-size: 14px;");
             return;
         }
 
@@ -51,17 +74,42 @@ public class PatientRegisterController {
             newPatientId = ThreadLocalRandom.current().nextInt(1_000_000, 10_000_000);
         }
 
-        Patient p = new Patient(newPatientId, name, age, address, phone);
+        // Create patient with separate username and email
+        Patient p = new Patient(newPatientId, username, password, fullname, email, age, address, phone);
         patientDAO.registerPatient(p);
 
-        statusLabel.setStyle("-fx-text-fill: #00ff00; -fx-font-size: 14px;");
-        statusLabel.setText("Registered! Your Patient ID is " + newPatientId);
+        CurrentPatientHolder.setPatientId(newPatientId);
+
+        statusLabel.setText("Registration successful! Patient ID: " + newPatientId);
+        statusLabel.setStyle("-fx-text-fill: #28A745; -fx-font-size: 14px;");
+
+        // Load the appointment screen
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/patient_appointment.fxml"));
+            Stage stage = (Stage) nameField.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Optionally disable fields to prevent re‐submitting
         nameField.setDisable(true);
         ageField.setDisable(true);
+        usernameField.setDisable(true);
+        emailField.setDisable(true);
+        passwordField.setDisable(true);
         addressField.setDisable(true);
         phoneField.setDisable(true);
+    }
+
+    // Enhanced email validation method with regex
+    private boolean isValidEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return false;
+        }
+        // RFC 5322 compliant email regex pattern
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        return email.matches(emailRegex);
     }
 
     @FXML

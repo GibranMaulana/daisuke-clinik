@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "username": "bam",
+    "password": "test",
+    "adminLevel": "SUPER",
+    "pendingRegistrationsArray": []
+  },
+  {
+    "id": 2,
+    "username": "admin2",
+    "password": "password123",
+    "adminLevel": "REGULAR",
+    "pendingRegistrationsArray": []
+  }
+]

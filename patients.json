@@ -1,22 +1,23 @@
 [ {
-  "id" : 2214098,
-  "name" : "nadhifa",
-  "age" : 19,
-  "address" : "jl.kendondong",
-  "phoneNumber" : "081385927668",
-  "illnessHistory" : [ ]
+  "id" : 4101360,
+  "username" : "gibran_azmi",
+  "password" : "password123",
+  "fullname" : "gibran maulana azmi",
+  "email" : "Gibran@gmail.com",
+  "age" : 21,
+  "address" : "afewfdsa",
+  "phoneNumber" : "333-333",
+  "name" : "gibran maulana azmi",
+  "illnessHistory" : [ "lung cancer", "diare", "liver cancer" ]
 }, {
-  "id" : 6827938,
-  "name" : "Gibran Maualna",
-  "age" : 32,
-  "address" : "jl Bendungan Jago",
-  "phoneNumber" : "555-323",
-  "illnessHistory" : [ ]
-}, {
-  "id" : 7187039,
-  "name" : "Alice",
+  "id" : 8931974,
+  "username" : "alice_patient",
+  "password" : "alice123",
+  "fullname" : "Alice",
+  "email" : "Alice@hospital.com",
   "age" : 30,
   "address" : "123 Main St",
   "phoneNumber" : "555-1234",
-  "illnessHistory" : [ ]
+  "name" : "Alice",
+  "illnessHistory" : [ "brain cancer", "smallpox", "heart cancer" ]
 } ]
