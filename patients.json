@@ -10,6 +10,17 @@
   "name" : "gibran maulana azmi",
   "illnessHistory" : [ "lung cancer", "diare", "liver cancer" ]
 }, {
+  "id" : 5819077,
+  "username" : "Raddboyy",
+  "password" : "tumanlu9",
+  "fullname" : "Muhammad Raditya Boy Wiratam",
+  "email" : "awikwok123@gmail.com",
+  "age" : 18,
+  "address" : "jalan jalan",
+  "phoneNumber" : "999999999",
+  "name" : "Muhammad Raditya Boy Wiratam",
+  "illnessHistory" : [ "penyakit serius" ]
+}, {
   "id" : 8931974,
   "username" : "alice_patient",
   "password" : "alice123",

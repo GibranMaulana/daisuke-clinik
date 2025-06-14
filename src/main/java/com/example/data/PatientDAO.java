@@ -105,14 +105,6 @@ public class PatientDAO {
         return patientsBST;
     }
 
-    /** 
-     * Refresh the cached BST data by reloading from the JSON file.
-     * This ensures we get the latest data after external changes.
-     */
-    public void refreshData() {
-        this.patientsBST = loadAllPatients();
-    }
-
     /** Get all patients as a list - used by admin functions */
     public CustomeLinkedList<Patient> getAllPatients() {
         return patientsBST.inOrderList();

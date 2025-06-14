@@ -38,4 +38,14 @@
   "currentLoginTime" : "2025-06-12T13:08:45.261020835",
   "name" : "susan strong",
   "loginHistory" : [ "2025-06-12T13:08:45.261020835" ]
+}, {
+  "id" : 6182,
+  "username" : "Muhammad Raditya Boy Wiratama",
+  "password" : "tumanlu9",
+  "fullname" : "Muhammad Raditya Boy Wiratama",
+  "email" : null,
+  "specialty" : "Kelamin Wanita",
+  "currentLoginTime" : "2025-06-13T23:55:00.24362705",
+  "name" : "Muhammad Raditya Boy Wiratama",
+  "loginHistory" : [ "2025-06-13T23:53:40.669305178", "2025-06-13T23:55:00.24362705" ]
 } ]
