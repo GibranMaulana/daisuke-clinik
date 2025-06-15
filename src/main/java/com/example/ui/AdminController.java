@@ -211,13 +211,13 @@ public class AdminController {
             patientAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
             patientPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
             patientIllnessColumn.setCellValueFactory(cellData -> {
-                // Get the most recent illness from history or return "None"
+                // Get the most recent diagnosis from history or return "None"
                 if (cellData.getValue().getIllnessHistory().size() > 0) {
-                    String lastIllness = null;
-                    for (String illness : cellData.getValue().getIllnessHistory()) {
-                        lastIllness = illness; // Gets the last one added
+                    String lastDiagnosis = null;
+                    for (com.example.model.Diagnosis diagnosis : cellData.getValue().getIllnessHistory()) {
+                        lastDiagnosis = diagnosis.getDoctorDiagnosis(); // Gets the last one added
                     }
-                    return new javafx.beans.property.SimpleStringProperty(lastIllness != null ? lastIllness : "None");
+                    return new javafx.beans.property.SimpleStringProperty(lastDiagnosis != null ? lastDiagnosis : "None");
                 }
                 return new javafx.beans.property.SimpleStringProperty("None");
             });

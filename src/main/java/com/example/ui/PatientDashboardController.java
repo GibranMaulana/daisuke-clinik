@@ -29,11 +29,20 @@ public class PatientDashboardController implements Initializable {
     @FXML private Label statusLabel;
     @FXML private VBox recentActivityContainer;
     
+    // New patient information labels for the dashboard
+    @FXML private Label dashboardNameLabel;
+    @FXML private Label dashboardPatientIdLabel;
+    @FXML private Label dashboardAgeLabel;
+    @FXML private Label dashboardEmailLabel;
+    @FXML private Label dashboardPhoneLabel;
+    @FXML private Label dashboardAddressLabel;
+    
     private final AppointmentDAO appointmentDAO = new AppointmentDAO();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadPatientInfo();
+        loadPatientDetailsInfo();
         loadRecentActivity();
     }
 
@@ -50,6 +59,30 @@ public class PatientDashboardController implements Initializable {
             patientEmailLabel.setText("Not logged in");
             statusLabel.setText("Session expired. Please log in again.");
             statusLabel.setStyle("-fx-text-fill: #DC3545; -fx-font-size: 14px;");
+        }
+    }
+
+    /**
+     * Load detailed patient information into the patient information section
+     */
+    private void loadPatientDetailsInfo() {
+        if (CurrentPatientHolder.isLoggedIn()) {
+            Patient patient = CurrentPatientHolder.getCurrentPatient();
+            
+            dashboardNameLabel.setText(patient.getFullname());
+            dashboardPatientIdLabel.setText(String.valueOf(patient.getId()));
+            dashboardAgeLabel.setText(patient.getAge() + " years");
+            dashboardEmailLabel.setText(patient.getEmail() != null ? patient.getEmail() : "Not provided");
+            dashboardPhoneLabel.setText(patient.getPhoneNumber() != null ? patient.getPhoneNumber() : "Not provided");
+            dashboardAddressLabel.setText(patient.getAddress() != null ? patient.getAddress() : "Not provided");
+        } else {
+            // Set default values when not logged in
+            dashboardNameLabel.setText("Guest User");
+            dashboardPatientIdLabel.setText("N/A");
+            dashboardAgeLabel.setText("N/A");
+            dashboardEmailLabel.setText("Please log in");
+            dashboardPhoneLabel.setText("Please log in");
+            dashboardAddressLabel.setText("Please log in");
         }
     }
 
@@ -171,11 +204,21 @@ public class PatientDashboardController implements Initializable {
 
     @FXML
     private void onBookAppointmentClicked(ActionEvent event) {
-        onBookAppointmentClicked((MouseEvent) null);
+        // Navigate to appointment booking from button
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/patient_appointment.fxml"));
+            Stage stage = (Stage) patientNameLabel.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            statusLabel.setText("Error loading appointment booking page.");
+            statusLabel.setStyle("-fx-text-fill: #DC3545; -fx-font-size: 14px;");
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    private void onMedicalRecordsClicked(MouseEvent event) {
+    private void onMedicalRecordsClicked(ActionEvent event) {
+        // Navigate to medical records from navigation button
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/patient_medical_records.fxml"));
             Stage stage = (Stage) patientNameLabel.getScene().getWindow();
@@ -188,8 +231,17 @@ public class PatientDashboardController implements Initializable {
     }
 
     @FXML
-    private void onMedicalRecordsClicked(ActionEvent event) {
-        onMedicalRecordsClicked((MouseEvent) null);
+    private void onMedicalRecordsCardClicked(MouseEvent event) {
+        // Navigate to medical records from card click
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/patient_medical_records.fxml"));
+            Stage stage = (Stage) patientNameLabel.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            statusLabel.setText("Error loading medical records page.");
+            statusLabel.setStyle("-fx-text-fill: #DC3545; -fx-font-size: 14px;");
+            e.printStackTrace();
+        }
     }
 
     @FXML

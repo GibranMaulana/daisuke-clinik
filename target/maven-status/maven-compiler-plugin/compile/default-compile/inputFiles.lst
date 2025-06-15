@@ -7,6 +7,7 @@
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/test/EmailRegistrationTest.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/test/UserInheritanceVerification.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/test/PendingRegistrationTest.java
+/home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/test/CrossEntityValidationTest.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/User.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/App.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/ui/DoctorRegisterController.java
@@ -17,6 +18,7 @@
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/test/PatientRemovalTest.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/ui/DoctorPatientViewController.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/data/DAOTest.java
+/home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/data/DiagnosisDAO.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/Patient.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/ui/DoctorDashboardController.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/LoginSession.java
@@ -25,6 +27,7 @@
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/ui/ProcessAppointmentController.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/data/AppointmentDAO.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/data/AdminLoginTest.java
+/home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/test/ValidationDemo.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/module-info.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/data/PatientRecordManagement.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/ui/PatientAppointmentController.java
@@ -38,15 +41,18 @@
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/ui/PatientLoginController.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/ds/CustomeLinkedList.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/ui/PatientController.java
+/home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/data/PatientDataMigration.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/ui/CurrentDoctorHolder.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/data/AdminService.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/PendingDoctorRegistration.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/ui/DoctorLoginController.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/ds/CustomeQueue.java
+/home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/test/SimpleValidationTest.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/test/UserInheritanceTest.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/ui/PatientRegisterController.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/data/AdminDAO.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/AdminLevel.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/test/AdminButtonTest.java
+/home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/Diagnosis.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/test/EmailValidationDemo.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/ui/AdminLoginController.java

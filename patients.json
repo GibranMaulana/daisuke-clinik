@@ -1,14 +1,41 @@
 [ {
   "id" : 4101360,
   "username" : "gibran_",
-  "password" : "password123",
+  "password" : "testing",
   "fullname" : "gibran maulana azmi",
   "email" : "Gibran@gmail.com",
   "age" : 21,
   "address" : "afewfdsa",
   "phoneNumber" : "333-333",
   "name" : "gibran maulana azmi",
-  "illnessHistory" : [ "lung cancer", "diare", "liver cancer" ]
+  "illnessHistory" : [ {
+    "id" : 1,
+    "doctorId" : 0,
+    "patientId" : 4101360,
+    "patientComplaint" : "Lung problem",
+    "doctorDiagnosis" : "lung cancer",
+    "recommendedMedicine" : "Prescribed medication",
+    "diagnosisDate" : "2024-01-15T10:30:00",
+    "appointmentId" : 0
+  }, {
+    "id" : 2,
+    "doctorId" : 0,
+    "patientId" : 4101360,
+    "patientComplaint" : "Stomach problem",
+    "doctorDiagnosis" : "diare",
+    "recommendedMedicine" : "Prescribed medication",
+    "diagnosisDate" : "2024-02-20T14:30:00",
+    "appointmentId" : 0
+  }, {
+    "id" : 3,
+    "doctorId" : 0,
+    "patientId" : 4101360,
+    "patientComplaint" : "Liver problem",
+    "doctorDiagnosis" : "liver cancer",
+    "recommendedMedicine" : "Prescribed medication",
+    "diagnosisDate" : "2024-03-10T16:30:00",
+    "appointmentId" : 0
+  } ]
 }, {
   "id" : 5819077,
   "username" : "Raddboyy",
@@ -19,7 +46,16 @@
   "address" : "jalan jalan",
   "phoneNumber" : "999999999",
   "name" : "Muhammad Raditya Boy Wiratam",
-  "illnessHistory" : [ "penyakit serius" ]
+  "illnessHistory" : [ {
+    "id" : 4,
+    "doctorId" : 0,
+    "patientId" : 5819077,
+    "patientComplaint" : "Serious health issue",
+    "doctorDiagnosis" : "penyakit serius",
+    "recommendedMedicine" : "Prescribed medication",
+    "diagnosisDate" : "2024-04-05T11:00:00",
+    "appointmentId" : 0
+  } ]
 }, {
   "id" : 8931974,
   "username" : "alice_patient",
@@ -30,5 +66,32 @@
   "address" : "123 Main St",
   "phoneNumber" : "555-1234",
   "name" : "Alice",
-  "illnessHistory" : [ "brain cancer", "smallpox", "heart cancer" ]
+  "illnessHistory" : [ {
+    "id" : 5,
+    "doctorId" : 0,
+    "patientId" : 8931974,
+    "patientComplaint" : "Brain problem",
+    "doctorDiagnosis" : "brain cancer",
+    "recommendedMedicine" : "Prescribed medication",
+    "diagnosisDate" : "2024-01-20T09:15:00",
+    "appointmentId" : 0
+  }, {
+    "id" : 6,
+    "doctorId" : 0,
+    "patientId" : 8931974,
+    "patientComplaint" : "Infectious disease",
+    "doctorDiagnosis" : "smallpox",
+    "recommendedMedicine" : "Prescribed medication",
+    "diagnosisDate" : "2024-02-25T13:45:00",
+    "appointmentId" : 0
+  }, {
+    "id" : 7,
+    "doctorId" : 0,
+    "patientId" : 8931974,
+    "patientComplaint" : "Heart problem",
+    "doctorDiagnosis" : "heart cancer",
+    "recommendedMedicine" : "Prescribed medication",
+    "diagnosisDate" : "2024-03-15T15:20:00",
+    "appointmentId" : 0
+  } ]
 } ]

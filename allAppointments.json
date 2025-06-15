@@ -6,4 +6,20 @@
   "time" : "2025-06-10T10:00:00",
   "patientIllness" : "Headache consultation",
   "status" : "scheduled"
+}, {
+  "appointmentId" : 8523355,
+  "patientId" : 4101360,
+  "doctorId" : 5819,
+  "doctorSpecialty" : "testing",
+  "time" : "2025-06-16T08:00:00",
+  "patientIllness" : "sakit perut",
+  "status" : "scheduled"
+}, {
+  "appointmentId" : 8379338,
+  "patientId" : 4101360,
+  "doctorId" : 6182,
+  "doctorSpecialty" : "Muhammad Raditya Boy Wiratama",
+  "time" : "2025-06-16T09:00:00",
+  "patientIllness" : "kepala saya pusing",
+  "status" : "scheduled"
 } ]

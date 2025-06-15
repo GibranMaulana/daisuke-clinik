@@ -108,7 +108,7 @@
                 </HBox>
                 
                 <VBox spacing="10">
-                    <Label text="Available Doctors (Currently Online)" style="-fx-text-fill: #6C757D; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                    <Label text="Available Doctors (All Doctors)" style="-fx-text-fill: #6C757D; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px; -fx-font-weight: bold;"/>
                     <ListView fx:id="doctorListView"
                               prefHeight="150"
                               style="-fx-min-height: 150px;">
@@ -141,11 +141,11 @@
                     <VBox spacing="5" HBox.hgrow="ALWAYS">
                         <HBox spacing="8" alignment="CENTER_LEFT">
                             <FontIcon iconLiteral="fas-clock" iconSize="14" iconColor="#6C757D" />
-                            <Label text="Preferred Time (24hr format)" style="-fx-text-fill: #6C757D; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                            <Label text="Preferred Time (Available Slots)" style="-fx-text-fill: #6C757D; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px; -fx-font-weight: bold;"/>
                         </HBox>
-                        <TextField fx:id="timeField"
-                                   promptText="e.g. 14:30"
-                                   prefWidth="150"/>
+                        <ComboBox fx:id="timeComboBox"
+                                  promptText="Select time slot"
+                                  prefWidth="150"/>
                     </VBox>
                 </HBox>
 

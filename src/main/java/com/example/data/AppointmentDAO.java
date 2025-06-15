@@ -124,4 +124,69 @@ public class AppointmentDAO {
     public CustomeLinkedList<Appointment> getAllAppointments() {
         return loadAllAppointments();
     }
+
+    /**
+     * Check if there's a time conflict for a doctor at the specified time
+     */
+    public boolean hasTimeConflict(int doctorId, java.time.LocalDateTime appointmentTime) {
+        CustomeLinkedList<Appointment> all = loadAllAppointments();
+        for (Appointment a : all) {
+            if (a.getDoctorId() == doctorId && a.getTime().equals(appointmentTime)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if a patient already has an appointment at the specified time
+     */
+    public boolean patientHasTimeConflict(int patientId, java.time.LocalDateTime appointmentTime) {
+        CustomeLinkedList<Appointment> all = loadAllAppointments();
+        for (Appointment a : all) {
+            if (a.getPatientId() == patientId && a.getTime().equals(appointmentTime)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if the appointment time is valid (between 08:00-11:00 or 13:00-21:00)
+     */
+    public boolean isValidAppointmentTime(java.time.LocalDateTime appointmentTime) {
+        java.time.LocalTime time = appointmentTime.toLocalTime();
+        java.time.LocalTime morning_start = java.time.LocalTime.of(8, 0);
+        java.time.LocalTime morning_end = java.time.LocalTime.of(11, 0);
+        java.time.LocalTime afternoon_start = java.time.LocalTime.of(13, 0);
+        java.time.LocalTime afternoon_end = java.time.LocalTime.of(21, 0);
+        
+        // Must be exactly on the hour
+        if (time.getMinute() != 0 || time.getSecond() != 0) {
+            return false;
+        }
+        
+        // Check if time is in valid ranges
+        return (time.compareTo(morning_start) >= 0 && time.compareTo(morning_end) <= 0) ||
+               (time.compareTo(afternoon_start) >= 0 && time.compareTo(afternoon_end) <= 0);
+    }
+
+    /**
+     * Get available time slots for a specific date
+     */
+    public java.util.List<java.time.LocalTime> getAvailableTimeSlots() {
+        java.util.List<java.time.LocalTime> slots = new java.util.ArrayList<>();
+        
+        // Morning slots: 08:00 - 11:00
+        for (int hour = 8; hour <= 11; hour++) {
+            slots.add(java.time.LocalTime.of(hour, 0));
+        }
+        
+        // Afternoon slots: 13:00 - 21:00
+        for (int hour = 13; hour <= 21; hour++) {
+            slots.add(java.time.LocalTime.of(hour, 0));
+        }
+        
+        return slots;
+    }
 }

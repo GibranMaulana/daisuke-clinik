@@ -1,8 +1,8 @@
 package com.example.ui;
 
 import com.example.data.AppointmentDAO;
-import com.example.data.PatientDAO;
 import com.example.model.Appointment;
+import com.example.model.Diagnosis;
 import com.example.model.Patient;
 import com.example.model.ds.CustomeLinkedList;
 import javafx.event.ActionEvent;
@@ -34,9 +34,9 @@ public class PatientMedicalRecordsController implements Initializable {
     @FXML private Label phoneLabel;
     @FXML private Label addressLabel;
     
-    // Content Containers
-    @FXML private VBox illnessHistoryContainer;
-    @FXML private VBox appointmentHistoryContainer;
+    // Content Containers - Now HBox for horizontal scrolling  
+    @FXML private HBox illnessHistoryContainer;
+    @FXML private HBox appointmentHistoryContainer;
     
     // Statistics Labels
     @FXML private Label totalAppointmentsLabel;
@@ -46,7 +46,6 @@ public class PatientMedicalRecordsController implements Initializable {
     // Status Label
     @FXML private Label statusLabel;
     
-    private final PatientDAO patientDAO = new PatientDAO();
     private final AppointmentDAO appointmentDAO = new AppointmentDAO();
 
     @Override
@@ -110,7 +109,7 @@ public class PatientMedicalRecordsController implements Initializable {
     private void loadMedicalHistory(Patient patient) {
         illnessHistoryContainer.getChildren().clear();
         
-        CustomeLinkedList<String> illnessHistory = patient.getIllnessHistory();
+        CustomeLinkedList<Diagnosis> illnessHistory = patient.getIllnessHistory();
         
         if (illnessHistory == null || illnessHistory.size() == 0) {
             Label noHistoryLabel = new Label("No medical history recorded.");
@@ -120,22 +119,25 @@ public class PatientMedicalRecordsController implements Initializable {
         }
 
         int index = 1;
-        for (String illness : illnessHistory) {
-            VBox illnessCard = createMedicalHistoryCard(illness, index++);
-            illnessHistoryContainer.getChildren().add(illnessCard);
+        for (Diagnosis diagnosis : illnessHistory) {
+            VBox diagnosisCard = createDiagnosisCard(diagnosis, index++);
+            illnessHistoryContainer.getChildren().add(diagnosisCard);
         }
     }
 
     /**
-     * Create a card for a medical history entry
+     * Create a card for a diagnosis entry
      */
-    private VBox createMedicalHistoryCard(String illness, int index) {
+    private VBox createDiagnosisCard(Diagnosis diagnosis, int index) {
         VBox card = new VBox();
-        card.setSpacing(8);
+        card.setSpacing(10);
+        card.setPrefWidth(280); // Fixed width for horizontal scrolling
+        card.setMinWidth(280);
+        card.setMaxWidth(280);
         card.setStyle("-fx-background-color: #FFF5F5; -fx-background-radius: 8; -fx-padding: 15; " +
                      "-fx-border-color: #FED7D7; -fx-border-radius: 8; -fx-border-width: 1;");
 
-        // Header with icon and number
+        // Header with icon and title
         HBox header = new HBox();
         header.setSpacing(10);
         header.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
@@ -143,21 +145,39 @@ public class PatientMedicalRecordsController implements Initializable {
         FontIcon medicalIcon = new FontIcon();
         medicalIcon.setIconLiteral("fas-notes-medical");
         medicalIcon.setIconSize(16);
-        medicalIcon.setIconColor(javafx.scene.paint.Color.web("#DC3545"));
+        medicalIcon.setIconColor(javafx.scene.paint.Color.web("#DC2626"));
 
-        Label indexLabel = new Label("#" + index);
-        indexLabel.setStyle("-fx-text-fill: #DC3545; -fx-font-size: 12px; -fx-font-weight: bold; " +
+        Label titleLabel = new Label("Medical Record #" + index);
+        titleLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #DC2626; " +
                            "-fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;");
 
-        header.getChildren().addAll(medicalIcon, indexLabel);
+        header.getChildren().addAll(medicalIcon, titleLabel);
 
-        // Illness description
-        Label illnessLabel = new Label(illness);
-        illnessLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #2C2C54; -fx-font-weight: bold; " +
+        // Diagnosis details
+        Label patientComplaintLabel = new Label("Complaint: " + 
+            (diagnosis.getPatientComplaint() != null ? diagnosis.getPatientComplaint() : "N/A"));
+        patientComplaintLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #4A5568; " +
+                                     "-fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;");
+        patientComplaintLabel.setWrapText(true);
+
+        Label doctorDiagnosisLabel = new Label("Diagnosis: " + 
+            (diagnosis.getDoctorDiagnosis() != null ? diagnosis.getDoctorDiagnosis() : "N/A"));
+        doctorDiagnosisLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #4A5568; " +
+                                    "-fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;");
+        doctorDiagnosisLabel.setWrapText(true);
+
+        Label medicineLabel = new Label("Medicine: " + 
+            (diagnosis.getRecommendedMedicine() != null ? diagnosis.getRecommendedMedicine() : "N/A"));
+        medicineLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #4A5568; " +
                              "-fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;");
-        illnessLabel.setWrapText(true);
+        medicineLabel.setWrapText(true);
 
-        card.getChildren().addAll(header, illnessLabel);
+        Label dateLabel = new Label("Date: " + (diagnosis.getDiagnosisDate() != null ? 
+            diagnosis.getDiagnosisDate().format(java.time.format.DateTimeFormatter.ofPattern("MMM dd, yyyy")) : "N/A"));
+        dateLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #718096; " +
+                          "-fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;");
+
+        card.getChildren().addAll(header, patientComplaintLabel, doctorDiagnosisLabel, medicineLabel, dateLabel);
         return card;
     }
 
@@ -208,6 +228,9 @@ public class PatientMedicalRecordsController implements Initializable {
     private VBox createAppointmentHistoryCard(Appointment appointment) {
         VBox card = new VBox();
         card.setSpacing(12);
+        card.setPrefWidth(320); // Fixed width for horizontal scrolling
+        card.setMinWidth(320);
+        card.setMaxWidth(320);
         card.setStyle("-fx-background-color: #F0F8FD; -fx-background-radius: 8; -fx-padding: 18; " +
                      "-fx-border-color: #C6E3F7; -fx-border-radius: 8; -fx-border-width: 1;");
 
@@ -269,7 +292,6 @@ public class PatientMedicalRecordsController implements Initializable {
             int patientId = patient.getId();
             CustomeLinkedList<Appointment> allAppointments = appointmentDAO.getAllAppointments();
             
-            // Count total appointments
             int totalAppointments = 0;
             int upcomingAppointments = 0;
             
@@ -282,10 +304,8 @@ public class PatientMedicalRecordsController implements Initializable {
                 }
             }
             
-            // Count medical conditions
             int totalConditions = patient.getIllnessHistory() != null ? patient.getIllnessHistory().size() : 0;
             
-            // Update labels
             totalAppointmentsLabel.setText(String.valueOf(totalAppointments));
             upcomingAppointmentsLabel.setText(String.valueOf(upcomingAppointments));
             totalConditionsLabel.setText(String.valueOf(totalConditions));
@@ -298,7 +318,6 @@ public class PatientMedicalRecordsController implements Initializable {
         }
     }
 
-    // Navigation Methods
     @FXML
     private void onDashboardClicked(ActionEvent event) {
         navigateTo("/com/example/ui/patient_dashboard.fxml");
