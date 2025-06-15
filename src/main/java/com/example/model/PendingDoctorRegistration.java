@@ -11,7 +11,9 @@ import java.util.Objects;
 public class PendingDoctorRegistration implements Comparable<PendingDoctorRegistration> {
     private int requestId;
     private String doctorName;
+    private String doctorUsername;
     private String doctorPassword;
+    private String doctorEmail;
     private String specialty;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime requestTime;
@@ -26,7 +28,9 @@ public class PendingDoctorRegistration implements Comparable<PendingDoctorRegist
         this();
         this.requestId = requestId;
         this.doctorName = doctorName;
+        this.doctorUsername = doctorName; // fallback for backward compatibility
         this.doctorPassword = doctorPassword;
+        this.doctorEmail = null; // no email in old constructor
         this.specialty = specialty;
     }
 
@@ -37,7 +41,9 @@ public class PendingDoctorRegistration implements Comparable<PendingDoctorRegist
         this();
         this.requestId = doctor.getId(); // Use doctor ID as request ID
         this.doctorName = doctor.getName();
+        this.doctorUsername = doctor.getUsername();
         this.doctorPassword = doctor.getPassword();
+        this.doctorEmail = doctor.getEmail();
         this.specialty = doctor.getSpecialty();
     }
 
@@ -66,6 +72,22 @@ public class PendingDoctorRegistration implements Comparable<PendingDoctorRegist
 
     public void setDoctorPassword(String doctorPassword) {
         this.doctorPassword = doctorPassword;
+    }
+
+    public String getDoctorUsername() {
+        return doctorUsername;
+    }
+
+    public void setDoctorUsername(String doctorUsername) {
+        this.doctorUsername = doctorUsername;
+    }
+
+    public String getDoctorEmail() {
+        return doctorEmail;
+    }
+
+    public void setDoctorEmail(String doctorEmail) {
+        this.doctorEmail = doctorEmail;
     }
 
     public String getSpecialty() {
@@ -105,7 +127,7 @@ public class PendingDoctorRegistration implements Comparable<PendingDoctorRegist
      */
     @JsonIgnore
     public Doctor toDoctor() {
-        return new Doctor(requestId, doctorName, doctorPassword, specialty);
+        return new Doctor(requestId, doctorUsername, doctorPassword, doctorName, doctorEmail, specialty);
     }
 
     // ─────────────────────────────────────────

@@ -315,7 +315,7 @@ public class PatientMedicalRecordsController implements Initializable {
         CurrentPatientHolder.clearSession();
         
         // Navigate back to login
-        navigateTo("/com/example/ui/patient_login.fxml");
+        navigateTo("/com/example/ui/login_view.fxml");
     }
 
     /**

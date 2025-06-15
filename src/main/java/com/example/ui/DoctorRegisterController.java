@@ -97,7 +97,7 @@ public class DoctorRegisterController {
     @FXML
     private void onBackClicked(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/doctor-login.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/login_view.fxml"));
             Stage stage = (Stage) nameField.getScene().getWindow();
             stage.getScene().setRoot(root);
         } catch (IOException e) {

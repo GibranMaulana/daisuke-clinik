@@ -70,6 +70,13 @@ public class DoctorDAO {
         return null;
     }
 
+    public Doctor findByUsername(String username) {
+        for (Doctor d : doctorList) {
+            if (username.equals(d.getUsername())) return d;
+        }
+        return null;
+    }
+
     public void updateDoctor(Doctor d) {
         Doctor old = findById(d.getId());
         if (old != null) {

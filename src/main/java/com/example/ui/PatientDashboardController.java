@@ -199,7 +199,7 @@ public class PatientDashboardController implements Initializable {
         
         // Navigate back to login
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/patient_login.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/login_view.fxml"));
             Stage stage = (Stage) patientNameLabel.getScene().getWindow();
             stage.getScene().setRoot(root);
         } catch (IOException e) {

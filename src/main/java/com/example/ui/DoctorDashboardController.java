@@ -133,7 +133,7 @@ public class DoctorDashboardController {
 
         // Load the doctor‐login.fxml screen
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/doctor-login.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/login_view.fxml"));
             Stage stage = (Stage) welcomeLabel.getScene().getWindow();
             stage.getScene().setRoot(root);
         } catch (IOException ex) {
