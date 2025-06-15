@@ -22,6 +22,7 @@ com/example/model/ds/CustomeLinkedList.class
 com/example/data/PatientSearchTreeManagement$1.class
 com/example/ui/PatientLoginController.class
 com/example/model/AdminLevel.class
+com/example/test/DoctorEmailRegistrationTest.class
 module-info.class
 com/example/data/PendingDoctorRegistrationDAO$1.class
 com/example/ui/ProcessAppointmentController.class

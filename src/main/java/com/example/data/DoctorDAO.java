@@ -77,6 +77,13 @@ public class DoctorDAO {
         return null;
     }
 
+    public Doctor findByEmail(String email) {
+        for (Doctor d : doctorList) {
+            if (email != null && email.equals(d.getEmail())) return d;
+        }
+        return null;
+    }
+
     public void updateDoctor(Doctor d) {
         Doctor old = findById(d.getId());
         if (old != null) {

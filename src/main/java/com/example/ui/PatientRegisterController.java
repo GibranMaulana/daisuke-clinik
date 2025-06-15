@@ -1,6 +1,7 @@
 package com.example.ui;
 
 import com.example.data.PatientDAO;
+import com.example.data.DoctorDAO;
 import com.example.model.Patient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,6 +26,7 @@ public class PatientRegisterController {
     @FXML private Label statusLabel;
 
     private final PatientDAO patientDAO = new PatientDAO();
+    private final DoctorDAO doctorDAO = new DoctorDAO();
 
     @FXML
     private void onRegisterPatientClicked(ActionEvent event) {
@@ -52,6 +54,20 @@ public class PatientRegisterController {
         // Password validation
         if (password.length() < 6) {
             statusLabel.setText("Password must be at least 6 characters long.");
+            statusLabel.setStyle("-fx-text-fill: #DC3545; -fx-font-size: 14px;");
+            return;
+        }
+
+        // Check for duplicate username across patients and doctors
+        if (patientDAO.findByUsername(username) != null || doctorDAO.findByUsername(username) != null) {
+            statusLabel.setText("Username is already taken.");
+            statusLabel.setStyle("-fx-text-fill: #DC3545; -fx-font-size: 14px;");
+            return;
+        }
+
+        // Check for duplicate email across patients and doctors
+        if (patientDAO.findByEmail(email) != null || doctorDAO.findByEmail(email) != null) {
+            statusLabel.setText("Email is already registered.");
             statusLabel.setStyle("-fx-text-fill: #DC3545; -fx-font-size: 14px;");
             return;
         }

@@ -84,6 +84,28 @@ public class PatientDAO {
         return null;
     }
 
+    /** Find patient by username */
+    public Patient findByUsername(String username) {
+        CustomeLinkedList<Patient> all = patientsBST.inOrderList();
+        for (Patient p : all) {
+            if (username != null && username.equals(p.getUsername())) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    /** Find patient by email */
+    public Patient findByEmail(String email) {
+        CustomeLinkedList<Patient> all = patientsBST.inOrderList();
+        for (Patient p : all) {
+            if (email != null && email.equals(p.getEmail())) {
+                return p;
+            }
+        }
+        return null;
+    }
+
     /** Delete old and insert updated, then persist. */
     // In PatientDAO.java
 
