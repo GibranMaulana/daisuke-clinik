@@ -1,14 +1,4 @@
 [ {
-  "id" : 1124,
-  "username" : "tiana margaret",
-  "password" : "tianamargaret",
-  "fullname" : "tiana margaret",
-  "email" : "tiana@gmail.com",
-  "specialty" : "neurology",
-  "currentLoginTime" : "2025-06-12T12:12:54.264344598",
-  "name" : "tiana margaret",
-  "loginHistory" : [ "2025-06-12T12:00:07.139900584", "2025-06-12T12:12:54.264344598" ]
-}, {
   "id" : 1087,
   "username" : "stampe",
   "password" : "stampeuns",
@@ -18,16 +8,6 @@
   "currentLoginTime" : null,
   "name" : "stampe",
   "loginHistory" : [ ]
-}, {
-  "id" : 9814,
-  "username" : "bob123",
-  "password" : "password123",
-  "fullname" : "Dr. Bob",
-  "email" : "bobcoolguy@gmail.com",
-  "specialty" : "Cardiology",
-  "currentLoginTime" : "2025-06-12T12:36:32.775422692",
-  "name" : "Dr. Bob",
-  "loginHistory" : [ "2025-06-12T11:58:59.451608848", "2025-06-12T12:07:17.418704268", "2025-06-12T12:36:32.775422692" ]
 }, {
   "id" : 8514,
   "username" : "susan strong",
@@ -47,7 +27,27 @@
   "specialty" : "cardiology",
   "currentLoginTime" : "2025-06-13T23:55:00.24362705",
   "name" : "Muhammad Raditya Boy Wiratama",
-  "loginHistory" : [ "2025-06-13T23:53:40.669305178", "2025-06-13T23:55:00.24362705" ]
+  "loginHistory" : [ "2025-06-13T23:53:40.669305178" ]
+}, {
+  "id" : 9814,
+  "username" : "bob123",
+  "password" : "password123",
+  "fullname" : "Dr. Bob",
+  "email" : "bobcoolguy@gmail.com",
+  "specialty" : "Cardiology",
+  "currentLoginTime" : "2025-06-16T16:05:31.21903608",
+  "name" : "Dr. Bob",
+  "loginHistory" : [ "2025-06-12T11:58:59.451608848", "2025-06-16T16:05:15.911409549" ]
+}, {
+  "id" : 1124,
+  "username" : "tiana margaret",
+  "password" : "tianamargaret",
+  "fullname" : "tiana margaret",
+  "email" : "tiana@gmail.com",
+  "specialty" : "neurology",
+  "currentLoginTime" : "2025-06-16T19:16:25.109584123",
+  "name" : "tiana margaret",
+  "loginHistory" : [ "2025-06-12T12:00:07.139900584", "2025-06-16T16:02:44.094460529" ]
 }, {
   "id" : 5819,
   "username" : "testingusername",
@@ -55,9 +55,9 @@
   "fullname" : "testing",
   "email" : "testing@gmail.com",
   "specialty" : "testing",
-  "currentLoginTime" : null,
+  "currentLoginTime" : "2025-06-16T22:38:57.213865573",
   "name" : "testing",
-  "loginHistory" : [ ]
+  "loginHistory" : [ "2025-06-15T20:58:47.737571446", "2025-06-16T22:37:06.086424716" ]
 }, {
   "id" : 2147,
   "username" : "gibran_azmi",
@@ -65,7 +65,7 @@
   "fullname" : "gibran_maulana azmi",
   "email" : "Gibran@gmail.com",
   "specialty" : "neurology",
-  "currentLoginTime" : "2025-06-15T15:10:58.228164647",
+  "currentLoginTime" : "2025-06-17T00:15:19.961771444",
   "name" : "gibran_maulana azmi",
-  "loginHistory" : [ "2025-06-15T15:10:58.228164647" ]
+  "loginHistory" : [ "2025-06-16T19:20:00.4160832", "2025-06-17T00:04:06.724429985" ]
 } ]

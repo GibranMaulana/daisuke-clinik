@@ -49,25 +49,52 @@
         </HBox>
     </VBox>
 
-    <!-- Left Navigation Bar -->
-    <VBox style="-fx-background-color: #0F0E47; -fx-padding: 15; -fx-spacing: 10; -fx-min-width: 200;" 
-          GridPane.rowIndex="1" GridPane.columnIndex="0">
+    <!-- Left Navigation Sidebar -->
+    <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" 
+          style="-fx-background-color: #0F0E47; -fx-padding: 20; -fx-spacing: 15; -fx-min-width: 200;" 
+          spacing="15">
         
-        <Button text="Book Appointment" 
-                onAction="#onBookAppointmentClicked"
-                style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 15; -fx-alignment: center-left; -fx-background-radius: 5; -fx-min-width: 170; -fx-graphic-text-gap: 10;">
-            <graphic>
-                <FontIcon iconLiteral="fas-calendar-plus" iconSize="16" iconColor="white" />
-            </graphic>
-        </Button>
-        
-        <Button text="Medical Records" 
-                onAction="#onMedicalRecordsClicked"
-                style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 15; -fx-alignment: center-left; -fx-background-radius: 5; -fx-min-width: 170; -fx-graphic-text-gap: 10;">
-            <graphic>
-                <FontIcon iconLiteral="fas-file-medical" iconSize="16" iconColor="white" />
-            </graphic>
-        </Button>
+        <!-- Sidebar Header -->
+        <VBox alignment="CENTER" style="-fx-padding: 15; -fx-spacing: 8;">
+            <HBox spacing="10" alignment="CENTER">
+                <FontIcon iconLiteral="fas-tachometer-alt" iconSize="24" iconColor="white" />
+                <Label text="Dashboard" 
+                       style="-fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+            </HBox>
+            <Label fx:id="dashboardPatientInfoLabel" text="Patient Portal" 
+                   style="-fx-text-fill: #B8B8E6; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px;"/>
+        </VBox>
+
+        <Separator style="-fx-background-color: #B8B8E6; -fx-opacity: 0.3;"/>
+
+        <!-- Navigation Buttons -->
+        <VBox spacing="8" style="-fx-padding: 10 0;">
+            <Button text="Dashboard" 
+                    style="-fx-background-color: #28A745; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 15; -fx-alignment: center-left; -fx-background-radius: 8; -fx-min-width: 170; -fx-graphic-text-gap: 12; -fx-font-weight: bold;"
+                    maxWidth="Infinity">
+                <graphic>
+                    <FontIcon iconLiteral="fas-tachometer-alt" iconSize="16" iconColor="white" />
+                </graphic>
+            </Button>
+            
+            <Button text="Make Appointment" 
+                    onAction="#onBookAppointmentButtonClicked"
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 15; -fx-alignment: center-left; -fx-background-radius: 8; -fx-min-width: 170; -fx-graphic-text-gap: 12;"
+                    maxWidth="Infinity">
+                <graphic>
+                    <FontIcon iconLiteral="fas-calendar-plus" iconSize="16" iconColor="white" />
+                </graphic>
+            </Button>
+            
+            <Button text="Medical Records" 
+                    onAction="#onMedicalRecordsClicked"
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 15; -fx-alignment: center-left; -fx-background-radius: 8; -fx-min-width: 170; -fx-graphic-text-gap: 12;"
+                    maxWidth="Infinity">
+                <graphic>
+                    <FontIcon iconLiteral="fas-file-medical" iconSize="16" iconColor="white" />
+                </graphic>
+            </Button>
+        </VBox>
     </VBox>
 
     <!-- Main Content Area -->
@@ -151,7 +178,7 @@
                         <!-- Book Appointment Card -->
                         <VBox alignment="CENTER" spacing="15" 
                               style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2); -fx-cursor: hand;"
-                              onMouseClicked="#onBookAppointmentClicked"
+                              onMouseClicked="#onBookAppointmentCardClicked"
                               GridPane.columnIndex="0" GridPane.rowIndex="0">
                             <FontIcon iconLiteral="fas-calendar-plus" iconSize="36" iconColor="#28A745" />
                             <Label text="Book New Appointment" 

@@ -35,6 +35,24 @@
     "recommendedMedicine" : "Prescribed medication",
     "diagnosisDate" : "2024-03-10T16:30:00",
     "appointmentId" : 0
+  }, {
+    "id" : 947067,
+    "doctorId" : 5819,
+    "patientId" : 4101360,
+    "patientComplaint" : "sakit perut, kakinya juga sakit",
+    "doctorDiagnosis" : "kanker perut",
+    "recommendedMedicine" : "chemotherapy",
+    "diagnosisDate" : "2025-06-15T21:05:27.706075933",
+    "appointmentId" : 8523355
+  }, {
+    "id" : 267242,
+    "doctorId" : 1124,
+    "patientId" : 4101360,
+    "patientComplaint" : "dia sakit sakit",
+    "doctorDiagnosis" : "gila dia mas",
+    "recommendedMedicine" : "solat",
+    "diagnosisDate" : "2025-06-16T16:03:37.612691495",
+    "appointmentId" : 1863903
   } ]
 }, {
   "id" : 5819077,

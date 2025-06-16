@@ -1,6 +1,6 @@
 package com.example;
 
-import com.example.data.PatientDataMigration;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,15 +12,6 @@ import java.io.InputStream;
 public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        // Run patient data migration at application startup
-        try {
-            PatientDataMigration migration = new PatientDataMigration();
-            migration.migratePatientDataIfNeeded();
-        } catch (Exception e) {
-            System.err.println("Warning: Patient data migration failed: " + e.getMessage());
-            e.printStackTrace();
-        }
-
         // Try to load Roboto fonts if available
         try {
             loadFonts(

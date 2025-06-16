@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "username": "bam",
+    "username": "gibran",
     "password": "test",
     "adminLevel": "SUPER",
     "pendingRegistrationsArray": []
@@ -11,6 +11,27 @@
     "username": "admin2",
     "password": "password123",
     "adminLevel": "REGULAR",
+    "pendingRegistrationsArray": []
+  },
+  {
+    "id": 3,
+    "username": "alfa",
+    "password": "test",
+    "adminLevel": "SUPER",
+    "pendingRegistrationsArray": []
+  },
+  {
+    "id": 4,
+    "username": "trisa",
+    "password": "test",
+    "adminLevel": "SUPER",
+    "pendingRegistrationsArray": []
+  },
+  {
+    "id": 5,
+    "username": "boy",
+    "password": "test",
+    "adminLevel": "SUPER",
     "pendingRegistrationsArray": []
   }
 ]

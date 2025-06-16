@@ -19,8 +19,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import com.example.model.ds.CustomeLinkedList;
 import java.util.ResourceBundle;
 
 public class PatientDashboardController implements Initializable {
@@ -104,25 +103,52 @@ public class PatientDashboardController implements Initializable {
             CustomeLinkedList<Appointment> allAppointments = appointmentDAO.getAllAppointments();
             
             // Filter appointments for current patient and get recent ones
-            List<Appointment> patientAppointments = new ArrayList<>();
+            CustomeLinkedList<Appointment> patientAppointments = new CustomeLinkedList<>();
             for (Appointment apt : allAppointments) {
                 if (apt.getPatientId() == patientId) {
                     patientAppointments.add(apt);
                 }
             }
             
+            // Convert to array for sorting, then back to CustomeLinkedList
             // Sort by time (most recent first) and limit to 5
-            patientAppointments.sort((a1, a2) -> a2.getTime().compareTo(a1.getTime()));
-            if (patientAppointments.size() > 5) {
-                patientAppointments = patientAppointments.subList(0, 5);
+            CustomeLinkedList<Appointment> sortedAppointments = new CustomeLinkedList<>();
+            if (patientAppointments.size() > 0) {
+                // Simple bubble sort to sort by time (most recent first)
+                for (int i = 0; i < patientAppointments.size(); i++) {
+                    Appointment latest = null;
+                    
+                    // Find the latest appointment that hasn't been added yet
+                    for (int j = 0; j < patientAppointments.size(); j++) {
+                        Appointment current = patientAppointments.get(j);
+                        boolean alreadyAdded = false;
+                        
+                        // Check if already added to sorted list
+                        for (Appointment sorted : sortedAppointments) {
+                            if (sorted == current) {
+                                alreadyAdded = true;
+                                break;
+                            }
+                        }
+                        
+                        if (!alreadyAdded && (latest == null || current.getTime().isAfter(latest.getTime()))) {
+                            latest = current;
+                        }
+                    }
+                    
+                    if (latest != null) {
+                        sortedAppointments.add(latest);
+                        if (sortedAppointments.size() >= 5) break; // Limit to 5
+                    }
+                }
             }
 
-            if (patientAppointments.isEmpty()) {
+            if (sortedAppointments.isEmpty()) {
                 Label noDataLabel = new Label("No appointments found. Book your first appointment!");
                 noDataLabel.setStyle("-fx-text-fill: #6C757D; -fx-font-size: 14px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;");
                 recentActivityContainer.getChildren().add(noDataLabel);
             } else {
-                for (Appointment appointment : patientAppointments) {
+                for (Appointment appointment : sortedAppointments) {
                     VBox appointmentCard = createAppointmentCard(appointment);
                     recentActivityContainer.getChildren().add(appointmentCard);
                 }
@@ -190,7 +216,8 @@ public class PatientDashboardController implements Initializable {
     }
 
     @FXML
-    private void onBookAppointmentClicked(MouseEvent event) {
+    private void onBookAppointmentCardClicked(MouseEvent event) {
+        // Navigate to appointment booking from card click
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/patient_appointment.fxml"));
             Stage stage = (Stage) patientNameLabel.getScene().getWindow();
@@ -203,8 +230,8 @@ public class PatientDashboardController implements Initializable {
     }
 
     @FXML
-    private void onBookAppointmentClicked(ActionEvent event) {
-        // Navigate to appointment booking from button
+    private void onBookAppointmentButtonClicked(ActionEvent event) {
+        // Navigate to appointment booking from navigation button
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/patient_appointment.fxml"));
             Stage stage = (Stage) patientNameLabel.getScene().getWindow();

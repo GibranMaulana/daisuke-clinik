@@ -2,14 +2,13 @@ package com.example.data;
 
 import com.example.model.PendingDoctorRegistration;
 import com.example.model.ds.CustomeQueue;
-import com.fasterxml.jackson.core.type.TypeReference;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.example.model.ds.CustomeLinkedList;
 
 public class PendingDoctorRegistrationDAO {
     private static final String PENDING_FILE = "pendingDoctorRegistrations.json";
@@ -46,27 +45,33 @@ public class PendingDoctorRegistrationDAO {
      * Check if a doctor ID is in the pending queue
      */
     public boolean isDoctorPending(int doctorId) {
-        List<PendingDoctorRegistration> allPending = getAllPendingRegistrations();
-        return allPending.stream()
-                .anyMatch(registration -> registration.getDoctorId() == doctorId);
+        CustomeLinkedList<PendingDoctorRegistration> allPending = getAllPendingRegistrations();
+        for (PendingDoctorRegistration registration : allPending) {
+            if (registration.getDoctorId() == doctorId) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
      * Get pending registration by doctor ID
      */
     public PendingDoctorRegistration getPendingByDoctorId(int doctorId) {
-        List<PendingDoctorRegistration> allPending = getAllPendingRegistrations();
-        return allPending.stream()
-                .filter(registration -> registration.getDoctorId() == doctorId)
-                .findFirst()
-                .orElse(null);
+        CustomeLinkedList<PendingDoctorRegistration> allPending = getAllPendingRegistrations();
+        for (PendingDoctorRegistration registration : allPending) {
+            if (registration.getDoctorId() == doctorId) {
+                return registration;
+            }
+        }
+        return null;
     }
 
     /**
      * Get all pending registrations as a list (for admin view)
      */
-    public List<PendingDoctorRegistration> getAllPendingRegistrations() {
-        List<PendingDoctorRegistration> list = new ArrayList<>();
+    public CustomeLinkedList<PendingDoctorRegistration> getAllPendingRegistrations() {
+        CustomeLinkedList<PendingDoctorRegistration> list = new CustomeLinkedList<>();
         
         // Temporarily dequeue all items, add to list, then re-enqueue
         CustomeQueue<PendingDoctorRegistration> tempQueue = new CustomeQueue<>();
@@ -132,13 +137,13 @@ public class PendingDoctorRegistrationDAO {
         }
 
         try {
-            List<PendingDoctorRegistration> registrationList = objectMapper.readValue(
-                file, new TypeReference<List<PendingDoctorRegistration>>() {}
+            PendingDoctorRegistration[] registrationArray = objectMapper.readValue(
+                file, PendingDoctorRegistration[].class
             );
             
             // Clear the queue and reload from file
             this.pendingQueue = new CustomeQueue<>();
-            for (PendingDoctorRegistration registration : registrationList) {
+            for (PendingDoctorRegistration registration : registrationArray) {
                 pendingQueue.enqueue(registration);
             }
         } catch (IOException e) {
@@ -152,10 +157,13 @@ public class PendingDoctorRegistrationDAO {
      */
     private void savePendingRegistrations() {
         try {
-            List<PendingDoctorRegistration> registrationList = getAllPendingRegistrations();
+            CustomeLinkedList<PendingDoctorRegistration> registrationList = getAllPendingRegistrations();
+            
+            // Convert CustomeLinkedList to array for JSON serialization
+            PendingDoctorRegistration[] registrationArray = registrationList.toJsonArray();
             
             objectMapper.writerWithDefaultPrettyPrinter()
-                    .writeValue(new File(PENDING_FILE), registrationList);
+                    .writeValue(new File(PENDING_FILE), registrationArray);
         } catch (IOException e) {
             System.err.println("Error saving pending registrations: " + e.getMessage());
         }

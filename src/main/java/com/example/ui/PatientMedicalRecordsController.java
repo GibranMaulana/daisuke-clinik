@@ -19,8 +19,6 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class PatientMedicalRecordsController implements Initializable {
@@ -34,12 +32,13 @@ public class PatientMedicalRecordsController implements Initializable {
     @FXML private Label phoneLabel;
     @FXML private Label addressLabel;
     
+    // Header email label for the new dashboard-style header
+    @FXML private Label medicalRecordsPatientEmailLabel;
+    
     // Content Containers - Now HBox for horizontal scrolling  
     @FXML private HBox illnessHistoryContainer;
-    @FXML private HBox appointmentHistoryContainer;
     
     // Statistics Labels
-    @FXML private Label totalAppointmentsLabel;
     @FXML private Label upcomingAppointmentsLabel;
     @FXML private Label totalConditionsLabel;
     
@@ -72,8 +71,7 @@ public class PatientMedicalRecordsController implements Initializable {
             // Load medical history
             loadMedicalHistory(patient);
             
-            // Load appointment history
-            loadAppointmentHistory(patient.getId());
+
             
             // Update statistics
             updateMedicalStatistics(patient);
@@ -101,6 +99,11 @@ public class PatientMedicalRecordsController implements Initializable {
         addressLabel.setText(patient.getAddress() != null ? patient.getAddress() : "Not provided");
         
         patientInfoLabel.setText("Patient: " + patient.getFullname() + " (ID: " + patient.getId() + ")");
+        
+        // Also update the header email label
+        if (medicalRecordsPatientEmailLabel != null) {
+            medicalRecordsPatientEmailLabel.setText(patient.getEmail() != null ? patient.getEmail() : "Not provided");
+        }
     }
 
     /**
@@ -181,108 +184,7 @@ public class PatientMedicalRecordsController implements Initializable {
         return card;
     }
 
-    /**
-     * Load and display appointment history
-     */
-    private void loadAppointmentHistory(int patientId) {
-        appointmentHistoryContainer.getChildren().clear();
-        
-        try {
-            CustomeLinkedList<Appointment> allAppointments = appointmentDAO.getAllAppointments();
-            
-            // Filter appointments for current patient
-            List<Appointment> patientAppointments = new ArrayList<>();
-            for (Appointment apt : allAppointments) {
-                if (apt.getPatientId() == patientId) {
-                    patientAppointments.add(apt);
-                }
-            }
-            
-            if (patientAppointments.isEmpty()) {
-                Label noAppointmentsLabel = new Label("No appointment history found.");
-                noAppointmentsLabel.setStyle("-fx-text-fill: #6C757D; -fx-font-size: 14px; -fx-font-style: italic; " +
-                                            "-fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;");
-                appointmentHistoryContainer.getChildren().add(noAppointmentsLabel);
-                return;
-            }
-            
-            // Sort by date (most recent first)
-            patientAppointments.sort((a1, a2) -> a2.getTime().compareTo(a1.getTime()));
-            
-            for (Appointment appointment : patientAppointments) {
-                VBox appointmentCard = createAppointmentHistoryCard(appointment);
-                appointmentHistoryContainer.getChildren().add(appointmentCard);
-            }
-            
-        } catch (Exception e) {
-            Label errorLabel = new Label("Error loading appointment history.");
-            errorLabel.setStyle("-fx-text-fill: #DC3545; -fx-font-size: 14px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;");
-            appointmentHistoryContainer.getChildren().add(errorLabel);
-            e.printStackTrace();
-        }
-    }
 
-    /**
-     * Create a card for an appointment history entry
-     */
-    private VBox createAppointmentHistoryCard(Appointment appointment) {
-        VBox card = new VBox();
-        card.setSpacing(12);
-        card.setPrefWidth(320); // Fixed width for horizontal scrolling
-        card.setMinWidth(320);
-        card.setMaxWidth(320);
-        card.setStyle("-fx-background-color: #F0F8FD; -fx-background-radius: 8; -fx-padding: 18; " +
-                     "-fx-border-color: #C6E3F7; -fx-border-radius: 8; -fx-border-width: 1;");
-
-        // Header with status icon and appointment ID
-        HBox header = new HBox();
-        header.setSpacing(12);
-        header.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-
-        FontIcon statusIcon = new FontIcon();
-        statusIcon.setIconSize(18);
-        
-        String statusText;
-        String statusColor;
-        if (appointment.getTime().isAfter(java.time.LocalDateTime.now())) {
-            statusIcon.setIconLiteral("fas-clock");
-            statusIcon.setIconColor(javafx.scene.paint.Color.web("#FFC107"));
-            statusText = "Upcoming";
-            statusColor = "#FFC107";
-        } else {
-            statusIcon.setIconLiteral("fas-check-circle");
-            statusIcon.setIconColor(javafx.scene.paint.Color.web("#28A745"));
-            statusText = "Completed";
-            statusColor = "#28A745";
-        }
-
-        Label statusLabel = new Label(statusText);
-        statusLabel.setStyle("-fx-text-fill: " + statusColor + "; -fx-font-size: 12px; -fx-font-weight: bold; " +
-                            "-fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;");
-
-        Label appointmentIdLabel = new Label("Appointment #" + appointment.getAppointmentId());
-        appointmentIdLabel.setStyle("-fx-text-fill: #6C757D; -fx-font-size: 12px; " +
-                                   "-fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;");
-
-        header.getChildren().addAll(statusIcon, statusLabel, appointmentIdLabel);
-
-        // Appointment details
-        Label doctorLabel = new Label("Doctor: " + appointment.getDoctorSpecialty() + " (ID: " + appointment.getDoctorId() + ")");
-        doctorLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2C2C54; " +
-                            "-fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;");
-
-        Label dateLabel = new Label("Date: " + appointment.getTime().format(DateTimeFormatter.ofPattern("EEEE, MMM dd, yyyy 'at' hh:mm a")));
-        dateLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #495057; " +
-                          "-fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;");
-
-        Label reasonLabel = new Label("Reason: " + (appointment.getPatientIllness() != null ? appointment.getPatientIllness() : "General consultation"));
-        reasonLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #495057; " +
-                            "-fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;");
-        reasonLabel.setWrapText(true);
-
-        card.getChildren().addAll(header, doctorLabel, dateLabel, reasonLabel);
-        return card;
-    }
 
     /**
      * Update medical statistics
@@ -292,12 +194,10 @@ public class PatientMedicalRecordsController implements Initializable {
             int patientId = patient.getId();
             CustomeLinkedList<Appointment> allAppointments = appointmentDAO.getAllAppointments();
             
-            int totalAppointments = 0;
             int upcomingAppointments = 0;
             
             for (Appointment apt : allAppointments) {
                 if (apt.getPatientId() == patientId) {
-                    totalAppointments++;
                     if (apt.getTime().isAfter(java.time.LocalDateTime.now())) {
                         upcomingAppointments++;
                     }
@@ -306,12 +206,10 @@ public class PatientMedicalRecordsController implements Initializable {
             
             int totalConditions = patient.getIllnessHistory() != null ? patient.getIllnessHistory().size() : 0;
             
-            totalAppointmentsLabel.setText(String.valueOf(totalAppointments));
             upcomingAppointmentsLabel.setText(String.valueOf(upcomingAppointments));
             totalConditionsLabel.setText(String.valueOf(totalConditions));
             
         } catch (Exception e) {
-            totalAppointmentsLabel.setText("N/A");
             upcomingAppointmentsLabel.setText("N/A");
             totalConditionsLabel.setText("N/A");
             e.printStackTrace();

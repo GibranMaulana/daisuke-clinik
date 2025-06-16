@@ -4,8 +4,7 @@ import com.example.model.Patient;
 import com.example.model.ds.CustomeBST;
 import com.example.model.ds.CustomeLinkedList;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.example.model.ds.CustomeLinkedList;
 import java.util.function.Consumer;
 
 /**
@@ -69,12 +68,12 @@ public class PatientSearchTreeManagement {
     }
 
     /**
-     * Traverse the BST in order (sorted by patient ID) and return a List<Patient> in ascending order.
+     * Traverse the BST in order (sorted by patient ID) and return a CustomeLinkedList<Patient> in ascending order.
      * If you simply want to print them instead, you could replace this with an inOrderTraversal that
-     * prints to console.  Here we collect into a List and return.
+     * prints to console.  Here we collect into a CustomeLinkedList and return.
      */
-    public List<Patient> inOrderDisplay() {
-        List<Patient> sorted = new ArrayList<>();
+    public CustomeLinkedList<Patient> inOrderDisplay() {
+        CustomeLinkedList<Patient> sorted = new CustomeLinkedList<>();
         // Assume CustomeBST has a method:
         //    void inOrderTraversal(Consumer<T> visitor)
         // which calls visitor.accept(node.value) for each node in sorted order.

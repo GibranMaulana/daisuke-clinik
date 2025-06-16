@@ -49,9 +49,6 @@
               alignment="CENTER" spacing="20" maxWidth="400">
             <Label text="Welcome" 
                    style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2C2C54; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
-            <Label text="Please select your role to continue" 
-                   style="-fx-text-fill: #6C757D; -fx-font-size: 12px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;" 
-                   textAlignment="CENTER" wrapText="true"/>
             
             <!-- Login Form Container -->
             <VBox spacing="20" alignment="CENTER">
