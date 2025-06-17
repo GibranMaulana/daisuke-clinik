@@ -55,7 +55,21 @@ public class Doctor extends User implements Comparable<Doctor> {
     public void setCurrentLoginTime(LocalDateTime loginTime) {
         this.currentLoginTime = loginTime;
         if (loginTime != null) {
-            loginHistory.add(loginTime);
+            // Only add to history if no login exists for today
+            boolean hasLoginToday = false;
+            java.time.LocalDate today = loginTime.toLocalDate();
+            
+            for (LocalDateTime historyTime : loginHistory) {
+                if (historyTime.toLocalDate().equals(today)) {
+                    hasLoginToday = true;
+                    break;
+                }
+            }
+            
+            // Only add if this is the first login of the day
+            if (!hasLoginToday) {
+                loginHistory.add(loginTime);
+            }
         }
     }
 

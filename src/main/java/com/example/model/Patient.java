@@ -3,6 +3,13 @@ package com.example.model;
 import com.example.model.ds.CustomeLinkedList;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
+import java.io.IOException;
 
 import java.util.Objects;
 
@@ -15,7 +22,7 @@ public class Patient extends User implements Comparable<Patient> {
     // 1) Keep the raw linked list, but ignore it when Jackson serializes
     // ─────────────────────────────────────────
     @JsonIgnore
-    private CustomeLinkedList<String> illnessHistory;
+    private CustomeLinkedList<Diagnosis> illnessHistory;
 
     public Patient() {
         super();
@@ -84,29 +91,29 @@ public class Patient extends User implements Comparable<Patient> {
     }
 
     // ─────────────────────────────────────────
-    // 3) Getter for illnessHistory as a String[] (for Jackson)
+    // 3) Getter for illnessHistory as a Diagnosis[] (for Jackson)
     // ─────────────────────────────────────────
     @JsonProperty("illnessHistory")
-    public String[] getIllnessHistoryArray() {
-        // Convert the CustomeLinkedList<String> into a String[]:
+    public Diagnosis[] getIllnessHistoryArray() {
+        // Convert the CustomeLinkedList<Diagnosis> into a Diagnosis[]:
         int n = illnessHistory.size();
-        String[] arr = new String[n];
+        Diagnosis[] arr = new Diagnosis[n];
         int idx = 0;
-        for (String s : illnessHistory) {
-            arr[idx++] = s;
+        for (Diagnosis d : illnessHistory) {
+            arr[idx++] = d;
         }
         return arr;
     }
 
     // ─────────────────────────────────────────
-    // 4) Setter for illnessHistory from a String[] (for Jackson)
+    // 4) Setter for illnessHistory from a Diagnosis[] (for Jackson)
     // ─────────────────────────────────────────
     @JsonProperty("illnessHistory")
-    public void setIllnessHistoryArray(String[] arr) {
+    public void setIllnessHistoryArray(Diagnosis[] arr) {
         this.illnessHistory = new CustomeLinkedList<>();
         if (arr != null) {
-            for (String s : arr) {
-                this.illnessHistory.add(s);
+            for (Diagnosis d : arr) {
+                this.illnessHistory.add(d);
             }
         }
     }
@@ -114,16 +121,23 @@ public class Patient extends User implements Comparable<Patient> {
     // ─────────────────────────────────────────
     // 5) Allow other code to add directly to the linked list
     // ─────────────────────────────────────────
-    public CustomeLinkedList<String> getIllnessHistory() {
+    public CustomeLinkedList<Diagnosis> getIllnessHistory() {
         return illnessHistory;
     }
 
-    public void setIllnessHistory(CustomeLinkedList<String> illnessHistory) {
+    public void setIllnessHistory(CustomeLinkedList<Diagnosis> illnessHistory) {
         this.illnessHistory = illnessHistory;
     }
 
+    public void addDiagnosis(Diagnosis diagnosis) {
+        illnessHistory.add(diagnosis);
+    }
+
+    // Backward compatibility method for adding simple illness string
     public void addIllness(String illness) {
-        illnessHistory.add(illness);
+        // This method is kept for backward compatibility but should be avoided
+        // Instead, use addDiagnosis() with proper Diagnosis object
+        System.out.println("Warning: addIllness(String) is deprecated. Use addDiagnosis(Diagnosis) instead.");
     }
 
     // ─────────────────────────────────────────

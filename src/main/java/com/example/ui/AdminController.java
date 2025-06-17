@@ -10,6 +10,8 @@ import com.example.model.Patient;
 import com.example.model.Appointment;
 import com.example.model.PendingDoctorRegistration;
 import com.example.model.ds.CustomeLinkedList;
+import com.example.model.DoctorSession;
+import com.example.data.DoctorSessionService;
 import com.example.model.ds.CustomeBST;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -22,7 +24,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+
 
 /**
  * Controller for Admin dashboard and operations
@@ -61,6 +63,15 @@ public class AdminController {
     @FXML private TableColumn<Doctor, String> activeDoctorEmailColumn;
     @FXML private TableColumn<Doctor, String> activeDoctorSpecialtyColumn;
     @FXML private TableColumn<Doctor, String> activeDoctorLoginTimeColumn;
+    
+    // Login History table
+    @FXML private TableView<DoctorSession> loginHistoryTable;
+    @FXML private TableColumn<DoctorSession, Integer> historyDoctorIdColumn;
+    @FXML private TableColumn<DoctorSession, String> historyDoctorNameColumn;
+    @FXML private TableColumn<DoctorSession, String> historyLoginTimeColumn;
+    @FXML private TableColumn<DoctorSession, String> historyLogoutTimeColumn;
+    @FXML private TableColumn<DoctorSession, String> historyDurationColumn;
+    @FXML private TableColumn<DoctorSession, String> historyStatusColumn;
     
     // Patient management table
     @FXML private TableView<Patient> allPatientsTable;
@@ -115,6 +126,8 @@ public class AdminController {
     @FXML private Button clearSearchButton;
     @FXML private Button removePatientButton;
     @FXML private Button viewAllAppointmentsButton;
+    @FXML private Button cleanExpiredAppointmentsButton;
+    @FXML private Button removeSelectedAppointmentButton;
     @FXML private Button acceptButton;
     @FXML private Button declineButton;
     @FXML private Button logoutButton;
@@ -139,7 +152,7 @@ public class AdminController {
     }
     
     /**
-     * Called from AdminLoginController when an admin has successfully logged in.
+     * Called from LoginController when an admin has successfully logged in.
      * Sets the current admin and updates the welcome label.
      */
     public void setCurrentAdmin(Admin admin) {
@@ -180,9 +193,12 @@ public class AdminController {
             doctorNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             doctorEmailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
             doctorSpecialtyColumn.setCellValueFactory(new PropertyValueFactory<>("specialty"));
-            doctorStatusColumn.setCellValueFactory(cellData -> 
-                new javafx.beans.property.SimpleStringProperty(
-                    cellData.getValue().getCurrentLoginTime() != null ? "Online" : "Offline"));
+            doctorStatusColumn.setCellValueFactory(cellData -> {
+                // Check if doctor is actually logged in using the new session system
+                DoctorSessionService sessionService = new DoctorSessionService();
+                boolean isLoggedIn = sessionService.isDoctorLoggedIn(cellData.getValue().getId());
+                return new javafx.beans.property.SimpleStringProperty(isLoggedIn ? "Online" : "Offline");
+            });
         }
         
         if (activeDoctorIdColumn != null) {
@@ -211,13 +227,13 @@ public class AdminController {
             patientAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
             patientPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
             patientIllnessColumn.setCellValueFactory(cellData -> {
-                // Get the most recent illness from history or return "None"
+                // Get the most recent diagnosis from history or return "None"
                 if (cellData.getValue().getIllnessHistory().size() > 0) {
-                    String lastIllness = null;
-                    for (String illness : cellData.getValue().getIllnessHistory()) {
-                        lastIllness = illness; // Gets the last one added
+                    String lastDiagnosis = null;
+                    for (com.example.model.Diagnosis diagnosis : cellData.getValue().getIllnessHistory()) {
+                        lastDiagnosis = diagnosis.getDoctorDiagnosis(); // Gets the last one added
                     }
-                    return new javafx.beans.property.SimpleStringProperty(lastIllness != null ? lastIllness : "None");
+                    return new javafx.beans.property.SimpleStringProperty(lastDiagnosis != null ? lastDiagnosis : "None");
                 }
                 return new javafx.beans.property.SimpleStringProperty("None");
             });
@@ -254,6 +270,42 @@ public class AdminController {
                 return new javafx.beans.property.SimpleStringProperty("N/A");
             });
             regStatusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        }
+        
+        // Setup Login History table
+        if (historyDoctorIdColumn != null) {
+            historyDoctorIdColumn.setCellValueFactory(new PropertyValueFactory<>("doctorId"));
+            historyDoctorNameColumn.setCellValueFactory(new PropertyValueFactory<>("doctorName"));
+            historyLoginTimeColumn.setCellValueFactory(cellData -> {
+                if (cellData.getValue().getLoginTime() != null) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    return new javafx.beans.property.SimpleStringProperty(
+                        cellData.getValue().getLoginTime().format(formatter));
+                }
+                return new javafx.beans.property.SimpleStringProperty("N/A");
+            });
+            historyLogoutTimeColumn.setCellValueFactory(cellData -> {
+                if (cellData.getValue().getLogoutTime() != null) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    return new javafx.beans.property.SimpleStringProperty(
+                        cellData.getValue().getLogoutTime().format(formatter));
+                }
+                return new javafx.beans.property.SimpleStringProperty("Still Active");
+            });
+            historyDurationColumn.setCellValueFactory(cellData -> {
+                DoctorSession session = cellData.getValue();
+                if (session.getSessionDuration() != null) {
+                    long hours = session.getSessionDuration().toHours();
+                    long minutes = session.getSessionDuration().toMinutesPart();
+                    return new javafx.beans.property.SimpleStringProperty(
+                        String.format("%dh %dm", hours, minutes));
+                }
+                return new javafx.beans.property.SimpleStringProperty("N/A");
+            });
+            historyStatusColumn.setCellValueFactory(cellData -> {
+                return new javafx.beans.property.SimpleStringProperty(
+                    cellData.getValue().isActive() ? "Active" : "Completed");
+            });
         }
     }
     
@@ -352,18 +404,34 @@ public class AdminController {
     }
     
     private void loadDashboardDataOptimized() {
+        // Automatically clean expired appointments when dashboard loads
+        try {
+            int expiredCount = adminService.removeExpiredAppointments();
+            if (expiredCount > 0) {
+                Platform.runLater(() -> {
+                    showStatus("Automatically cleaned " + expiredCount + " expired appointments", true);
+                });
+            }
+        } catch (Exception e) {
+            Platform.runLater(() -> {
+                showStatus("Warning: Could not clean expired appointments: " + e.getMessage(), false);
+            });
+        }
+        
         // Load data using individual methods
         AdminService.SystemStats systemStats = adminService.getSystemStats();
         CustomeLinkedList<Doctor> allDoctors = adminService.getAllDoctors();
         CustomeLinkedList<Doctor> loggedInDoctors = adminService.getCurrentlyLoggedInDoctors();
         CustomeLinkedList<Patient> allPatients = adminService.getAllPatients();
         CustomeLinkedList<Appointment> allAppointments = adminService.getAllAppointments();
+        CustomeLinkedList<DoctorSession> loginHistory = adminService.getAllDoctorLoginHistory();
         
         // Update UI with all data at once
         Platform.runLater(() -> {
             updateSystemStatsUI(systemStats);
             updateDoctorsTableUI(allDoctors);
             updateLoggedInDoctorsTableUI(loggedInDoctors);
+            updateLoginHistoryTableUI(loginHistory);
             updatePatientsTableUI(allPatients);
             updateAppointmentsTableUI(allAppointments);
         });
@@ -431,6 +499,16 @@ public class AdminController {
                 appointmentsList.add(appointment);
             }
             allAppointmentsTable.setItems(appointmentsList);
+        }
+    }
+    
+    private void updateLoginHistoryTableUI(CustomeLinkedList<DoctorSession> loginHistory) {
+        if (loginHistoryTable != null) {
+            ObservableList<DoctorSession> sessionsList = FXCollections.observableArrayList();
+            for (DoctorSession session : loginHistory) {
+                sessionsList.add(session);
+            }
+            loginHistoryTable.setItems(sessionsList);
         }
     }
     
@@ -534,7 +612,7 @@ public class AdminController {
             }
             
             // Use the new PendingDoctorRegistrationDAO instead of AdminService
-            List<PendingDoctorRegistration> allPending = pendingDAO.getAllPendingRegistrations();
+            CustomeLinkedList<PendingDoctorRegistration> allPending = pendingDAO.getAllPendingRegistrations();
             ObservableList<PendingDoctorRegistration> tableData = FXCollections.observableArrayList();
             
             // Filter to show only pending registrations
@@ -738,14 +816,12 @@ public class AdminController {
     
     @FXML
     private void viewDoctorLoginHistory() {
-        // Display login history information in status
+        // Load login history data into the table (same as other views)
         try {
-            CustomeLinkedList<Doctor> doctors = adminService.getAllDoctors();
-            int totalLogins = 0;
-            for (Doctor doctor : doctors) {
-                totalLogins += doctor.getLoginHistory().size();
-            }
-            showStatus("Total login sessions recorded: " + totalLogins, true);
+            CustomeLinkedList<DoctorSession> allSessions = adminService.getAllDoctorLoginHistory();
+            updateLoginHistoryTableUI(allSessions);
+            showStatus("Login history loaded: " + allSessions.size() + " total sessions", true);
+            
         } catch (Exception e) {
             showStatus("Error loading doctor login history: " + e.getMessage(), false);
         }
@@ -1298,6 +1374,18 @@ public class AdminController {
             }
         }
         
+        // Disable/enable appointment removal functionality
+        if (removeSelectedAppointmentButton != null) {
+            removeSelectedAppointmentButton.setDisable(!isSuperAdmin);
+            if (!isSuperAdmin) {
+                removeSelectedAppointmentButton.setText("View Only (Super Admin Required)");
+                removeSelectedAppointmentButton.setStyle("-fx-background-color: #6C757D; -fx-text-fill: white; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 25; -fx-background-radius: 8; -fx-cursor: not-allowed; -fx-graphic-text-gap: 10;");
+            } else {
+                removeSelectedAppointmentButton.setText("Remove Selected");
+                removeSelectedAppointmentButton.setStyle("-fx-background-color: #DC3545; -fx-text-fill: white; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 25; -fx-background-radius: 8; -fx-cursor: hand; -fx-graphic-text-gap: 10;");
+            }
+        }
+        
         // Disable/enable doctor registration processing buttons
         if (acceptButton != null) {
             acceptButton.setDisable(!isSuperAdmin);
@@ -1340,6 +1428,48 @@ public class AdminController {
         if (statusLabel != null) {
             statusLabel.setText(permissionText);
             statusLabel.setStyle(permissionStyle);
+        }
+    }
+    
+    @FXML
+    private void cleanExpiredAppointments() {
+        // Clean expired appointments - any admin can do this
+        try {
+            int removedCount = adminService.removeExpiredAppointments();
+            loadAllAppointments(); // Refresh the table
+            showStatus("Cleaned " + removedCount + " expired appointments (past date + 2 hours)", true);
+            
+        } catch (Exception e) {
+            showStatus("Error cleaning expired appointments: " + e.getMessage(), false);
+        }
+    }
+    
+    @FXML
+    private void removeSelectedAppointment() {
+        // Remove selected appointment - Super admin only
+        if (!currentAdmin.isSuperAdmin()) {
+            showStatus("Access denied: Only super admins can remove appointments.", false);
+            return;
+        }
+        
+        Appointment selected = allAppointmentsTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showStatus("Please select an appointment to remove.", false);
+            return;
+        }
+        
+        try {
+            boolean success = adminService.removeAppointment(selected.getAppointmentId());
+            
+            if (success) {
+                loadAllAppointments(); // Refresh the table
+                showStatus("Appointment " + selected.getAppointmentId() + " removed successfully.", true);
+            } else {
+                showStatus("Failed to remove appointment " + selected.getAppointmentId(), false);
+            }
+            
+        } catch (Exception e) {
+            showStatus("Error removing appointment: " + e.getMessage(), false);
         }
     }
 }

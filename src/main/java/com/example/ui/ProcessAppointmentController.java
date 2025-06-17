@@ -2,8 +2,10 @@ package com.example.ui;
 
 import com.example.data.AppointmentDAO;
 import com.example.data.PatientDAO;
+import com.example.data.DiagnosisDAO;
 import com.example.model.Appointment;
 import com.example.model.Patient;
+import com.example.model.Diagnosis;
 import com.example.model.ds.CustomeLinkedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,24 +37,26 @@ public class ProcessAppointmentController {
 
     @FXML private TextArea apptHistoryArea;
     @FXML private TextArea apptDoctorNotesArea;
+    @FXML private TextArea patientComplaintArea;
+    @FXML private TextArea recommendedMedicineArea;
 
     @FXML private Label statusLabel;
 
     private Appointment currentAppointment;
     private final PatientDAO patientDAO = new PatientDAO();
     private final AppointmentDAO appointmentDAO = new AppointmentDAO();
+    private final DiagnosisDAO diagnosisDAO = new DiagnosisDAO();
 
     /**
      * Called by DoctorDashboardController when this FXML is loaded.
      */
     public void setAppointment(Appointment appt) {
         this.currentAppointment = appt;
-
         // 1) Show appointment ID and date/time
         headerApptIdLabel.setText("Appointment ID: " + appt.getAppointmentId());
         apptDateTimeField.setText(appt.getTime().toString());
 
-        // 2) Load the patient’s data
+        // 2) Load the patient's data
         int pid = appt.getPatientId();
         Patient p = patientDAO.findById(pid);
 
@@ -62,34 +66,53 @@ public class ProcessAppointmentController {
         apptPatientAddressField.setText(p.getAddress());
         apptPatientPhoneField.setText(p.getPhoneNumber());
 
-        // 3) Show the patient’s existing illness history
+        // 3) Show the patient's existing illness history
         StringBuilder sb = new StringBuilder();
-        CustomeLinkedList<String> history = p.getIllnessHistory();
-        for (String entry : history) {
-            sb.append(entry).append("\n");
+        CustomeLinkedList<Diagnosis> history = p.getIllnessHistory();
+        for (Diagnosis diagnosis : history) {
+            sb.append("• ").append(diagnosis.getPatientComplaint()).append(" - ")
+              .append(diagnosis.getDoctorDiagnosis()).append("\n");
         }
         apptHistoryArea.setText(sb.toString());
     }
 
     /**
-     * Called when the doctor clicks “Finish Appointment”.
-     * - Take whatever the doctor typed into apptDoctorNotesArea:
-     *   if non‐empty, append it to the patient’s history and save.
-     * - Process the current appointment.
-     * - Then return to the dashboard.
+     * Called when the doctor clicks "Finish Appointment".
+     * - Create a diagnosis record with patient complaint, doctor diagnosis, and recommended medicine
+     * - Add the diagnosis to the patient's illness history
+     * - Remove this appointment from the queue
+     * - Return to doctor dashboard
      */
     @FXML
     private void onFinishClicked(ActionEvent event) {
-        String notes = apptDoctorNotesArea.getText().trim();
-        int pid = currentAppointment.getPatientId();
-        if (!notes.isEmpty()) {
-            // 1) Append notes to patient's illnessHistory
+        String doctorNotes = apptDoctorNotesArea.getText().trim();
+        String patientComplaint = patientComplaintArea.getText().trim();
+        String recommendedMedicine = recommendedMedicineArea.getText().trim();
+        
+        if (!doctorNotes.isEmpty() && !patientComplaint.isEmpty()) {
+            // Create a new diagnosis record
+            Diagnosis diagnosis = new Diagnosis(
+                diagnosisDAO.generateUniqueId(),
+                CurrentDoctorHolder.getDoctor().getId(),
+                currentAppointment.getPatientId(),
+                patientComplaint,
+                doctorNotes,
+                recommendedMedicine,
+                java.time.LocalDateTime.now(),
+                currentAppointment.getAppointmentId()
+            );
+            
+            // Save the diagnosis
+            diagnosisDAO.addDiagnosis(diagnosis);
+            
+            // Add diagnosis to patient's illness history
+            int pid = currentAppointment.getPatientId();
             Patient p = patientDAO.findById(pid);
-            p.addIllness(notes);
+            p.getIllnessHistory().add(diagnosis);
             patientDAO.updatePatient(p);
         }
 
-        // 2) Process (dequeue) this appointment
+        // 2) Remove this appointment from the queue
         appointmentDAO.processNextAppointment(CurrentDoctorHolder.getDoctor().getId());
 
         // 3) Return to doctor dashboard
@@ -97,24 +120,6 @@ public class ProcessAppointmentController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/ui/doctor_dashboard.fxml"));
             Parent root = loader.load();
             DoctorDashboardController dashCtrl = loader.getController();
-            dashCtrl.setLoggedInDoctor(CurrentDoctorHolder.getDoctor());
-            Stage stage = (Stage) headerApptIdLabel.getScene().getWindow();
-            stage.getScene().setRoot(root);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    /**
-     * “Cancel” just returns to the dashboard without saving notes.
-     */
-    @FXML
-    private void onCancelClicked(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/ui/doctor_dashboard.fxml"));
-            Parent root = loader.load();
-            DoctorDashboardController dashCtrl = loader.getController();
-            // Reload the same doctor
             dashCtrl.setLoggedInDoctor(CurrentDoctorHolder.getDoctor());
             Stage stage = (Stage) headerApptIdLabel.getScene().getWindow();
             stage.getScene().setRoot(root);
@@ -160,17 +165,54 @@ public class ProcessAppointmentController {
      */
     @FXML
     private void onSaveClicked(ActionEvent event) {
-        String notes = apptDoctorNotesArea.getText().trim();
-        if (!notes.isEmpty()) {
+        String doctorNotes = apptDoctorNotesArea.getText().trim();
+        String patientComplaint = patientComplaintArea.getText().trim();
+        String recommendedMedicine = recommendedMedicineArea.getText().trim();
+        
+        if (!doctorNotes.isEmpty() && !patientComplaint.isEmpty()) {
+            // Create a new diagnosis record
+            Diagnosis diagnosis = new Diagnosis(
+                diagnosisDAO.generateUniqueId(),
+                CurrentDoctorHolder.getDoctor().getId(),
+                currentAppointment.getPatientId(),
+                patientComplaint,
+                doctorNotes,
+                recommendedMedicine,
+                java.time.LocalDateTime.now(),
+                currentAppointment.getAppointmentId()
+            );
+            
+            // Save the diagnosis
+            diagnosisDAO.addDiagnosis(diagnosis);
+            
+            // Add diagnosis to patient's illness history
             int pid = currentAppointment.getPatientId();
             Patient p = patientDAO.findById(pid);
-            p.addIllness(notes);
+            p.getIllnessHistory().add(diagnosis);
             patientDAO.updatePatient(p);
-            statusLabel.setText("Notes saved successfully!");
+            
+            statusLabel.setText("Diagnosis saved successfully!");
             statusLabel.setStyle("-fx-text-fill: #28a745;");
         } else {
-            statusLabel.setText("No notes to save.");
+            statusLabel.setText("Please fill in both patient complaint and doctor diagnosis.");
             statusLabel.setStyle("-fx-text-fill: #ffc107;");
+        }
+    }
+
+    /**
+     * Cancel appointment processing and return to dashboard
+     */
+    @FXML
+    private void onCancelClicked(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/ui/doctor_dashboard.fxml"));
+            Parent root = loader.load();
+            DoctorDashboardController dashCtrl = loader.getController();
+            dashCtrl.setLoggedInDoctor(CurrentDoctorHolder.getDoctor());
+            Stage stage = (Stage) headerApptIdLabel.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 }

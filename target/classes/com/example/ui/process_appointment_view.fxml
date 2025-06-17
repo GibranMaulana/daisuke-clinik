@@ -183,17 +183,41 @@
                   spacing="15" VBox.vgrow="ALWAYS">
                 <HBox spacing="10" alignment="CENTER_LEFT">
                     <FontIcon iconLiteral="fas-notes-medical" iconSize="20" iconColor="#2C2C54" />
-                    <Label text="Doctor's Notes and Diagnosis" 
+                    <Label text="Diagnosis and Treatment" 
                            style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2C2C54; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
                 </HBox>
-                <Label text="Enter your diagnosis, treatment plan, and notes" 
+                <Label text="Complete the diagnosis by filling in patient complaint, diagnosis, and recommended medicine" 
                        style="-fx-text-fill: #6C757D; -fx-font-size: 12px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
                 
-                <TextArea fx:id="apptDoctorNotesArea"
-                          promptText="Enter your diagnosis and treatment notes here..."
-                          prefRowCount="8"
-                          style="-fx-background-color: white; -fx-border-color: #8686AC; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);"
-                          VBox.vgrow="ALWAYS"/>
+                <!-- Patient Complaint Section -->
+                <VBox spacing="8">
+                    <Label text="Patient Complaint:" 
+                           style="-fx-font-weight: bold; -fx-text-fill: #2C2C54; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px;"/>
+                    <TextArea fx:id="patientComplaintArea"
+                              promptText="What is the patient's main complaint or symptoms?"
+                              prefRowCount="3"
+                              style="-fx-background-color: white; -fx-border-color: #8686AC; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);"/>
+                </VBox>
+                
+                <!-- Doctor's Diagnosis Section -->
+                <VBox spacing="8">
+                    <Label text="Doctor's Diagnosis:" 
+                           style="-fx-font-weight: bold; -fx-text-fill: #2C2C54; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px;"/>
+                    <TextArea fx:id="apptDoctorNotesArea"
+                              promptText="Enter your medical diagnosis and treatment notes here..."
+                              prefRowCount="4"
+                              style="-fx-background-color: white; -fx-border-color: #8686AC; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);"/>
+                </VBox>
+                
+                <!-- Recommended Medicine Section -->
+                <VBox spacing="8">
+                    <Label text="Recommended Medicine:" 
+                           style="-fx-font-weight: bold; -fx-text-fill: #2C2C54; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px;"/>
+                    <TextArea fx:id="recommendedMedicineArea"
+                              promptText="Prescribe medications, dosages, and instructions (optional)"
+                              prefRowCount="3"
+                              style="-fx-background-color: white; -fx-border-color: #8686AC; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);"/>
+                </VBox>
             </VBox>
 
             <!-- Action Section -->

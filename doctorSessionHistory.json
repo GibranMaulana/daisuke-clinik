@@ -1,0 +1,73 @@
+[ {
+  "doctorId" : 1124,
+  "doctorName" : "tiana margaret",
+  "loginTime" : "2025-06-16T18:35:35.653941873",
+  "logoutTime" : "2025-06-16T18:36:15.985143091",
+  "active" : false
+}, {
+  "doctorId" : 1124,
+  "doctorName" : "tiana margaret",
+  "loginTime" : "2025-06-16T19:01:29.136906071",
+  "logoutTime" : "2025-06-16T19:01:29.153491024",
+  "active" : false
+}, {
+  "doctorId" : 1124,
+  "doctorName" : "tiana margaret",
+  "loginTime" : "2025-06-16T19:16:25.108512127",
+  "logoutTime" : "2025-06-16T19:16:25.11432032",
+  "active" : false
+}, {
+  "doctorId" : 2147,
+  "doctorName" : "gibran_maulana azmi",
+  "loginTime" : "2025-06-16T19:07:31.806939726",
+  "logoutTime" : "2025-06-16T19:18:17.315810133",
+  "active" : false
+}, {
+  "doctorId" : 2147,
+  "doctorName" : "gibran_maulana azmi",
+  "loginTime" : "2025-06-16T19:20:00.403762948",
+  "logoutTime" : "2025-06-16T19:21:27.674205913",
+  "active" : false
+}, {
+  "doctorId" : 2147,
+  "doctorName" : "gibran_maulana azmi",
+  "loginTime" : "2025-06-16T19:22:12.187413055",
+  "logoutTime" : "2025-06-16T22:06:26.892074169",
+  "active" : false
+}, {
+  "doctorId" : 2147,
+  "doctorName" : "gibran_maulana azmi",
+  "loginTime" : "2025-06-16T22:06:46.480856171",
+  "logoutTime" : "2025-06-16T22:25:36.95724847",
+  "active" : false
+}, {
+  "doctorId" : 2147,
+  "doctorName" : "gibran_maulana azmi",
+  "loginTime" : "2025-06-16T22:28:01.978877057",
+  "logoutTime" : "2025-06-16T22:34:48.961007024",
+  "active" : false
+}, {
+  "doctorId" : 2147,
+  "doctorName" : "gibran_maulana azmi",
+  "loginTime" : "2025-06-16T22:36:04.663053274",
+  "logoutTime" : "2025-06-16T22:36:32.046005569",
+  "active" : false
+}, {
+  "doctorId" : 5819,
+  "doctorName" : "testing",
+  "loginTime" : "2025-06-16T22:37:06.075233947",
+  "logoutTime" : "2025-06-16T22:37:50.837590256",
+  "active" : false
+}, {
+  "doctorId" : 5819,
+  "doctorName" : "testing",
+  "loginTime" : "2025-06-16T22:38:57.201912585",
+  "logoutTime" : "2025-06-16T22:39:02.752937033",
+  "active" : false
+}, {
+  "doctorId" : 2147,
+  "doctorName" : "gibran_maulana azmi",
+  "loginTime" : "2025-06-17T00:04:06.717570152",
+  "logoutTime" : "2025-06-17T00:15:38.83310869",
+  "active" : false
+} ]

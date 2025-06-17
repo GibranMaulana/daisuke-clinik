@@ -19,8 +19,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import com.example.model.ds.CustomeLinkedList;
 import java.util.ResourceBundle;
 
 public class PatientDashboardController implements Initializable {
@@ -29,11 +28,20 @@ public class PatientDashboardController implements Initializable {
     @FXML private Label statusLabel;
     @FXML private VBox recentActivityContainer;
     
+    // New patient information labels for the dashboard
+    @FXML private Label dashboardNameLabel;
+    @FXML private Label dashboardPatientIdLabel;
+    @FXML private Label dashboardAgeLabel;
+    @FXML private Label dashboardEmailLabel;
+    @FXML private Label dashboardPhoneLabel;
+    @FXML private Label dashboardAddressLabel;
+    
     private final AppointmentDAO appointmentDAO = new AppointmentDAO();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadPatientInfo();
+        loadPatientDetailsInfo();
         loadRecentActivity();
     }
 
@@ -50,6 +58,30 @@ public class PatientDashboardController implements Initializable {
             patientEmailLabel.setText("Not logged in");
             statusLabel.setText("Session expired. Please log in again.");
             statusLabel.setStyle("-fx-text-fill: #DC3545; -fx-font-size: 14px;");
+        }
+    }
+
+    /**
+     * Load detailed patient information into the patient information section
+     */
+    private void loadPatientDetailsInfo() {
+        if (CurrentPatientHolder.isLoggedIn()) {
+            Patient patient = CurrentPatientHolder.getCurrentPatient();
+            
+            dashboardNameLabel.setText(patient.getFullname());
+            dashboardPatientIdLabel.setText(String.valueOf(patient.getId()));
+            dashboardAgeLabel.setText(patient.getAge() + " years");
+            dashboardEmailLabel.setText(patient.getEmail() != null ? patient.getEmail() : "Not provided");
+            dashboardPhoneLabel.setText(patient.getPhoneNumber() != null ? patient.getPhoneNumber() : "Not provided");
+            dashboardAddressLabel.setText(patient.getAddress() != null ? patient.getAddress() : "Not provided");
+        } else {
+            // Set default values when not logged in
+            dashboardNameLabel.setText("Guest User");
+            dashboardPatientIdLabel.setText("N/A");
+            dashboardAgeLabel.setText("N/A");
+            dashboardEmailLabel.setText("Please log in");
+            dashboardPhoneLabel.setText("Please log in");
+            dashboardAddressLabel.setText("Please log in");
         }
     }
 
@@ -71,25 +103,52 @@ public class PatientDashboardController implements Initializable {
             CustomeLinkedList<Appointment> allAppointments = appointmentDAO.getAllAppointments();
             
             // Filter appointments for current patient and get recent ones
-            List<Appointment> patientAppointments = new ArrayList<>();
+            CustomeLinkedList<Appointment> patientAppointments = new CustomeLinkedList<>();
             for (Appointment apt : allAppointments) {
                 if (apt.getPatientId() == patientId) {
                     patientAppointments.add(apt);
                 }
             }
             
+            // Convert to array for sorting, then back to CustomeLinkedList
             // Sort by time (most recent first) and limit to 5
-            patientAppointments.sort((a1, a2) -> a2.getTime().compareTo(a1.getTime()));
-            if (patientAppointments.size() > 5) {
-                patientAppointments = patientAppointments.subList(0, 5);
+            CustomeLinkedList<Appointment> sortedAppointments = new CustomeLinkedList<>();
+            if (patientAppointments.size() > 0) {
+                // Simple bubble sort to sort by time (most recent first)
+                for (int i = 0; i < patientAppointments.size(); i++) {
+                    Appointment latest = null;
+                    
+                    // Find the latest appointment that hasn't been added yet
+                    for (int j = 0; j < patientAppointments.size(); j++) {
+                        Appointment current = patientAppointments.get(j);
+                        boolean alreadyAdded = false;
+                        
+                        // Check if already added to sorted list
+                        for (Appointment sorted : sortedAppointments) {
+                            if (sorted == current) {
+                                alreadyAdded = true;
+                                break;
+                            }
+                        }
+                        
+                        if (!alreadyAdded && (latest == null || current.getTime().isAfter(latest.getTime()))) {
+                            latest = current;
+                        }
+                    }
+                    
+                    if (latest != null) {
+                        sortedAppointments.add(latest);
+                        if (sortedAppointments.size() >= 5) break; // Limit to 5
+                    }
+                }
             }
 
-            if (patientAppointments.isEmpty()) {
+            if (sortedAppointments.isEmpty()) {
                 Label noDataLabel = new Label("No appointments found. Book your first appointment!");
                 noDataLabel.setStyle("-fx-text-fill: #6C757D; -fx-font-size: 14px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;");
                 recentActivityContainer.getChildren().add(noDataLabel);
             } else {
-                for (Appointment appointment : patientAppointments) {
+                for (Appointment appointment : sortedAppointments) {
                     VBox appointmentCard = createAppointmentCard(appointment);
                     recentActivityContainer.getChildren().add(appointmentCard);
                 }
@@ -157,7 +216,8 @@ public class PatientDashboardController implements Initializable {
     }
 
     @FXML
-    private void onBookAppointmentClicked(MouseEvent event) {
+    private void onBookAppointmentCardClicked(MouseEvent event) {
+        // Navigate to appointment booking from card click
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/patient_appointment.fxml"));
             Stage stage = (Stage) patientNameLabel.getScene().getWindow();
@@ -170,12 +230,22 @@ public class PatientDashboardController implements Initializable {
     }
 
     @FXML
-    private void onBookAppointmentClicked(ActionEvent event) {
-        onBookAppointmentClicked((MouseEvent) null);
+    private void onBookAppointmentButtonClicked(ActionEvent event) {
+        // Navigate to appointment booking from navigation button
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/patient_appointment.fxml"));
+            Stage stage = (Stage) patientNameLabel.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            statusLabel.setText("Error loading appointment booking page.");
+            statusLabel.setStyle("-fx-text-fill: #DC3545; -fx-font-size: 14px;");
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    private void onMedicalRecordsClicked(MouseEvent event) {
+    private void onMedicalRecordsClicked(ActionEvent event) {
+        // Navigate to medical records from navigation button
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/patient_medical_records.fxml"));
             Stage stage = (Stage) patientNameLabel.getScene().getWindow();
@@ -188,8 +258,17 @@ public class PatientDashboardController implements Initializable {
     }
 
     @FXML
-    private void onMedicalRecordsClicked(ActionEvent event) {
-        onMedicalRecordsClicked((MouseEvent) null);
+    private void onMedicalRecordsCardClicked(MouseEvent event) {
+        // Navigate to medical records from card click
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/patient_medical_records.fxml"));
+            Stage stage = (Stage) patientNameLabel.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            statusLabel.setText("Error loading medical records page.");
+            statusLabel.setStyle("-fx-text-fill: #DC3545; -fx-font-size: 14px;");
+            e.printStackTrace();
+        }
     }
 
     @FXML

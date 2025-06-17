@@ -21,38 +21,31 @@
         <RowConstraints minHeight="40" maxHeight="40"/>
     </rowConstraints>
 
-    <!-- Header Navigation Bar -->
-    <HBox GridPane.columnSpan="2" GridPane.rowIndex="0" GridPane.columnIndex="0" 
-          style="-fx-background-color: #272757; -fx-padding: 15; -fx-spacing: 20;" 
-          alignment="CENTER">
-        
-        <FontIcon iconLiteral="fas-bars" iconSize="20" iconColor="white" />
-        <Label text="Medical Records - Patient Portal" 
-               style="-fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 18px; -fx-font-weight: bold;"/>
-        
-        <Region HBox.hgrow="ALWAYS"/>
-        
-        <Button text="Dashboard" onAction="#onDashboardClicked"
-                style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 8 15; -fx-background-radius: 5; -fx-border-color: white; -fx-border-radius: 5;">
-            <graphic>
-                <FontIcon iconLiteral="fas-home" iconSize="14" iconColor="white" />
-            </graphic>
-        </Button>
-        
-        <Button text="Book Appointment" onAction="#onBookAppointmentClicked"
-                style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 8 15; -fx-background-radius: 5; -fx-border-color: white; -fx-border-radius: 5;">
-            <graphic>
-                <FontIcon iconLiteral="fas-calendar-plus" iconSize="14" iconColor="white" />
-            </graphic>
-        </Button>
-        
-        <Button text="Logout" onAction="#onLogoutClicked"
-                style="-fx-background-color: #DC3545; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 8 15; -fx-background-radius: 5;">
-            <graphic>
-                <FontIcon iconLiteral="fas-sign-out-alt" iconSize="14" iconColor="white" />
-            </graphic>
-        </Button>
-    </HBox>
+    <!-- Header spans both columns -->
+    <VBox style="-fx-background-color: #272757; -fx-padding: 20; -fx-spacing: 10;" 
+          GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2">
+        <HBox spacing="15" alignment="CENTER_LEFT">
+            <FontIcon iconLiteral="fas-file-medical-alt" iconSize="32" iconColor="white" />
+            <VBox>
+                <Label text="Medical Records" 
+                       style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                <Label fx:id="medicalRecordsPatientEmailLabel" text="patient@email.com" 
+                       style="-fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+            </VBox>
+            
+            <!-- Spacer -->
+            <Region HBox.hgrow="ALWAYS"/>
+            
+            <!-- Logout Button -->
+            <Button text="Logout" onAction="#onLogoutClicked"
+                    style="-fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 10 20; -fx-font-size: 14px; -fx-cursor: hand; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-graphic-text-gap: 8;"
+                    prefHeight="40">
+                <graphic>
+                    <FontIcon iconLiteral="fas-sign-out-alt" iconSize="14" iconColor="white" />
+                </graphic>
+            </Button>
+        </HBox>
+    </VBox>
 
     <!-- Left Navigation Sidebar -->
     <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" 
@@ -74,7 +67,7 @@
 
         <!-- Navigation Buttons -->
         <VBox spacing="8" style="-fx-padding: 10 0;">
-            <Button text="Dashboard" onAction="#onDashboardClicked"
+            <Button text="Back to Dashboard" onAction="#onDashboardClicked"
                     style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 15; -fx-alignment: center-left; -fx-background-radius: 8; -fx-min-width: 170; -fx-graphic-text-gap: 12;"
                     maxWidth="Infinity">
                 <graphic>
@@ -82,7 +75,7 @@
                 </graphic>
             </Button>
             
-            <Button text="Book Appointment" onAction="#onBookAppointmentClicked"
+            <Button text="Make Appointment" onAction="#onBookAppointmentClicked"
                     style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 15; -fx-alignment: center-left; -fx-background-radius: 8; -fx-min-width: 170; -fx-graphic-text-gap: 12;"
                     maxWidth="Infinity">
                 <graphic>
@@ -103,11 +96,15 @@
     <!-- Main Content Area -->
     <ScrollPane GridPane.rowIndex="1" GridPane.columnIndex="1" 
                 style="-fx-background-color: #F8F9FA; -fx-background: #F8F9FA;" 
-                fitToWidth="true" fitToHeight="true">
-        <VBox style="-fx-padding: 25; -fx-spacing: 20; -fx-background-color: #F8F9FA;">
+                fitToWidth="true" fitToHeight="true" 
+                vbarPolicy="AS_NEEDED" hbarPolicy="NEVER"
+                pannable="true" vvalue="0.0">
+        <VBox style="-fx-padding: 25; -fx-spacing: 20; -fx-background-color: #F8F9FA;"
+              fillWidth="true">
             
             <!-- Patient Information Header -->
-            <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 25; -fx-spacing: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);">
+            <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 25; -fx-spacing: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);"
+                  prefHeight="300" minHeight="300" maxHeight="300">
                 <HBox spacing="15" alignment="CENTER_LEFT">
                     <FontIcon iconLiteral="fas-user-circle" iconSize="28" iconColor="#272757" />
                     <Label text="Patient Information" 
@@ -153,7 +150,8 @@
             </VBox>
 
             <!-- Medical History Section -->
-            <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 25; -fx-spacing: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);">
+            <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 25; -fx-spacing: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);"
+                  prefHeight="350" minHeight="350" maxHeight="350">
                 <HBox spacing="15" alignment="CENTER_LEFT">
                     <FontIcon iconLiteral="fas-history" iconSize="24" iconColor="#DC3545" />
                     <Label text="Medical History" 
@@ -161,69 +159,47 @@
                 </HBox>
                 
                 <ScrollPane style="-fx-background-color: transparent; -fx-background: transparent;" 
-                           fitToWidth="true" prefHeight="200" maxHeight="300">
-                    <VBox fx:id="illnessHistoryContainer" spacing="8" style="-fx-padding: 5;">
+                           fitToHeight="true" prefHeight="250" minHeight="250" maxHeight="250"
+                           hbarPolicy="AS_NEEDED" vbarPolicy="NEVER"
+                           pannable="true" hvalue="0.0">
+                    <HBox fx:id="illnessHistoryContainer" spacing="8" style="-fx-padding: 5;"
+                          fillHeight="true">
                         <!-- Illness history items will be populated dynamically -->
-                    </VBox>
-                </ScrollPane>
-            </VBox>
-
-            <!-- Appointment History Section -->
-            <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 25; -fx-spacing: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);">
-                <HBox spacing="15" alignment="CENTER_LEFT">
-                    <FontIcon iconLiteral="fas-calendar-check" iconSize="24" iconColor="#007BFF" />
-                    <Label text="Appointment History" 
-                           style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #272757; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
-                </HBox>
-                
-                <ScrollPane style="-fx-background-color: transparent; -fx-background: transparent;" 
-                           fitToWidth="true" prefHeight="300" maxHeight="400">
-                    <VBox fx:id="appointmentHistoryContainer" spacing="12" style="-fx-padding: 5;">
-                        <!-- Appointment history items will be populated dynamically -->
-                    </VBox>
+                    </HBox>
                 </ScrollPane>
             </VBox>
 
             <!-- Medical Statistics Section -->
-            <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 25; -fx-spacing: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);">
+            <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 25; -fx-spacing: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);"
+                  prefHeight="200" minHeight="200" maxHeight="200">
                 <HBox spacing="15" alignment="CENTER_LEFT">
                     <FontIcon iconLiteral="fas-chart-line" iconSize="24" iconColor="#28A745" />
                     <Label text="Medical Statistics" 
                            style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #272757; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
                 </HBox>
                 
-                <GridPane hgap="20" vgap="15">
+                <GridPane hgap="30" vgap="15">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="ALWAYS" percentWidth="33.33"/>
-                        <ColumnConstraints hgrow="ALWAYS" percentWidth="33.33"/>
-                        <ColumnConstraints hgrow="ALWAYS" percentWidth="33.33"/>
+                        <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                        <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
                     </columnConstraints>
                     
                     <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER" 
-                          style="-fx-background-color: #E8F5E8; -fx-background-radius: 8; -fx-padding: 15;">
-                        <FontIcon iconLiteral="fas-procedures" iconSize="20" iconColor="#28A745" />
-                        <Label fx:id="totalAppointmentsLabel" text="0" 
-                               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #28A745; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
-                        <Label text="Total Appointments" 
-                               style="-fx-font-size: 12px; -fx-text-fill: #28A745; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                          style="-fx-background-color: #FFF3CD; -fx-background-radius: 8; -fx-padding: 20;">
+                        <FontIcon iconLiteral="fas-clock" iconSize="24" iconColor="#FFC107" />
+                        <Label fx:id="upcomingAppointmentsLabel" text="0" 
+                               style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #FFC107; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                        <Label text="Upcoming Appointments" 
+                               style="-fx-font-size: 14px; -fx-text-fill: #FFC107; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-weight: bold;"/>
                     </VBox>
                     
                     <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER" 
-                          style="-fx-background-color: #FFF3CD; -fx-background-radius: 8; -fx-padding: 15;">
-                        <FontIcon iconLiteral="fas-clock" iconSize="20" iconColor="#FFC107" />
-                        <Label fx:id="upcomingAppointmentsLabel" text="0" 
-                               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #FFC107; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
-                        <Label text="Upcoming Appointments" 
-                               style="-fx-font-size: 12px; -fx-text-fill: #FFC107; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
-                    </VBox>
-                    
-                    <VBox GridPane.columnIndex="2" GridPane.rowIndex="0" alignment="CENTER" 
-                          style="-fx-background-color: #F8D7DA; -fx-background-radius: 8; -fx-padding: 15;">
-                        <FontIcon iconLiteral="fas-notes-medical" iconSize="20" iconColor="#DC3545" />
+                          style="-fx-background-color: #F8D7DA; -fx-background-radius: 8; -fx-padding: 20;">
+                        <FontIcon iconLiteral="fas-notes-medical" iconSize="24" iconColor="#DC3545" />
                         <Label fx:id="totalConditionsLabel" text="0" 
-                               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #DC3545; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                               style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #DC3545; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
                         <Label text="Medical Conditions" 
-                               style="-fx-font-size: 12px; -fx-text-fill: #DC3545; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                               style="-fx-font-size: 14px; -fx-text-fill: #DC3545; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-weight: bold;"/>
                     </VBox>
                 </GridPane>
             </VBox>

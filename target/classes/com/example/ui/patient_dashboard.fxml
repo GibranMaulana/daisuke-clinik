@@ -49,25 +49,52 @@
         </HBox>
     </VBox>
 
-    <!-- Left Navigation Bar -->
-    <VBox style="-fx-background-color: #0F0E47; -fx-padding: 15; -fx-spacing: 10; -fx-min-width: 200;" 
-          GridPane.rowIndex="1" GridPane.columnIndex="0">
+    <!-- Left Navigation Sidebar -->
+    <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" 
+          style="-fx-background-color: #0F0E47; -fx-padding: 20; -fx-spacing: 15; -fx-min-width: 200;" 
+          spacing="15">
         
-        <Button text="Book Appointment" 
-                onAction="#onBookAppointmentClicked"
-                style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 15; -fx-alignment: center-left; -fx-background-radius: 5; -fx-min-width: 170; -fx-graphic-text-gap: 10;">
-            <graphic>
-                <FontIcon iconLiteral="fas-calendar-plus" iconSize="16" iconColor="white" />
-            </graphic>
-        </Button>
-        
-        <Button text="Medical Records" 
-                onAction="#onMedicalRecordsClicked"
-                style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 15; -fx-alignment: center-left; -fx-background-radius: 5; -fx-min-width: 170; -fx-graphic-text-gap: 10;">
-            <graphic>
-                <FontIcon iconLiteral="fas-file-medical" iconSize="16" iconColor="white" />
-            </graphic>
-        </Button>
+        <!-- Sidebar Header -->
+        <VBox alignment="CENTER" style="-fx-padding: 15; -fx-spacing: 8;">
+            <HBox spacing="10" alignment="CENTER">
+                <FontIcon iconLiteral="fas-tachometer-alt" iconSize="24" iconColor="white" />
+                <Label text="Dashboard" 
+                       style="-fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+            </HBox>
+            <Label fx:id="dashboardPatientInfoLabel" text="Patient Portal" 
+                   style="-fx-text-fill: #B8B8E6; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 12px;"/>
+        </VBox>
+
+        <Separator style="-fx-background-color: #B8B8E6; -fx-opacity: 0.3;"/>
+
+        <!-- Navigation Buttons -->
+        <VBox spacing="8" style="-fx-padding: 10 0;">
+            <Button text="Dashboard" 
+                    style="-fx-background-color: #28A745; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 15; -fx-alignment: center-left; -fx-background-radius: 8; -fx-min-width: 170; -fx-graphic-text-gap: 12; -fx-font-weight: bold;"
+                    maxWidth="Infinity">
+                <graphic>
+                    <FontIcon iconLiteral="fas-tachometer-alt" iconSize="16" iconColor="white" />
+                </graphic>
+            </Button>
+            
+            <Button text="Make Appointment" 
+                    onAction="#onBookAppointmentButtonClicked"
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 15; -fx-alignment: center-left; -fx-background-radius: 8; -fx-min-width: 170; -fx-graphic-text-gap: 12;"
+                    maxWidth="Infinity">
+                <graphic>
+                    <FontIcon iconLiteral="fas-calendar-plus" iconSize="16" iconColor="white" />
+                </graphic>
+            </Button>
+            
+            <Button text="Medical Records" 
+                    onAction="#onMedicalRecordsClicked"
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 15; -fx-alignment: center-left; -fx-background-radius: 8; -fx-min-width: 170; -fx-graphic-text-gap: 12;"
+                    maxWidth="Infinity">
+                <graphic>
+                    <FontIcon iconLiteral="fas-file-medical" iconSize="16" iconColor="white" />
+                </graphic>
+            </Button>
+        </VBox>
     </VBox>
 
     <!-- Main Content Area -->
@@ -90,6 +117,53 @@
                     </HBox>
                 </VBox>
 
+                <!-- Patient Information Section -->
+                <VBox style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 25; -fx-spacing: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);" 
+                      spacing="15" maxWidth="900">
+                    <HBox spacing="15" alignment="CENTER_LEFT">
+                        <FontIcon iconLiteral="fas-user-circle" iconSize="28" iconColor="#272757" />
+                        <Label text="Patient Information" 
+                               style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #272757; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                    </HBox>
+                    
+                    <GridPane hgap="25" vgap="15">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                        </columnConstraints>
+                        
+                        <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label text="Full Name" style="-fx-text-fill: #6C757D; -fx-font-size: 12px; -fx-font-weight: bold; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                            <Label fx:id="dashboardNameLabel" text="John Doe" style="-fx-text-fill: #2C2C54; -fx-font-size: 16px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                        </VBox>
+                        
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label text="Patient ID" style="-fx-text-fill: #6C757D; -fx-font-size: 12px; -fx-font-weight: bold; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                            <Label fx:id="dashboardPatientIdLabel" text="1234567" style="-fx-text-fill: #2C2C54; -fx-font-size: 16px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                        </VBox>
+                        
+                        <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <Label text="Age" style="-fx-text-fill: #6C757D; -fx-font-size: 12px; -fx-font-weight: bold; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                            <Label fx:id="dashboardAgeLabel" text="30 years" style="-fx-text-fill: #2C2C54; -fx-font-size: 16px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                        </VBox>
+                        
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Label text="Email" style="-fx-text-fill: #6C757D; -fx-font-size: 12px; -fx-font-weight: bold; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                            <Label fx:id="dashboardEmailLabel" text="john.doe@example.com" style="-fx-text-fill: #2C2C54; -fx-font-size: 16px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                        </VBox>
+                        
+                        <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                            <Label text="Phone Number" style="-fx-text-fill: #6C757D; -fx-font-size: 12px; -fx-font-weight: bold; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                            <Label fx:id="dashboardPhoneLabel" text="555-1234" style="-fx-text-fill: #2C2C54; -fx-font-size: 16px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                        </VBox>
+                        
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <Label text="Address" style="-fx-text-fill: #6C757D; -fx-font-size: 12px; -fx-font-weight: bold; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                            <Label fx:id="dashboardAddressLabel" text="123 Main St" style="-fx-text-fill: #2C2C54; -fx-font-size: 16px; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+
                 <!-- Quick Actions Grid -->
                 <VBox spacing="20" maxWidth="900">
                     <Label text="Quick Actions" 
@@ -104,7 +178,7 @@
                         <!-- Book Appointment Card -->
                         <VBox alignment="CENTER" spacing="15" 
                               style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2); -fx-cursor: hand;"
-                              onMouseClicked="#onBookAppointmentClicked"
+                              onMouseClicked="#onBookAppointmentCardClicked"
                               GridPane.columnIndex="0" GridPane.rowIndex="0">
                             <FontIcon iconLiteral="fas-calendar-plus" iconSize="36" iconColor="#28A745" />
                             <Label text="Book New Appointment" 
@@ -116,7 +190,7 @@
                         <!-- Medical Records Card -->
                         <VBox alignment="CENTER" spacing="15" 
                               style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2); -fx-cursor: hand;"
-                              onMouseClicked="#onMedicalRecordsClicked"
+                              onMouseClicked="#onMedicalRecordsCardClicked"
                               GridPane.columnIndex="1" GridPane.rowIndex="0">
                             <FontIcon iconLiteral="fas-file-medical" iconSize="36" iconColor="#DC3545" />
                             <Label text="Medical Records" 

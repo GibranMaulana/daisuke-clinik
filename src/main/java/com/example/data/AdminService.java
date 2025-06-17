@@ -13,7 +13,6 @@ public class AdminService {
     private final DoctorDAO doctorDAO = new DoctorDAO();
     private final PatientDAO patientDAO = new PatientDAO();
     private final AppointmentDAO appointmentDAO = new AppointmentDAO();
-    private final LoginSessionDAO sessionDAO = new LoginSessionDAO();
 
     // ─────────────────────────────────────────
     // Admin Authentication & Management
@@ -90,6 +89,20 @@ public class AdminService {
         return filteredAppointments;
     }
 
+    /**
+     * Remove expired appointments (past date + 2 hours)
+     */
+    public int removeExpiredAppointments() {
+        return appointmentDAO.removeExpiredAppointments();
+    }
+    
+    /**
+     * Remove appointment by ID - Super admin only functionality
+     */
+    public boolean removeAppointment(int appointmentId) {
+        return appointmentDAO.removeAppointment(appointmentId);
+    }
+
     // ─────────────────────────────────────────
     // Doctor Management
     // ─────────────────────────────────────────
@@ -105,34 +118,17 @@ public class AdminService {
      * Get currently logged in doctors
      */
     public CustomeLinkedList<Doctor> getCurrentlyLoggedInDoctors() {
-        // Use session data from loginSessions.json for accurate logged-in status
-        CustomeLinkedList<LoginSession> activeSessions = sessionDAO.getAllSessions();
-        CustomeLinkedList<Doctor> allDoctors = doctorDAO.getAllDoctors();
-        CustomeLinkedList<Doctor> loggedInDoctors = new CustomeLinkedList<>();
-        
-        for (Doctor doctor : allDoctors) {
-            // Check if doctor has an active session in loginSessions.json
-            boolean hasActiveSession = false;
-            for (LoginSession session : activeSessions) {
-                if (session.getDoctorId() == doctor.getId()) {
-                    hasActiveSession = true;
-                    break;
-                }
-            }
-            
-            // Only include doctors with active sessions (no fallback to currentLoginTime)
-            if (hasActiveSession) {
-                loggedInDoctors.add(doctor);
-            }
-        }
-        return loggedInDoctors;
+        // Use the new doctor session service for accurate logged-in status
+        DoctorSessionService sessionService = new DoctorSessionService();
+        return sessionService.getCurrentlyLoggedInDoctorsAsDoctor();
     }
 
     /**
-     * Get all doctor login history
+     * Get all doctor login history from the new session tracking system
      */
-    public CustomeLinkedList<Doctor> getAllDoctorLoginHistory() {
-        return doctorDAO.getAllDoctors(); // Login history is embedded in Doctor objects
+    public CustomeLinkedList<DoctorSession> getAllDoctorLoginHistory() {
+        DoctorSessionService sessionService = new DoctorSessionService();
+        return sessionService.getAllSessionHistory();
     }
 
     /**

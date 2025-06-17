@@ -65,39 +65,84 @@ public class AppointmentDAO {
     /** Return queue for a given doctorId */
     public CustomeLinkedList<Appointment> getQueueForDoctor(int doctorId) {
         CustomeLinkedList<Appointment> all = loadAllAppointments();
-        CustomeLinkedList<Appointment> result = new CustomeLinkedList<>();
+        CustomeLinkedList<Appointment> doctorAppointments = new CustomeLinkedList<>();
+        
+        java.time.LocalDateTime now = java.time.LocalDateTime.now();
+        
+        // Filter appointments for this doctor and collect only scheduled ones that are in the future
         for (Appointment a : all) {
-            if (a.getDoctorId() == doctorId) {
-                result.add(a);
+            if (a.getDoctorId() == doctorId && 
+                "scheduled".equals(a.getStatus()) &&
+                a.getTime().isAfter(now) &&
+                isValidAppointmentTime(a.getTime())) {
+                doctorAppointments.add(a);
             }
         }
-        return result;
+        
+        // Sort the appointments by time using insertion sort to maintain custom data structure
+        return sortAppointmentsByTime(doctorAppointments);
+    }
+    
+    /**
+     * Helper method to sort appointments by time using insertion sort
+     * This maintains our custom data structure approach without using ArrayList
+     */
+    private CustomeLinkedList<Appointment> sortAppointmentsByTime(CustomeLinkedList<Appointment> appointments) {
+        if (appointments.size() <= 1) {
+            return appointments;
+        }
+        
+        CustomeLinkedList<Appointment> sorted = new CustomeLinkedList<>();
+        
+        for (Appointment current : appointments) {
+            // Find the correct position to insert current appointment
+            boolean inserted = false;
+            CustomeLinkedList<Appointment> temp = new CustomeLinkedList<>();
+            
+            for (Appointment existing : sorted) {
+                if (!inserted && current.getTime().isBefore(existing.getTime())) {
+                    temp.add(current);
+                    inserted = true;
+                }
+                temp.add(existing);
+            }
+            
+            // If not inserted yet, add at the end
+            if (!inserted) {
+                temp.add(current);
+            }
+            
+            sorted = temp;
+        }
+        
+        return sorted;
     }
 
     /** Dequeue (first) appointment for doctorId, then save. */
     public Appointment processNextAppointment(int doctorId) {
+        // Get the sorted queue for this doctor
+        CustomeLinkedList<Appointment> sortedQueue = getQueueForDoctor(doctorId);
+        
+        if (sortedQueue.isEmpty()) {
+            return null;
+        }
+        
+        // Get the earliest appointment (first in sorted queue)
+        Appointment toProcess = sortedQueue.get(0);
+        
+        // Remove the appointment from the main list and save
         CustomeLinkedList<Appointment> all = loadAllAppointments();
-        Appointment toProcess = null;
-        for (Appointment a : all) {
-            if (a.getDoctorId() == doctorId) {
-                toProcess = a;
-                break;
-            }
-        }
-        if (toProcess != null) {
-            all.remove(toProcess);
-            saveAllAppointments(all);
-        }
+        all.remove(toProcess);
+        saveAllAppointments(all);
+        
         return toProcess;
     }
 
     /** Return (without dequeuing) first appointment for doctorId */
     public Appointment peekNextAppointment(int doctorId) {
-        CustomeLinkedList<Appointment> all = loadAllAppointments();
-        for (Appointment a : all) {
-            if (a.getDoctorId() == doctorId) {
-                return a;
-            }
+        CustomeLinkedList<Appointment> queue = getQueueForDoctor(doctorId);
+        if (queue.size() > 0) {
+            return queue.get(0); // Get first appointment from sorted queue
         }
         return null;
     }
@@ -123,5 +168,115 @@ public class AppointmentDAO {
     /** Get all appointments as a list - used by admin functions */
     public CustomeLinkedList<Appointment> getAllAppointments() {
         return loadAllAppointments();
+    }
+
+    /**
+     * Check if there's a time conflict for a doctor at the specified time
+     */
+    public boolean hasTimeConflict(int doctorId, java.time.LocalDateTime appointmentTime) {
+        CustomeLinkedList<Appointment> all = loadAllAppointments();
+        for (Appointment a : all) {
+            if (a.getDoctorId() == doctorId && a.getTime().equals(appointmentTime)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if a patient already has an appointment at the specified time
+     */
+    public boolean patientHasTimeConflict(int patientId, java.time.LocalDateTime appointmentTime) {
+        CustomeLinkedList<Appointment> all = loadAllAppointments();
+        for (Appointment a : all) {
+            if (a.getPatientId() == patientId && a.getTime().equals(appointmentTime)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if the appointment time is valid (between 08:00-11:00 or 13:00-21:00)
+     */
+    public boolean isValidAppointmentTime(java.time.LocalDateTime appointmentTime) {
+        java.time.LocalTime time = appointmentTime.toLocalTime();
+        java.time.LocalTime morning_start = java.time.LocalTime.of(8, 0);
+        java.time.LocalTime morning_end = java.time.LocalTime.of(11, 0);
+        java.time.LocalTime afternoon_start = java.time.LocalTime.of(13, 0);
+        java.time.LocalTime afternoon_end = java.time.LocalTime.of(21, 0);
+        
+        // Must be exactly on the hour
+        if (time.getMinute() != 0 || time.getSecond() != 0) {
+            return false;
+        }
+        
+        // Check if time is in valid ranges
+        return (time.compareTo(morning_start) >= 0 && time.compareTo(morning_end) <= 0) ||
+               (time.compareTo(afternoon_start) >= 0 && time.compareTo(afternoon_end) <= 0);
+    }
+
+    /**
+     * Get available time slots for a specific date
+     */
+    public java.util.List<java.time.LocalTime> getAvailableTimeSlots() {
+        java.util.List<java.time.LocalTime> slots = new java.util.ArrayList<>();
+        
+        // Morning slots: 08:00 - 11:00
+        for (int hour = 8; hour <= 11; hour++) {
+            slots.add(java.time.LocalTime.of(hour, 0));
+        }
+        
+        // Afternoon slots: 13:00 - 21:00
+        for (int hour = 13; hour <= 21; hour++) {
+            slots.add(java.time.LocalTime.of(hour, 0));
+        }
+        
+        return slots;
+    }
+
+    /**
+     * Remove appointments that have passed their scheduled time + 2 hours
+     * This method should be called periodically to clean up old appointments
+     */
+    public int removeExpiredAppointments() {
+        CustomeLinkedList<Appointment> all = loadAllAppointments();
+        CustomeLinkedList<Appointment> validAppointments = new CustomeLinkedList<>();
+        java.time.LocalDateTime cutoffTime = java.time.LocalDateTime.now().minusHours(2);
+        
+        int removedCount = 0;
+        
+        for (Appointment appointment : all) {
+            // Keep appointments that are still within the 2-hour grace period
+            if (appointment.getTime().isAfter(cutoffTime)) {
+                validAppointments.add(appointment);
+            } else {
+                removedCount++;
+                System.out.println("Removing expired appointment: " + appointment.getAppointmentId() + 
+                                 " scheduled for " + appointment.getTime());
+            }
+        }
+        
+        // Save the filtered list back to file
+        saveAllAppointments(validAppointments);
+        
+        return removedCount;
+    }
+    
+    /**
+     * Remove a specific appointment by ID (for admin use)
+     */
+    public boolean removeAppointment(int appointmentId) {
+        CustomeLinkedList<Appointment> all = loadAllAppointments();
+        
+        for (Appointment appointment : all) {
+            if (appointment.getAppointmentId() == appointmentId) {
+                all.remove(appointment);
+                saveAllAppointments(all);
+                return true;
+            }
+        }
+        
+        return false; // Appointment not found
     }
 }
