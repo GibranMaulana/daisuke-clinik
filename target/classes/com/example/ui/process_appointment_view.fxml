@@ -44,7 +44,6 @@
     <!-- Left Navigation Bar -->
     <VBox style="-fx-background-color: #0F0E47; -fx-padding: 15; -fx-spacing: 10; -fx-min-width: 200;" 
           GridPane.rowIndex="1" GridPane.columnIndex="0">
-        <Label text="Navigation" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 0 0 10 0; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
          <Button text="Dashboard" 
                 onAction="#onBackToDashboard"
                 style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 15; -fx-alignment: center-left; -fx-background-radius: 5; -fx-min-width: 170; -fx-graphic-text-gap: 10;">
@@ -60,39 +59,6 @@
             </graphic>
         </Button>
         
-        <Button text="All Patients"
-                onAction="#onViewAllPatients"
-                style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 15; -fx-alignment: center-left; -fx-background-radius: 5; -fx-min-width: 170; -fx-graphic-text-gap: 10;">
-            <graphic>
-                <FontIcon iconLiteral="fas-users" iconSize="16" iconColor="white" />
-            </graphic>
-        </Button>
-        
-        <Separator style="-fx-border-color: #505081; -fx-border-width: 1 0 0 0; -fx-padding: 5 0;"/>
-        
-        <Button text="Save and Continue"
-                onAction="#onSaveClicked"
-                style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 15; -fx-alignment: center-left; -fx-background-radius: 5; -fx-min-width: 170; -fx-graphic-text-gap: 10;">
-            <graphic>
-                <FontIcon iconLiteral="fas-save" iconSize="16" iconColor="white" />
-            </graphic>
-        </Button>
-        
-        <Button text="Complete"
-                onAction="#onFinishClicked"
-                style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 15; -fx-alignment: center-left; -fx-background-radius: 5; -fx-min-width: 170; -fx-graphic-text-gap: 10;">
-            <graphic>
-                <FontIcon iconLiteral="fas-check-circle" iconSize="16" iconColor="white" />
-            </graphic>
-        </Button>
-        
-        <Button text="Cancel"
-                onAction="#onCancelClicked"
-                style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 10 15; -fx-alignment: center-left; -fx-background-radius: 5; -fx-min-width: 170; -fx-graphic-text-gap: 10;">
-            <graphic>
-                <FontIcon iconLiteral="fas-times-circle" iconSize="16" iconColor="white" />
-            </graphic>
-        </Button>
     </VBox>
 
     <!-- Main Content Area -->
@@ -229,14 +195,7 @@
                            style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2C2C54; -fx-font-family: 'Roboto', 'Arial', 'Helvetica', sans-serif;"/>
                 </HBox>
                 <HBox spacing="15" alignment="CENTER">
-                    <Button text="Save Progress"
-                            onAction="#onSaveClicked"
-                            style="-fx-background-color: #8686AC; -fx-text-fill: white; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 20; -fx-background-radius: 8; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 2); -fx-graphic-text-gap: 10;"
-                            prefWidth="150">
-                        <graphic>
-                            <FontIcon iconLiteral="fas-save" iconSize="16" iconColor="white" />
-                        </graphic>
-                    </Button>
+                    
                     <Button text="Complete and Next"
                             onAction="#onFinishClicked"
                             style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-family: 'Roboto Medium', 'Arial', 'Helvetica', sans-serif; -fx-font-size: 14px; -fx-padding: 12 20; -fx-background-radius: 8; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 2); -fx-graphic-text-gap: 10;"

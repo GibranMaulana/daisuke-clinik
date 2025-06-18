@@ -710,7 +710,7 @@ public class AdminController {
             showStatus("Doctor registration accepted successfully! Doctor ID: " + newDoctor.getId(), true);
             
         } catch (Exception e) {
-            showStatus("Error accepting registration: " + e.getMessage(), false);
+            e.printStackTrace();
         }
     }
     

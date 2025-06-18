@@ -55,12 +55,6 @@ public class DoctorDashboardController {
         appointmentCardsContainer.getChildren().clear();
         CustomeLinkedList<Appointment> queue = appointmentDAO.getQueueForDoctor(loggedInDoctor.getId());
         
-        // Debug output
-        System.out.println("DEBUG: Doctor ID " + loggedInDoctor.getId() + " has " + queue.size() + " appointments");
-        for (Appointment a : queue) {
-            System.out.println("  - " + a.getAppointmentId() + " at " + a.getTime() + " for patient " + a.getPatientId());
-        }
-        
         // Create appointment cards
         for (Appointment appointment : queue) {
             VBox appointmentCard = createAppointmentCard(appointment);

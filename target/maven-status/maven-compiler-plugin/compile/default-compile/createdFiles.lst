@@ -20,7 +20,6 @@ com/example/ui/ProcessAppointmentController.class
 com/example/data/AdminDAO.class
 com/example/ui/PatientAppointmentController.class
 com/example/model/ds/CustomeBST.class
-com/example/debug/AppointmentDebug.class
 com/example/data/PatientRecordManagement.class
 com/example/data/DoctorSessionService.class
 com/example/model/Patient.class

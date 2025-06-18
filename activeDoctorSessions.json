@@ -1,1 +1,7 @@
-[ ]
+[ {
+  "doctorId" : 2147,
+  "doctorName" : "gibran_maulana azmi",
+  "loginTime" : "2025-06-18T10:30:30.904495622",
+  "logoutTime" : null,
+  "active" : true
+} ]
