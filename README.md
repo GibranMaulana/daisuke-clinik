@@ -748,6 +748,52 @@ mvn compile exec:java -Dexec.mainClass="com.example.util.DataIntegrityValidator"
 - [ ] Email notifications
 - [ ] Backup dan restore functionality
 
+---
+
+## 👥 Tim Pengembang
+
+<div align="center">
+
+### **Contributors**
+
+| Nama | NIM |
+|------|-----|
+| **Trisa Dwi Rahmawati** | L0124079 | 
+| **Gibran Maulana Azmi** | L0124100 | 
+| **Muhammad Azzam Alfarozy** | L0124106 | 
+| **Muhammad Raditya Boy W.** | L0124109 |
+
+</div>
+
+### **Kontribusi Tim**
+
+#### 🎨 **Frontend & UI Development**
+- **Trisa Dwi Rahmawati**: Desain antarmuka pengguna, implementasi JavaFX FXML, styling CSS
+- **Muhammad Raditya Boy W.**: Integrasi komponen UI, responsiveness, user experience optimization
+
+#### ⚙️ **Backend & Logic Development**
+- **Gibran Maulana Azmi**: Implementasi custom data structures (CustomeLinkedList, CustomeQueue), core business logic
+- **Muhammad Azzam Alfarozy**: Arsitektur sistem, DAO pattern implementation, JSON serialization
+
+#### 🧪 **Testing & Quality Assurance**
+- **Muhammad Raditya Boy W.**: Unit testing, integration testing, bug fixes
+- **Trisa Dwi Rahmawati**: User acceptance testing, UI/UX validation
+
+#### 📊 **System Design & Architecture**
+- **Muhammad Azzam Alfarozy**: Database design, data modeling, system architecture
+- **Gibran Maulana Azmi**: Algorithm optimization, performance tuning
+
+---
+
+### **Acknowledgments**
+
+Tim ini berkolaborasi untuk mengembangkan sistem manajemen rumah sakit yang komprehensif dengan implementasi struktur data kustom. Setiap anggota tim memberikan kontribusi unik dalam berbagai aspek pengembangan, mulai dari desain UI yang intuitif hingga implementasi algoritma yang efisien.
+
+**Special Thanks:**
+- Dosen pembimbing untuk guidance dan feedback
+- Komunitas JavaFX untuk resources dan dokumentasi
+- Open source libraries yang mendukung pengembangan
+
 <div align="center">
 
 **🏥 Sistem Manajemen Rumah Sakit** 
