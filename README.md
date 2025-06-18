@@ -765,23 +765,6 @@ mvn compile exec:java -Dexec.mainClass="com.example.util.DataIntegrityValidator"
 
 </div>
 
-### **Kontribusi Tim**
-
-#### 🎨 **Frontend & UI Development**
-- **Trisa Dwi Rahmawati**: Desain antarmuka pengguna, implementasi JavaFX FXML, styling CSS
-- **Muhammad Raditya Boy W.**: Integrasi komponen UI, responsiveness, user experience optimization
-
-#### ⚙️ **Backend & Logic Development**
-- **Gibran Maulana Azmi**: Implementasi custom data structures (CustomeLinkedList, CustomeQueue), core business logic
-- **Muhammad Azzam Alfarozy**: Arsitektur sistem, DAO pattern implementation, JSON serialization
-
-#### 🧪 **Testing & Quality Assurance**
-- **Muhammad Raditya Boy W.**: Unit testing, integration testing, bug fixes
-- **Trisa Dwi Rahmawati**: User acceptance testing, UI/UX validation
-
-#### 📊 **System Design & Architecture**
-- **Muhammad Azzam Alfarozy**: Database design, data modeling, system architecture
-- **Gibran Maulana Azmi**: Algorithm optimization, performance tuning
 
 ---
 
