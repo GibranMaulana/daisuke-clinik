@@ -435,20 +435,6 @@ Untuk bantuan teknis atau pertanyaan tentang sistem:
 
 ---
 
-<div align="center">
-
-**🏥 Sistem Manajemen Rumah Sakit** 
-
-*Dikembangkan dengan ❤️ menggunakan Java & JavaFX*
-
----
-
-*© 2025 - Hospital Management System. Built with Custom Data Structures.*
-
-</div>
-
----
-
 ## 🛠 Implementasi Fitur yang Telah Dibangun
 
 ### **✅ Fitur yang Sudah Diimplementasi**
@@ -687,3 +673,89 @@ Berikut adalah daftar lengkap fitur yang telah berhasil diimplementasikan dalam 
 ├── UI notifications: Immediate feedback
 └── Data persistence: Immediate JSON write
 ```
+
+---
+
+## 🐛 Bug Fixes & Improvements
+
+### **Critical Bug Fixes**
+
+#### **1. Pending Doctor Registration Decline Issue**
+- **Problem**: Menolak pendaftaran dokter tidak menghapus entri dari `pendingDoctorRegistrations.json`
+- **Root Cause**: `ClassCastException` saat menyimpan list kosong (Object[] vs PendingDoctorRegistration[])
+- **Solution**: Implementasi null-safe handling di `PendingDoctorRegistrationDAO.savePendingRegistrations()`
+- **Status**: ✅ **FIXED**
+
+#### **2. NullPointerException in Process Appointment**
+- **Problem**: Error `Cannot invoke "Patient.getName()" because "p" is null`
+- **Root Cause**: Appointment mereferensikan patient yang tidak ada (data inconsistency)
+- **Solution**: 
+  - Implementasi null-checking di `ProcessAppointmentController.setAppointment()`
+  - Tambah missing patient record untuk menjaga data integrity
+  - Graceful handling saat patient tidak ditemukan
+- **Status**: ✅ **FIXED**
+
+### **New Features & Improvements**
+
+#### **Data Integrity Validation**
+```java
+// New utility class for data validation
+DataIntegrityValidator validator = new DataIntegrityValidator();
+validator.runFullIntegrityCheck(); // Validates all data relationships
+```
+
+**Features:**
+- ✅ Validasi appointment-patient references
+- ✅ Deteksi orphaned records
+- ✅ Automatic data consistency reporting
+- ✅ Easy integration untuk development/debugging
+
+#### **Enhanced Error Handling**
+- **Null-safe operations** di semua DAO classes
+- **Graceful degradation** saat data tidak ditemukan
+- **User-friendly error messages** di UI
+- **Console logging** untuk debugging
+
+#### **Robustness Improvements**
+- **Empty list handling** di custom data structures
+- **Type safety** untuk JSON serialization
+- **Memory leak prevention** di UI controllers
+- **Session management** yang lebih robust
+
+---
+
+### **Development Notes**
+
+#### **Testing Strategy**
+```bash
+# Run application tests
+mvn clean compile javafx:run
+
+# Test specific functionality
+mvn compile exec:java -Dexec.mainClass="com.example.util.DataIntegrityValidator"
+```
+
+#### **Known Limitations**
+- File-based storage (untuk skalabilitas besar perlu database)
+- Single-user concurrent access (tidak ada locking mechanism)
+- UI responsiveness bergantung pada ukuran data
+
+#### **Future Enhancements**
+- [ ] Database integration (PostgreSQL/MySQL)
+- [ ] Multi-user session management
+- [ ] Advanced reporting dan analytics
+- [ ] Mobile app integration
+- [ ] Email notifications
+- [ ] Backup dan restore functionality
+
+<div align="center">
+
+**🏥 Sistem Manajemen Rumah Sakit** 
+
+*Dikembangkan dengan ❤️ menggunakan Java & JavaFX*
+
+---
+
+*© 2025 - Hospital Management System. Built with Custom Data Structures.*
+
+</div>

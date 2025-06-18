@@ -38,6 +38,7 @@ com/example/ui/PatientController.class
 com/example/data/DiagnosisDAO.class
 com/example/ui/PatientRegisterController.class
 com/example/data/AdminService.class
+com/example/util/DataIntegrityValidator.class
 com/example/data/PendingDoctorRegistrationDAO.class
 com/example/ui/DoctorRegisterController.class
 com/example/model/User.class

@@ -22,6 +22,7 @@
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/data/PatientSearchTreeManagement.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/data/DoctorSessionService.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/PendingDoctorRegistration.java
+/home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/util/DataIntegrityValidator.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/ds/CustomeQueue.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/Appointment.java
 /home/bammm/coding/tubes-sda1/hospital/src/main/java/com/example/model/ds/CustomeBST.java

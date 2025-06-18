@@ -102,7 +102,7 @@ public class PatientRegisterController {
 
         // Load the appointment screen
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/patient_appointment.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/ui/login_view.fxml"));
             Stage stage = (Stage) nameField.getScene().getWindow();
             stage.getScene().setRoot(root);
         } catch (IOException e) {

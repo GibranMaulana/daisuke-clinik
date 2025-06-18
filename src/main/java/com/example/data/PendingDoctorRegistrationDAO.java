@@ -160,7 +160,14 @@ public class PendingDoctorRegistrationDAO {
             CustomeLinkedList<PendingDoctorRegistration> registrationList = getAllPendingRegistrations();
             
             // Convert CustomeLinkedList to array for JSON serialization
-            PendingDoctorRegistration[] registrationArray = registrationList.toJsonArray();
+            // Handle empty list case to avoid ClassCastException
+            PendingDoctorRegistration[] registrationArray;
+            if (registrationList.size() == 0) {
+                // Create empty array with correct type
+                registrationArray = new PendingDoctorRegistration[0];
+            } else {
+                registrationArray = registrationList.toJsonArray();
+            }
             
             objectMapper.writerWithDefaultPrettyPrinter()
                     .writeValue(new File(PENDING_FILE), registrationArray);

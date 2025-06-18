@@ -61,6 +61,18 @@ public class ProcessAppointmentController {
         Patient p = patientDAO.findById(pid);
 
         apptPatientIdField.setText(String.valueOf(pid));
+        
+        // Handle case where patient is not found (data inconsistency)
+        if (p == null) {
+            System.err.println("ERROR: Patient with ID " + pid + " not found! Data inconsistency detected.");
+            apptPatientNameField.setText("PATIENT NOT FOUND (ID: " + pid + ")");
+            apptPatientAgeField.setText("N/A");
+            apptPatientAddressField.setText("N/A");
+            apptPatientPhoneField.setText("N/A");
+            apptHistoryArea.setText("Cannot load patient history - patient record not found.");
+            return;
+        }
+        
         apptPatientNameField.setText(p.getName());
         apptPatientAgeField.setText(String.valueOf(p.getAge()));
         apptPatientAddressField.setText(p.getAddress());
@@ -108,8 +120,12 @@ public class ProcessAppointmentController {
             // Add diagnosis to patient's illness history
             int pid = currentAppointment.getPatientId();
             Patient p = patientDAO.findById(pid);
-            p.getIllnessHistory().add(diagnosis);
-            patientDAO.updatePatient(p);
+            if (p != null) {
+                p.getIllnessHistory().add(diagnosis);
+                patientDAO.updatePatient(p);
+            } else {
+                System.err.println("WARNING: Cannot update patient history - patient with ID " + pid + " not found");
+            }
         }
 
         // 2) Remove this appointment from the queue
@@ -188,8 +204,12 @@ public class ProcessAppointmentController {
             // Add diagnosis to patient's illness history
             int pid = currentAppointment.getPatientId();
             Patient p = patientDAO.findById(pid);
-            p.getIllnessHistory().add(diagnosis);
-            patientDAO.updatePatient(p);
+            if (p != null) {
+                p.getIllnessHistory().add(diagnosis);
+                patientDAO.updatePatient(p);
+            } else {
+                System.err.println("WARNING: Cannot update patient history - patient with ID " + pid + " not found");
+            }
             
             statusLabel.setText("Diagnosis saved successfully!");
             statusLabel.setStyle("-fx-text-fill: #28a745;");
