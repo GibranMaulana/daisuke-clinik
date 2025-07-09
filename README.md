@@ -765,6 +765,32 @@ mvn compile exec:java -Dexec.mainClass="com.example.util.DataIntegrityValidator"
 
 </div>
 
+---
+### **Our team Contribution**
+
+**Trisa Dwi Rahmawati**
+- patient management service
+- admin model init,
+- doctor pending registration logic
+- admin level logic
+- user abstrak
+
+**Gibran Maulan Azmi** 
+- setup maven project
+- Data services logic dan DAO, UI fxml dan UI controller
+
+**Muhammad Azzam Alfarozy**
+- appointment model init
+- custom Queue data structure
+- diagnosis model
+- login session model
+- patient model
+
+**Muhammad Raditya Boy**
+- Custom LinkedList for data structure
+- doctor model init 
+- doctor session model
+- pending doctor registration model
 
 ---
 
